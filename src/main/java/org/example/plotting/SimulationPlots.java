@@ -59,7 +59,17 @@ public class SimulationPlots {
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesPaint(0, Color.BLUE);
         renderer.setSeriesPaint(1, Color.GREEN);
+        renderer.setSeriesShapesVisible(0, false);
+        renderer.setSeriesShapesVisible(1, false);
+
         plot.setRenderer(renderer);
+
+        // Set background color to white
+        plot.setBackgroundPaint(Color.WHITE);
+
+        // Set grid lines color to grey
+        plot.setDomainGridlinePaint(Color.GRAY);
+        plot.setRangeGridlinePaint(Color.GRAY);
 
         JFrame frame = new JFrame("Simulation Results");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
