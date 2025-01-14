@@ -13,6 +13,7 @@ import org.example.utils.Timer;
 import lombok.Getter;
 
 public class Simulation {
+    @Getter
     private final World world;
     private final int nIters;
     private final PCommunicationStrategy pCommunicationStrategy;
@@ -94,6 +95,7 @@ public class Simulation {
             }
         } else {
             world.killAgent(agent.getX(), agent.getY());
+            iterationStats.trackKilledAgent();
         }
     }
 

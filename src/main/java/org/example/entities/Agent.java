@@ -9,11 +9,13 @@ import lombok.Getter;
 public class Agent {
     @Getter
     private final double learningAbility;
+    @Getter
     private final Lexicon lexicon;
     @Getter
     private int x;
     @Getter
     private int y;
+    @Getter
     private int age;
 
     public Agent(double learningAbility, Lexicon lexicon, int x, int y) {

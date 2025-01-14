@@ -1,11 +1,11 @@
 package org.example.entities;
 
 import java.util.*;
-import java.util.List;
 
 import org.example.Config;
 import org.example.utils.Position;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public class World {
@@ -110,12 +110,28 @@ public class World {
         return totalKnowledge / agentsGrid.size();
     }
 
-    public double getAvgLearningAbility() {
+    public Stats getStats() {
         double totalLearningAbility = 0;
+        Set<String> languages = new HashSet<>();
+        int totalAge = 0;
+
         for (Agent agent : agentsGrid.values()) {
             totalLearningAbility += agent.getLearningAbility();
+            if (!agent.getLexicon().isEmpty()) {
+                languages.add(agent.getLexicon().getTopWord());
+            }            
+            totalAge += agent.getAge();
         }
-        return totalLearningAbility / agentsGrid.size();
+
+        double avgLearningAbility = totalLearningAbility / agentsGrid.size();
+        int languagesNumber = languages.size();
+        double avgAge = (double) totalAge / agentsGrid.size();
+
+        return new Stats(avgLearningAbility, languagesNumber, avgAge);
+    }
+
+    public Agent getAgentAt(int x, int y) {
+        return agentsGrid.get(new Position(x, y));
     }
 
     private void shouldBeEmpty(int x, int y) {
@@ -128,5 +144,15 @@ public class World {
         if (!agentsGrid.containsKey(new Position(x, y))) {
             throw new IllegalArgumentException("Position (" + x + ", " + y + ") is empty");
         }
+    }
+
+    @AllArgsConstructor
+    public static class Stats {
+        @Getter
+        private final double avgLearningAbility;
+        @Getter
+        private final int languagesNumber;
+        @Getter
+        private final double avgAge;
     }
 }

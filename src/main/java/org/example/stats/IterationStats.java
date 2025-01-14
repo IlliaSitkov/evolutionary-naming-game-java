@@ -1,8 +1,13 @@
 package org.example.stats;
 
+import lombok.Getter;
+
 public class IterationStats {
+    @Getter
     private int nCommunications = 0;
     private int nSuccessfulCommunications = 0;
+    @Getter
+    private int nKilledAgents = 0;
 
     public void trackSuccessRate(boolean success) {
         nCommunications++;
@@ -16,5 +21,9 @@ public class IterationStats {
             return 0;
         }
         return (double) nSuccessfulCommunications / nCommunications;
+    }
+
+    public void trackKilledAgent() {
+        nKilledAgents++;
     }
 }
