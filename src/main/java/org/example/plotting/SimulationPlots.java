@@ -4,12 +4,8 @@ import org.example.entities.Agent;
 import org.example.entities.World;
 import org.example.stats.SimulationStats;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.LegendItem;
-import org.jfree.chart.LegendItemCollection;
-import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.PaintScale;
@@ -27,10 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import javax.swing.JFrame;
-
 public class SimulationPlots {
     private final SimulationStats simulationStats;
+    private static final String outputDir = "out/";
 
     public SimulationPlots(SimulationStats simulationStats) {
         this.simulationStats = simulationStats;
@@ -85,7 +80,7 @@ public class SimulationPlots {
 
 
         try {
-            ChartUtils.saveChartAsPNG(new File("SuccessRateLearningAbility.png"), chart, 800, 600);
+            ChartUtils.saveChartAsPNG(new File(outputDir + "SuccessRateLearningAbility.png"), chart, 800, 600);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -134,7 +129,7 @@ public class SimulationPlots {
         plot.setRangeGridlinePaint(Color.GRAY);
 
         try {
-            ChartUtils.saveChartAsPNG(new File(title.replaceAll(" ", "") + ".png"), chart, 800, 600);
+            ChartUtils.saveChartAsPNG(new File(outputDir + title.replaceAll(" ", "") + ".png"), chart, 800, 600);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -213,7 +208,7 @@ public class SimulationPlots {
         plot.setBackgroundPaint(Color.WHITE);
 
         try {
-            ChartUtils.saveChartAsPNG(new File(fileName + ".png"), chart, 800, 800);
+            ChartUtils.saveChartAsPNG(new File(outputDir + fileName + ".png"), chart, 800, 800);
         } catch (IOException e) {
             e.printStackTrace();
         }
