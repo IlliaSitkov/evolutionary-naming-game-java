@@ -109,6 +109,7 @@ public class World {
         double totalLearningAbility = 0;
         Set<String> languages = new HashSet<>();
         int totalAge = 0;
+        double totalKnowledge = 0;
 
         for (Agent agent : agentsGrid.values()) {
             totalLearningAbility += agent.getLearningAbility();
@@ -116,13 +117,15 @@ public class World {
                 languages.add(agent.getLexicon().getTopWord());
             }            
             totalAge += agent.getAge();
+            totalKnowledge += agent.getKnowledge();
         }
 
         double avgLearningAbility = totalLearningAbility / agentsGrid.size();
         int languagesNumber = languages.size();
         double avgAge = (double) totalAge / agentsGrid.size();
+        double avgKnowledge = totalKnowledge / agentsGrid.size();
 
-        return new Stats(avgLearningAbility, languagesNumber, avgAge);
+        return new Stats(avgLearningAbility, languagesNumber, avgAge, avgKnowledge);
     }
 
     public Agent getAgentAt(int x, int y) {
@@ -153,5 +156,7 @@ public class World {
         private final int languagesNumber;
         @Getter
         private final double avgAge;
+        @Getter
+        private final double avgKnowledge;
     }
 }

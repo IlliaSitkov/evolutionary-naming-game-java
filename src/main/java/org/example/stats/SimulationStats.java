@@ -20,6 +20,8 @@ public class SimulationStats {
     private final List<Double> avgAges = new ArrayList<>();
     @Getter
     private final List<Integer> killedAgentsNumber = new ArrayList<>();
+    @Getter
+    private final List<Double> avgKnowledge = new ArrayList<>();
 
     public void recordBeforeEvolution(World world) {
         recordCommonWorldStats(world);
@@ -40,5 +42,6 @@ public class SimulationStats {
         avgLearningAbilities.add(stats.getAvgLearningAbility());
         languagesNumber.add(stats.getLanguagesNumber());
         avgAges.add(stats.getAvgAge());
+        avgKnowledge.add(stats.getAvgKnowledge());
     }
 }
