@@ -48,7 +48,6 @@ public class Lexicon {
     }
 
     public String getTopWord() {
-        shouldNotBeEmpty();
         return words.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey();
     }
 

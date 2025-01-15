@@ -12,7 +12,6 @@ public class World {
     @Getter
     private final int size;
     private final Map<Position, Agent> agentsGrid = new HashMap<>();
-    private final List<Position> agentsPositions = new ArrayList<>();
 
     public World(int size) {
         this.size = size;
@@ -31,16 +30,12 @@ public class World {
     public void addAgent(int x, int y, Agent agent) {
         shouldBeEmpty(x, y);
         agent.setPosition(x, y);
-        Position position = new Position(x, y);
-        agentsPositions.add(position);
-        agentsGrid.put(position, agent);
+        agentsGrid.put(new Position(x, y), agent);
     }
 
     public void killAgent(int x, int y) {
         shouldNotBeEmpty(x, y);
-        Position position = new Position(x, y);
-        agentsGrid.remove(position);
-        agentsPositions.remove(position);
+        agentsGrid.remove(new Position(x, y));
     }
 
     public List<Position> getNeighbourPositions(int x, int y) {
@@ -92,8 +87,8 @@ public class World {
     }
 
     public Agent getRandomAgent() {
-        Position randomPosition = agentsPositions.get(new Random().nextInt(agentsPositions.size()));
-        return agentsGrid.get(randomPosition);
+        Collection<Agent> agents = agentsGrid.values();
+        return agents.stream().skip(new Random().nextInt(agents.size())).findFirst().get();
     }
 
     public void increaseAgentsAge() {
@@ -132,6 +127,10 @@ public class World {
 
     public Agent getAgentAt(int x, int y) {
         return agentsGrid.get(new Position(x, y));
+    }
+
+    public boolean hasAgents() {
+        return !agentsGrid.isEmpty();
     }
 
     private void shouldBeEmpty(int x, int y) {

@@ -36,7 +36,7 @@ public class Simulation {
 
     public void start() {
         simulationStats.recordBeforeEvolution(world);
-        for (int iteration = 0; iteration < nIters; iteration++) {
+        for (int iteration = 0; iteration < nIters && world.hasAgents(); iteration++) {
             iterationStats = new IterationStats();
 
             Timer timer = new Timer();
@@ -52,7 +52,7 @@ public class Simulation {
     }
 
     private void evolveWorld(int iteration) {
-        for (int i = 0; i < world.getSize() * world.getSize(); i++) {
+        for (int i = 0; i < world.getSize() * world.getSize() && world.hasAgents(); i++) {
             updateAgent(iteration);
         }
         world.increaseAgentsAge();

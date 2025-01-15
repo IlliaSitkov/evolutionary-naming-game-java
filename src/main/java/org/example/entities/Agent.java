@@ -68,18 +68,21 @@ public class Agent {
 
     public Agent reproduce(double mutationProbability) {
         Random random = new Random();
+
         double rLearningAbility = random.nextDouble();
-        double rWordMutation = random.nextDouble();
-
-        double newLearningAbility = learningAbility;
-        String newWord = lexicon.getTopWord();
-
+        double newLearningAbility;
         if (rLearningAbility < mutationProbability) {
             newLearningAbility = random.nextDouble();
+        } else {
+            newLearningAbility = learningAbility;
         }
 
-        if (rWordMutation < mutationProbability) {
+        double rWordMutation = random.nextDouble();
+        String newWord;
+        if (rWordMutation < mutationProbability || lexicon.isEmpty()) {
             newWord = Lexicon.generateWord(Config.WORD_LENGTH);
+        } else {
+            newWord = lexicon.getTopWord();
         }
 
         Lexicon newLexicon = new Lexicon(lexicon.getMaxSize());
