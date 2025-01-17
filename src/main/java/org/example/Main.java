@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.export.ExportUtils;
 import org.example.plotting.SimulationPlots;
 import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
@@ -62,5 +63,8 @@ public class Main {
 
 
         timer.stop("After plotting");
+
+
+        ExportUtils.exportLearningAbilities(simulation.getWorld(), "out/learningAbilities.json");
     }
 }

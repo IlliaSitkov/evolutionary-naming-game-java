@@ -235,7 +235,6 @@ public class SimulationPlots {
                 } else {
                     double learningAbility = agent.getLearningAbility();
                     int intensity = (int) (255 * (1 - learningAbility)); // The larger the learning ability, the darker the color
-                    System.out.println("Intensity: " + intensity);
                     Color color = new Color(BASE_COLOR.getRed(), BASE_COLOR.getGreen(), BASE_COLOR.getBlue(), intensity);
                     zValues[index] = color.getRGB();
                 }
