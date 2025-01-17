@@ -2,7 +2,6 @@ package org.example.plotting;
 
 import org.example.entities.Agent;
 import org.example.entities.World;
-import org.example.stats.SimulationStats;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
@@ -24,35 +23,70 @@ import java.util.Map;
 import java.util.Random;
 
 public class SimulationPlots {
-    private final SimulationStats simulationStats;
-    private static final String outputDir = "out/";
+    private static final String OUTPUT_DIR = "out/";
+    private static String folderName = "";
 
-    public SimulationPlots(SimulationStats simulationStats) {
-        this.simulationStats = simulationStats;
-    }
+    private static final Color EMPTY_CELL_COLOR = Color.WHITE;
+    private static final Color EMPTY_LEXICON_COLOR = Color.BLACK;
+    private static final Color BASE_COLOR = Color.BLUE;
 
-    public void plotSuccessRateLearningAbility() {
-        List<Double> successRates = simulationStats.getSuccessRates();
-        List<Double> avgLearningAbilities = simulationStats.getAvgLearningAbilities();
-
-        XYSeries successRateSeries = new XYSeries("Success Rate");
-        for (int i = 0; i < successRates.size(); i++) {
-            successRateSeries.add(i + 1, successRates.get(i));
+    private static final PaintScale PAINT_SCALE = new PaintScale() {
+        @Override
+        public double getLowerBound() {
+            return 0;
         }
 
-        XYSeries learningAbilitySeries = new XYSeries("Average Learning Ability");
-        for (int i = 0; i < avgLearningAbilities.size(); i++) {
-            learningAbilitySeries.add(i, avgLearningAbilities.get(i));
+        @Override
+        public double getUpperBound() {
+            return 0xFFFFFF;
+        }
+
+        @Override
+        public Paint getPaint(double value) {
+            return new Color((int) value);
+        }
+    };
+
+    public static void setFolderName(String folder) {
+        folderName = folder;
+    }
+
+    private static String getOutputPath(String fileName) {
+        return OUTPUT_DIR + folderName + "/" + fileName;
+    }
+
+    private static void saveChartAsPNG(JFreeChart chart, String fileName, int width, int height) {
+        try {
+            File file = new File(getOutputPath(fileName));
+            File directory = file.getParentFile();
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            ChartUtils.saveChartAsPNG(file, chart, width, height);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void plotTwoSeriesOverIterations(List<Double> series1, List<Double> series2, String title, String xAxisLabel, String yAxisLabel, int series1Shift, int series2Shift, String series1Name, String series2Name, Double rangeMin, Double rangeMax) {
+        XYSeries xySeries1 = new XYSeries(series1Name);
+        for (int i = 0; i < series1.size(); i++) {
+            xySeries1.add(i + series1Shift, series1.get(i));
+        }
+
+        XYSeries xySeries2 = new XYSeries(series2Name);
+        for (int i = 0; i < series2.size(); i++) {
+            xySeries2.add(i + series2Shift, series2.get(i));
         }
 
         XYSeriesCollection dataset = new XYSeriesCollection();
-        dataset.addSeries(successRateSeries);
-        dataset.addSeries(learningAbilitySeries);
+        dataset.addSeries(xySeries1);
+        dataset.addSeries(xySeries2);
 
         JFreeChart chart = ChartFactory.createXYLineChart(
-                "Success Rate and Average Learning Ability Over Iterations",
-                "Iteration",
-                "Value",
+                title,
+                xAxisLabel,
+                yAxisLabel,
                 dataset,
                 PlotOrientation.VERTICAL,
                 true,
@@ -61,7 +95,9 @@ public class SimulationPlots {
         );
 
         XYPlot plot = chart.getXYPlot();
-        plot.getRangeAxis().setRange(0.0, 1.2);
+        if (rangeMin != null && rangeMax != null) {
+            plot.getRangeAxis().setRange(rangeMin, rangeMax);
+        }
 
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesPaint(0, Color.BLUE);
@@ -78,12 +114,7 @@ public class SimulationPlots {
         plot.setDomainGridlinePaint(Color.GRAY);
         plot.setRangeGridlinePaint(Color.GRAY);
 
-
-        try {
-            ChartUtils.saveChartAsPNG(new File(outputDir + "SuccessRateLearningAbility.png"), chart, 800, 600);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        saveChartAsPNG(chart, title.replaceAll(" ", "") + ".png", 800, 600);
     }
 
     public static <T extends Number> void plotStat(List<T> data, String title, String seriesName, String yAxisLabel, int startIteration) {
@@ -128,17 +159,10 @@ public class SimulationPlots {
         plot.setDomainGridlinePaint(Color.GRAY);
         plot.setRangeGridlinePaint(Color.GRAY);
 
-        try {
-            ChartUtils.saveChartAsPNG(new File(outputDir + title.replaceAll(" ", "") + ".png"), chart, 800, 600);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        saveChartAsPNG(chart, title.replaceAll(" ", "") + ".png", 800, 600);
     }
 
-    private static final Color EMPTY_CELL_COLOR = Color.WHITE;
-    private static final Color EMPTY_LEXICON_COLOR = Color.BLACK;
-
-    public static void plotWorld(World world, String fileName) {
+    public static void plotWorldLanguages(World world, String fileName) {
         int size = world.getSize();
         DefaultXYZDataset dataset = new DefaultXYZDataset();
         Map<String, Color> languageColorMap = new HashMap<>();
@@ -183,21 +207,74 @@ public class SimulationPlots {
         renderer.setBlockWidth(1.0);
         renderer.setBlockHeight(1.0);
 
-        // Create a custom PaintScale to map the z-values to colors
+        renderer.setPaintScale(PAINT_SCALE);
+        plot.setRenderer(renderer);
+
+        // Set the background color of the plot to white
+        plot.setBackgroundPaint(Color.WHITE);
+
+        saveChartAsPNG(chart, fileName + ".png", 800, 800);
+    }
+
+    public static void plotWorldLearningAbilities(World world, String fileName, double epsilon) {
+        int size = world.getSize();
+        DefaultXYZDataset dataset = new DefaultXYZDataset();
+
+        double[] xValues = new double[size * size];
+        double[] yValues = new double[size * size];
+        double[] zValues = new double[size * size];
+
+        int index = 0;
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
+                xValues[index] = x;
+                yValues[index] = y;
+                Agent agent = world.getAgentAt(x, y);
+                if (agent == null) {
+                    zValues[index] = EMPTY_CELL_COLOR.getRGB();
+                } else {
+                    double learningAbility = agent.getLearningAbility();
+                    int intensity = (int) (255 * (1 - learningAbility)); // The larger the learning ability, the darker the color
+                    System.out.println("Intensity: " + intensity);
+                    Color color = new Color(BASE_COLOR.getRed(), BASE_COLOR.getGreen(), BASE_COLOR.getBlue(), intensity);
+                    zValues[index] = color.getRGB();
+                }
+                index++;
+            }
+        }
+
+        dataset.addSeries("World", new double[][]{xValues, yValues, zValues});
+
+        JFreeChart chart = ChartFactory.createScatterPlot(
+                "World Grid by Learning Abilities",
+                "X",
+                "Y",
+                dataset,
+                PlotOrientation.VERTICAL,
+                true, false, false
+        );
+
+        XYPlot plot = (XYPlot) chart.getPlot();
+        XYBlockRenderer renderer = new XYBlockRenderer();
+        renderer.setBlockWidth(1.0);
+        renderer.setBlockHeight(1.0);
+
         PaintScale paintScale = new PaintScale() {
             @Override
             public double getLowerBound() {
                 return 0;
             }
-
+    
             @Override
             public double getUpperBound() {
-                return 0xFFFFFF;
+                return 1;
             }
-
+    
             @Override
             public Paint getPaint(double value) {
-                return new Color((int) value);
+                int intensity = (int) (255 * (1 - value)); // The larger the learning ability, the darker the color
+                intensity = Math.max(0, Math.min(255, intensity)); // Ensure intensity is within [0, 255]
+                return new Color(BASE_COLOR.getRed(), BASE_COLOR.getGreen(), BASE_COLOR.getBlue(), intensity);
             }
         };
 
@@ -207,10 +284,52 @@ public class SimulationPlots {
         // Set the background color of the plot to white
         plot.setBackgroundPaint(Color.WHITE);
 
-        try {
-            ChartUtils.saveChartAsPNG(new File(outputDir + fileName + ".png"), chart, 800, 800);
-        } catch (IOException e) {
-            e.printStackTrace();
+        saveChartAsPNG(chart, fileName + ".png", 800, 800);
+    }
+
+    public static void plotSeriesAsDependentOnAnother(List<Double> xData, List<Double> yData, String title, String xAxisLabel, String yAxisLabel, String seriesName, Double rangeMin, Double rangeMax) {
+        // Prepend null values to yData until it is of the same size as xData
+        while (yData.size() < xData.size()) {
+            yData.add(0, null);
         }
+
+        XYSeries series = new XYSeries(seriesName);
+        for (int i = 0; i < xData.size(); i++) {
+            series.add(xData.get(i), yData.get(i));
+        }
+
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        dataset.addSeries(series);
+
+        JFreeChart chart = ChartFactory.createXYLineChart(
+                title,
+                xAxisLabel,
+                yAxisLabel,
+                dataset,
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false
+        );
+
+        XYPlot plot = chart.getXYPlot();
+        if (rangeMin != null && rangeMax != null) {
+            plot.getRangeAxis().setRange(rangeMin, rangeMax);
+        }
+
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        renderer.setSeriesPaint(0, Color.BLUE);
+        renderer.setSeriesShapesVisible(0, false);
+
+        plot.setRenderer(renderer);
+
+        // Set background color to white
+        plot.setBackgroundPaint(Color.WHITE);
+
+        // Set grid lines color to grey
+        plot.setDomainGridlinePaint(Color.GRAY);
+        plot.setRangeGridlinePaint(Color.GRAY);
+
+        saveChartAsPNG(chart, title.replaceAll(" ", "") + ".png", 800, 600);
     }
 }

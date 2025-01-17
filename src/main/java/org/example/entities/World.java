@@ -136,6 +136,11 @@ public class World {
         return !agentsGrid.isEmpty();
     }
 
+    public List<Agent> getAgents() {
+        return new ArrayList<>(agentsGrid.values());
+    }
+
+
     private void shouldBeEmpty(int x, int y) {
         if (agentsGrid.containsKey(new Position(x, y))) {
             throw new IllegalArgumentException("Position (" + x + ", " + y + ") is already occupied");

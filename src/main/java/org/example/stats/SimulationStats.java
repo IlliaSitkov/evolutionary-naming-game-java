@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.example.entities.World;
+import org.example.strategies.pCommunication.PCommunicationStrategy;
 
 import lombok.Getter;
 
@@ -43,5 +44,13 @@ public class SimulationStats {
         languagesNumber.add(stats.getLanguagesNumber());
         avgAges.add(stats.getAvgAge());
         avgKnowledge.add(stats.getAvgKnowledge());
+    }
+
+    public static List<Double> getPCommunicationOverIterations(PCommunicationStrategy strategy, int nIters) {
+        List<Double> pCommunications = new ArrayList<>();
+        for (int i = 0; i < nIters; i++) {
+            pCommunications.add(strategy.getPCommunication(i));
+        }
+        return pCommunications;
     }
 }
