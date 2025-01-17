@@ -17,13 +17,10 @@ public class Main {
         int worldSize = 3;
         PCommunicationStrategy strategy = new ContinuousIncreasePCommunicationStrategy(0.1, 0.5, nIters);
 
-        // Simulation simulation = new Simulation(1000, 40, new SingleStepPCommunicationStrategy(0.1, 8000, 0.98), 0.001, 0.005, 5);
-
         Simulation simulation = new Simulation(nIters, worldSize, strategy, 0.001, 0.005, 5);
 
         SimulationPlots.setFolderName("Test");
         SimulationPlots.plotWorldLanguages(simulation.getWorld(), "WorldMap_Languages_Before");
-        SimulationPlots.plotWorldLearningAbilities(simulation.getWorld(), "WorldMap_LearningAbilities_Before", 0.01);
 
         simulation.start();
 
@@ -59,8 +56,6 @@ public class Main {
             null, null);
 
         SimulationPlots.plotWorldLanguages(simulation.getWorld(), "WorldMap_Languages_After");
-        SimulationPlots.plotWorldLearningAbilities(simulation.getWorld(), "WorldMap_LearningAbilities_After", 0.01);
-
 
         timer.stop("After plotting");
 

@@ -28,7 +28,6 @@ public class SimulationPlots {
 
     private static final Color EMPTY_CELL_COLOR = Color.WHITE;
     private static final Color EMPTY_LEXICON_COLOR = Color.BLACK;
-    private static final Color BASE_COLOR = Color.BLUE;
 
     private static final PaintScale PAINT_SCALE = new PaintScale() {
         @Override
@@ -208,76 +207,6 @@ public class SimulationPlots {
         renderer.setBlockHeight(1.0);
 
         renderer.setPaintScale(PAINT_SCALE);
-        plot.setRenderer(renderer);
-
-        // Set the background color of the plot to white
-        plot.setBackgroundPaint(Color.WHITE);
-
-        saveChartAsPNG(chart, fileName + ".png", 800, 800);
-    }
-
-    public static void plotWorldLearningAbilities(World world, String fileName, double epsilon) {
-        int size = world.getSize();
-        DefaultXYZDataset dataset = new DefaultXYZDataset();
-
-        double[] xValues = new double[size * size];
-        double[] yValues = new double[size * size];
-        double[] zValues = new double[size * size];
-
-        int index = 0;
-        for (int y = 0; y < size; y++) {
-            for (int x = 0; x < size; x++) {
-                xValues[index] = x;
-                yValues[index] = y;
-                Agent agent = world.getAgentAt(x, y);
-                if (agent == null) {
-                    zValues[index] = EMPTY_CELL_COLOR.getRGB();
-                } else {
-                    double learningAbility = agent.getLearningAbility();
-                    int intensity = (int) (255 * (1 - learningAbility)); // The larger the learning ability, the darker the color
-                    Color color = new Color(BASE_COLOR.getRed(), BASE_COLOR.getGreen(), BASE_COLOR.getBlue(), intensity);
-                    zValues[index] = color.getRGB();
-                }
-                index++;
-            }
-        }
-
-        dataset.addSeries("World", new double[][]{xValues, yValues, zValues});
-
-        JFreeChart chart = ChartFactory.createScatterPlot(
-                "World Grid by Learning Abilities",
-                "X",
-                "Y",
-                dataset,
-                PlotOrientation.VERTICAL,
-                true, false, false
-        );
-
-        XYPlot plot = (XYPlot) chart.getPlot();
-        XYBlockRenderer renderer = new XYBlockRenderer();
-        renderer.setBlockWidth(1.0);
-        renderer.setBlockHeight(1.0);
-
-        PaintScale paintScale = new PaintScale() {
-            @Override
-            public double getLowerBound() {
-                return 0;
-            }
-    
-            @Override
-            public double getUpperBound() {
-                return 1;
-            }
-    
-            @Override
-            public Paint getPaint(double value) {
-                int intensity = (int) (255 * (1 - value)); // The larger the learning ability, the darker the color
-                intensity = Math.max(0, Math.min(255, intensity)); // Ensure intensity is within [0, 255]
-                return new Color(BASE_COLOR.getRed(), BASE_COLOR.getGreen(), BASE_COLOR.getBlue(), intensity);
-            }
-        };
-
-        renderer.setPaintScale(paintScale);
         plot.setRenderer(renderer);
 
         // Set the background color of the plot to white
