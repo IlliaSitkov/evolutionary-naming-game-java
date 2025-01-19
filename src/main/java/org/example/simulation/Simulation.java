@@ -24,18 +24,18 @@ public class Simulation {
     private final SimulationStats simulationStats;
     private IterationStats iterationStats;
 
-    public Simulation(int nIters, int worldSize, PCommunicationStrategy pCommunicationStrategy, double pMutation, double A, double B) {
+    public Simulation(int nIters, int worldSize, PCommunicationStrategy pCommunicationStrategy, SimulationStats simulationStats, double pMutation, double A, double B) {
         this.world = new World(worldSize);
         this.nIters = nIters;
         this.pCommunicationStrategy = pCommunicationStrategy;
         this.pMutation = pMutation;
         this.A = A;
         this.B = B;
-        this.simulationStats = new SimulationStats();
+        this.simulationStats = simulationStats;
     }
 
     public void start() {
-        simulationStats.recordBeforeEvolution(world);
+        simulationStats.recordBeforeEvolution(world, pCommunicationStrategy.getPCommunication(0));
         for (int iteration = 0; iteration < nIters && world.hasAgents(); iteration++) {
             iterationStats = new IterationStats();
 
@@ -47,7 +47,7 @@ public class Simulation {
             timer.stop("Iteration " + iteration);
 
             simulationStats.recordIteration(iterationStats);
-            simulationStats.recordAfterIteration(world);
+            simulationStats.recordAfterIteration(world, iteration, pCommunicationStrategy.getPCommunication(iteration));
         }
     }
 

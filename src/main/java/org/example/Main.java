@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.List;
+
 import org.example.export.ExportUtils;
 import org.example.plotting.SimulationPlots;
 import org.example.simulation.Simulation;
@@ -13,33 +15,52 @@ public class Main {
         Timer timer = new Timer();
         timer.start();
 
-        int nIters = 50;
-        int worldSize = 3;
+        int nIters = 1000;
+        int worldSize = 10;
+        double A = 0.005;
+        double B = 5;
+        SimulationStats simulationStats = new SimulationStats(List.of(5, 10, 20, 49), List.of(0.11, 0.12, 0.14, 0.49));
         PCommunicationStrategy strategy = new ContinuousIncreasePCommunicationStrategy(0.1, 0.5, nIters);
 
-        Simulation simulation = new Simulation(nIters, worldSize, strategy, 0.001, 0.005, 5);
+        Simulation simulation = new Simulation(nIters, worldSize, strategy, simulationStats, 0.001, A, B);
 
-        SimulationPlots.setFolderName("Test");
-        SimulationPlots.plotWorldLanguages(simulation.getWorld(), "WorldMap_Languages_Before");
+        String folder = "Test1";
+        SimulationPlots.setFolderName(folder);
 
         simulation.start();
 
         timer.stop("Full simulation");
 
-        SimulationPlots.plotTwoSeriesOverIterations(simulation.getSimulationStats().getAvgLearningAbilities(), simulation.getSimulationStats().getSuccessRates(), "Learning Ability and Success Rate Over Iterations", "Iteration", "Value", 0, 1, "Learning Ability", "Success Rate", 0.0, 1.2);
-        SimulationPlots.plotStat(simulation.getSimulationStats().getSuccessRates(), "Success Rate Over Iterations", "Success Rate", "Success Rate", 1, 0.0, 1.2);
-        SimulationPlots.plotStat(simulation.getSimulationStats().getAvgLearningAbilities(), "Average Learning Ability Over Iterations", "Average Learning Ability", "Learning Ability", 0, 0.0, 1.2);
-        SimulationPlots.plotStat(simulation.getSimulationStats().getLanguagesNumber(), "Languages Number Over Iterations", "Languages Number", "Languages Number", 0);
-        SimulationPlots.plotStat(simulation.getSimulationStats().getCommunicationsNumber(), "Communications Number Over Iterations", "Communications Number", "Communications Number", 1);
-        SimulationPlots.plotStat(simulation.getSimulationStats().getAvgAges(), "Average Age Over Iterations", "Average Age", "Age", 0);
-        SimulationPlots.plotStat(simulation.getSimulationStats().getKilledAgentsNumber(), "Killed Agents Number Over Iterations", "Killed Agents Number", "Killed Agents Number", 1);
-        SimulationPlots.plotStat(simulation.getSimulationStats().getAvgKnowledge(), "Average Knowledge Over Iterations", "Avg Knowledge", "Avg Knowledge", 0);
-        SimulationPlots.plotSeriesAsDependentOnAnother(SimulationStats.getPCommunicationOverIterations(strategy, nIters), simulation.getSimulationStats().getSuccessRates(), "Success rate over P_Comm", "P_Communication", "Success rate", "Success rate", 0.0, 1.2);
-        SimulationPlots.plotSeriesAsDependentOnAnother(SimulationStats.getPCommunicationOverIterations(strategy, nIters), simulation.getSimulationStats().getAvgLearningAbilities(), "Learning ability over P_Comm", "P_Communication", "Learning ability", "Learning ability", 0.0, 1.2);
+        SimulationPlots.plotTwoSeriesOverIterations(simulationStats.getAvgLearningAbilities(), simulationStats.getSuccessRates(), "Learning Ability and Success Rate Over Iterations", "Iteration", "Value", 0, 1, "Learning Ability", "Success Rate", 0.0, 1.2);
+        SimulationPlots.plotStat(simulationStats.getSuccessRates(), "Success Rate Over Iterations", "Success Rate", "Success Rate", 1, 0.0, 1.2);
+        SimulationPlots.plotStat(simulationStats.getAvgLearningAbilities(), "Average Learning Ability Over Iterations", "Average Learning Ability", "Learning Ability", 0, 0.0, 1.2);
+        SimulationPlots.plotStat(simulationStats.getLanguagesNumber(), "Languages Number Over Iterations", "Languages Number", "Languages Number", 0);
+        SimulationPlots.plotStat(simulationStats.getCommunicationsNumber(), "Communications Number Over Iterations", "Communications Number", "Communications Number", 1);
+        SimulationPlots.plotStat(simulationStats.getAvgAges(), "Average Age Over Iterations", "Average Age", "Age", 0);
+        SimulationPlots.plotStat(simulationStats.getKilledAgentsNumber(), "Killed Agents Number Over Iterations", "Killed Agents Number", "Killed Agents Number", 1);
+        SimulationPlots.plotStat(simulationStats.getAvgKnowledge(), "Average Knowledge Over Iterations", "Avg Knowledge", "Avg Knowledge", 0);
         
         SimulationPlots.plotSeriesAsDependentOnAnother(
-            simulation.getSimulationStats().getAvgLearningAbilities(),
-            simulation.getSimulationStats().getAvgKnowledge(),
+            SimulationStats.getPCommunicationOverIterations(strategy, nIters),
+            simulationStats.getSuccessRates(),
+            "Success rate over P_Comm",
+            "P_Communication",
+            "Success rate",
+            "Success rate",
+            0.0, 1.2);
+        
+        SimulationPlots.plotSeriesAsDependentOnAnother(
+            SimulationStats.getPCommunicationOverIterations(strategy, nIters),
+            simulationStats.getAvgLearningAbilities(),
+            "Learning ability over P_Comm",
+            "P_Communication",
+            "Learning ability",
+            "Learning ability",
+            0.0, 1.2);
+        
+        SimulationPlots.plotSeriesAsDependentOnAnother(
+            simulationStats.getAvgLearningAbilities(),
+            simulationStats.getAvgKnowledge(),
             "Knowledge Over Learning ability",
             "Learning ability",
             "Knowledge",
@@ -47,19 +68,18 @@ public class Main {
             null, null);
 
         SimulationPlots.plotSeriesAsDependentOnAnother(
-            simulation.getSimulationStats().getAvgKnowledge(),
-            simulation.getSimulationStats().getSuccessRates(),
+            simulationStats.getAvgKnowledge(),
+            simulationStats.getSuccessRates(),
             "Success Rate Over Knowledge",
             "Knowledge",
             "Success Rate",
             "Success Rate",
             null, null);
 
-        SimulationPlots.plotWorldLanguages(simulation.getWorld(), "WorldMap_Languages_After");
 
         timer.stop("After plotting");
 
-
-        ExportUtils.exportLearningAbilities(simulation.getWorld(), "out/learningAbilities.json");
+        ExportUtils.exportToJson(simulationStats.getLanguageMaps(), "out/"+folder+"/language_maps.json");
+        ExportUtils.exportToJson(simulationStats.getLearningAbilityMaps(), "out/"+folder+"/learning_ability_maps.json");
     }
 }
