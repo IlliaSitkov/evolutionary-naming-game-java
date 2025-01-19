@@ -37,19 +37,33 @@ public class SimulationStats {
 
     private final List<Integer> iterationsToSaveMaps;
     private final List<Double> pCommunicationsToSaveMaps;
+    private final int nSkipIterations;
 
     public SimulationStats(List<Integer> iterationsToSaveMaps, List<Double> pCommunicationsToSaveMaps) {
         this.iterationsToSaveMaps = new ArrayList<>(iterationsToSaveMaps);
         this.pCommunicationsToSaveMaps = new ArrayList<>(pCommunicationsToSaveMaps);
+        this.nSkipIterations = 0;
+    }
+
+    public SimulationStats(int nSkipIterations) {
+        this.iterationsToSaveMaps = new ArrayList<>();
+        this.pCommunicationsToSaveMaps = new ArrayList<>();
+        this.nSkipIterations = nSkipIterations;
     }
 
     public void recordBeforeEvolution(World world, double pCommunication) {
+        if (nSkipIterations > 0) {
+            return;
+        }
         recordCommonWorldStats(world);
         recordWorldLearningAbilities(world, -1, pCommunication);
         recordWorldLanguages(world, -1, pCommunication);
     }
 
     public void recordIteration(IterationStats iterationStats) {
+        if (iterationStats.getIteration() < nSkipIterations) {
+            return;
+        }
         successRates.add(iterationStats.getSuccessRate());
         communicationsNumber.add(iterationStats.getNCommunications());
         killedAgentsNumber.add(iterationStats.getNKilledAgents());
@@ -57,6 +71,9 @@ public class SimulationStats {
     }
 
     public void recordAfterIteration(World world, int iteration, double pCommunication) {
+        if (iteration < nSkipIterations) {
+            return;
+        }
         recordCommonWorldStats(world);
         if (shouldSaveMaps(iteration, pCommunication)) {
             recordWorldLearningAbilities(world, iteration, pCommunication);
@@ -72,7 +89,7 @@ public class SimulationStats {
         .anyMatch((pComm) -> pCommunication >= pComm);
     }
 
-    public void recordCommonWorldStats(World world) {
+    private void recordCommonWorldStats(World world) {
         World.Stats stats = world.getStats();
         avgLearningAbilities.add(stats.getAvgLearningAbility());
         languagesNumber.add(stats.getLanguagesNumber());
@@ -89,7 +106,7 @@ public class SimulationStats {
         return pCommunications;
     }
 
-    public void recordWorldLearningAbilities(World world, int iteration, double pCommunication) {
+    private void recordWorldLearningAbilities(World world, int iteration, double pCommunication) {
         int size = world.getSize();
         double[][] learningAbilities = new double[size][size];
 
@@ -108,7 +125,7 @@ public class SimulationStats {
         learningAbilityMaps.put(key, learningAbilities);
     }
 
-    public void recordWorldLanguages(World world, int iteration, double pCommunication) {
+    private void recordWorldLanguages(World world, int iteration, double pCommunication) {
         int size = world.getSize();
         String[][] languages = new String[size][size];
 
@@ -126,4 +143,14 @@ public class SimulationStats {
         String key = String.format("p_comm_%.4f_it_%d", pCommunication, iteration);
         languageMaps.put(key, languages);
     }
+
+    public double getAvgLearningAbility() {
+        return avgLearningAbilities.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+    }
+
+    public double getAvgSuccessRate() {
+        return successRates.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+    }
+
+    
 }

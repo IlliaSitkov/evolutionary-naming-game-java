@@ -11,17 +11,20 @@ import org.example.utils.Position;
 import org.example.utils.Timer;
 
 import lombok.Getter;
+import lombok.Setter;
 
 public class Simulation {
     @Getter
     private final World world;
     private final int nIters;
-    private final PCommunicationStrategy pCommunicationStrategy;
+    @Setter
+    private PCommunicationStrategy pCommunicationStrategy;
     private final double pMutation;
     private final double A;
     private final double B;
     @Getter
-    private final SimulationStats simulationStats;
+    @Setter
+    private SimulationStats simulationStats;
     private IterationStats iterationStats;
 
     public Simulation(int nIters, int worldSize, PCommunicationStrategy pCommunicationStrategy, SimulationStats simulationStats, double pMutation, double A, double B) {
@@ -37,7 +40,7 @@ public class Simulation {
     public void start() {
         simulationStats.recordBeforeEvolution(world, pCommunicationStrategy.getPCommunication(0));
         for (int iteration = 0; iteration < nIters && world.hasAgents(); iteration++) {
-            iterationStats = new IterationStats();
+            iterationStats = new IterationStats(iteration);
 
             Timer timer = new Timer();
             timer.start();

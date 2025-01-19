@@ -87,7 +87,7 @@ public class SimulationPlots {
 
         saveChartAsPNG(chart, title.replaceAll(" ", "") + ".png", 800, 600);
     }
-
+    
     public static <T extends Number> void plotStat(List<T> data, String title, String seriesName, String yAxisLabel, int startIteration) {
         plotStat(data, title, seriesName, yAxisLabel, startIteration, null, null);
     }
@@ -134,7 +134,10 @@ public class SimulationPlots {
     }
 
     public static void plotSeriesAsDependentOnAnother(List<Double> xData, List<Double> yData, String title, String xAxisLabel, String yAxisLabel, String seriesName, Double rangeMin, Double rangeMax) {
-        // Prepend null values to yData until it is of the same size as xData
+        plotSeriesAsDependentOnAnother(xData, yData, title, xAxisLabel, yAxisLabel, seriesName, rangeMin, rangeMax, false);
+    }
+
+    public static void plotSeriesAsDependentOnAnother(List<Double> xData, List<Double> yData, String title, String xAxisLabel, String yAxisLabel, String seriesName, Double rangeMin, Double rangeMax, boolean showMarkers) {
         while (yData.size() < xData.size()) {
             yData.add(0, null);
         }
@@ -165,7 +168,7 @@ public class SimulationPlots {
 
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesPaint(0, Color.BLUE);
-        renderer.setSeriesShapesVisible(0, false);
+        renderer.setSeriesShapesVisible(0, showMarkers);
 
         plot.setRenderer(renderer);
 

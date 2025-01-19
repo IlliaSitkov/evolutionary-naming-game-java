@@ -10,6 +10,12 @@ public class IterationStats {
     private int nKilledAgents = 0;
     @Getter
     private int nBornAgents = 0;
+    @Getter
+    private final int iteration;
+
+    public IterationStats(int iteration) {
+        this.iteration = iteration;
+    }
 
     public void trackSuccessRate(boolean success) {
         nCommunications++;
