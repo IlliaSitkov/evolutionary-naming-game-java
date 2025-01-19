@@ -1,5 +1,6 @@
 package org.example.entities;
 
+import java.io.Serializable;
 import java.util.*;
 
 import org.example.Config;
@@ -8,7 +9,9 @@ import org.example.utils.Position;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-public class World {
+public class World implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Getter
     private final int size;
     private final Map<Position, Agent> agentsGrid = new HashMap<>();

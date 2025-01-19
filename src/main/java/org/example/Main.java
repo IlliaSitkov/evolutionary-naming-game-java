@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.example.entities.World;
-import org.example.export.ExportUtils;
+import org.example.export.IOUtils;
 import org.example.plotting.SimulationPlots;
 import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
@@ -100,15 +100,15 @@ public class Main {
                 "Success Rate",
                 null, null);
 
-        ExportUtils.exportToJson(simulationStats.getLanguageMaps(), "out/" + folder + "/language_maps.json");
-        ExportUtils.exportToJson(simulationStats.getLearningAbilityMaps(),
+        IOUtils.exportToJson(simulationStats.getLanguageMaps(), "out/" + folder + "/language_maps.json");
+        IOUtils.exportToJson(simulationStats.getLearningAbilityMaps(),
                 "out/" + folder + "/learning_ability_maps.json");
     }
 
     public static void runPCommSimulations() {
 
-        int nIters = 2000;
-        int nSkipIterations = 300;
+        int nIters = 50000;
+        int nSkipIterations = 15000;
         int worldSize = 20;
         double A = 0.05;
         double B = 5;
@@ -151,8 +151,9 @@ public class Main {
                 simulationStats.getSuccessRates(), "Learning Ability and Success Rate Over Iterations, pComm = " + pComm, "Iteration",
                 "Value", 0, 1, "Learning Ability", "Success Rate", 0.0, 1.2);
 
-            ExportUtils.exportToJson(avgLearningAbility, "out/" + folder + "/l_ab_pComm_"+pComm+".json");
-            ExportUtils.exportToJson(avgSuccessRate, "out/" + folder + "/s_rate_pComm_"+pComm+".json");
+            IOUtils.exportToJson(avgLearningAbility, "out/" + folder + "/l_ab_pComm_"+pComm+".json");
+            IOUtils.exportToJson(avgSuccessRate, "out/" + folder + "/s_rate_pComm_"+pComm+".json");
+            IOUtils.saveWorld(simulation.getWorld(), "out/" + folder + "/world_after_pComm_"+pComm+".ser");
         }
 
         SimulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgLearningAbilities, "Learning Ability Over P_Comm", "P_Communication", "Learning Ability", "Learning Ability", null, null, true);

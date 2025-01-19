@@ -1,12 +1,13 @@
 package org.example.entities;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 
 import lombok.Getter;
 
-public class Lexicon {
+public class Lexicon implements Serializable {
     @Getter
     private final int maxSize;
     private final Map<String, Double> words = new LinkedHashMap<>();

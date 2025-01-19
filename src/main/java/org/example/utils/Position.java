@@ -1,3 +1,7 @@
 package org.example.utils;
 
-public record Position(int x, int y) {}
+import java.io.Serializable;
+
+public record Position(int x, int y) implements Serializable {
+    private static final long serialVersionUID = 1L;
+}

@@ -1,12 +1,13 @@
 package org.example.entities;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import org.example.Config;
 
 import lombok.Getter;
 
-public class Agent {
+public class Agent implements Serializable {
     @Getter
     private final double learningAbility;
     @Getter
