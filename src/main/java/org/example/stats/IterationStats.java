@@ -8,6 +8,8 @@ public class IterationStats {
     private int nSuccessfulCommunications = 0;
     @Getter
     private int nKilledAgents = 0;
+    @Getter
+    private int nBornAgents = 0;
 
     public void trackSuccessRate(boolean success) {
         nCommunications++;
@@ -23,7 +25,11 @@ public class IterationStats {
         return (double) nSuccessfulCommunications / nCommunications;
     }
 
-    public void trackKilledAgent() {
+    public void trackAgentKilled() {
         nKilledAgents++;
+    }
+
+    public void trackAgentBorn() {
+        nBornAgents++;
     }
 }

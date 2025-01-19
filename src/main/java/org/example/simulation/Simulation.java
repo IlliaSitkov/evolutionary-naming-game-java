@@ -92,10 +92,11 @@ public class Simulation {
             Position emptyNeighbourPosition = world.getRandomEmptyNeighbourPosition(agent.getX(), agent.getY());
             if (emptyNeighbourPosition != null) {
                 reproduce(agent, emptyNeighbourPosition);
+                iterationStats.trackAgentBorn();
             }
         } else {
             world.killAgent(agent.getX(), agent.getY());
-            iterationStats.trackKilledAgent();
+            iterationStats.trackAgentKilled();
         }
     }
 

@@ -25,11 +25,15 @@ public class SimulationStats {
     @Getter
     private final List<Integer> killedAgentsNumber = new ArrayList<>();
     @Getter
+    private final List<Integer> bornAgentsNumber = new ArrayList<>();
+    @Getter
     private final List<Double> avgKnowledge = new ArrayList<>();
     @Getter
     private final Map<String, double[][]> learningAbilityMaps = new HashMap<>();
     @Getter
     private final Map<String, String[][]> languageMaps = new HashMap<>();
+    @Getter
+    private final List<Integer> nAgentsAlive = new ArrayList<>();
 
     private final List<Integer> iterationsToSaveMaps;
     private final List<Double> pCommunicationsToSaveMaps;
@@ -49,6 +53,7 @@ public class SimulationStats {
         successRates.add(iterationStats.getSuccessRate());
         communicationsNumber.add(iterationStats.getNCommunications());
         killedAgentsNumber.add(iterationStats.getNKilledAgents());
+        bornAgentsNumber.add(iterationStats.getNBornAgents());
     }
 
     public void recordAfterIteration(World world, int iteration, double pCommunication) {
@@ -73,6 +78,7 @@ public class SimulationStats {
         languagesNumber.add(stats.getLanguagesNumber());
         avgAges.add(stats.getAvgAge());
         avgKnowledge.add(stats.getAvgKnowledge());
+        nAgentsAlive.add(world.getAgents().size());
     }
 
     public static List<Double> getPCommunicationOverIterations(PCommunicationStrategy strategy, int nIters) {
