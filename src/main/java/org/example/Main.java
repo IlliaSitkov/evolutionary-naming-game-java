@@ -16,7 +16,7 @@ import org.example.utils.Timer;
 
 public class Main {
     public static void main(String[] args) {
-        runPCommSimulations();
+        runOrdinarySimulation();
     }
 
     public static void runOrdinarySimulation() {
@@ -24,19 +24,15 @@ public class Main {
         timer.start();
 
         int nIters = 50000;
-        int worldSize = 20;
-        double A = 0.05;
-        double B = 5;
+        int worldSize = 40;
         double pMutation = 0.001;
-        SimulationStats simulationStats = new SimulationStats(List.of(1000, 7000, 7999, 8000, 8050, 9000, nIters - 1),
-                List.of(0.11, 0.12, 0.14, 0.22, 0.24, 0.25, 0.3));
-        // PCommunicationStrategy strategy = new SingleStepPCommunicationStrategy(0.1,
-        // 8000, 0.98);
-        PCommunicationStrategy strategy = new ContinuousIncreasePCommunicationStrategy(0.1, 0.5, nIters);
+        SimulationStats simulationStats = new SimulationStats(List.of(1000, 5000, 7990, 8000, 8500, 10000, 30000, 40000, nIters - 1), List.of());
 
-        Simulation simulation = new Simulation(nIters, worldSize, strategy, simulationStats, pMutation, A, B);
+        PCommunicationStrategy strategy = new SingleStepPCommunicationStrategy(0.1, 8000, 0.98);
 
-        String folder = "Test1";
+        Simulation simulation = new Simulation(nIters, worldSize, strategy, simulationStats, pMutation);
+
+        String folder = "0.1_0.98_50k_A_0.05";
         SimulationPlots.setFolderName(folder);
 
         simulation.start();
@@ -121,7 +117,7 @@ public class Main {
         List<Double> avgSuccessRates = new ArrayList<>();
         List<Double> avgLearningAbilities = new ArrayList<>();
 
-        Simulation simulation = new Simulation(nIters, worldSize, null, null, pMutation, A, B);
+        Simulation simulation = new Simulation(nIters, worldSize, null, null, pMutation);
 
         Timer timer = new Timer();
         timer.start();

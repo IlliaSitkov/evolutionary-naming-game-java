@@ -8,7 +8,7 @@ public class ContinuousIncreasePCommunicationStrategy implements PCommunicationS
     public ContinuousIncreasePCommunicationStrategy(double initialProbability, double finalProbability, int nSteps) {
         this.initialProbability = initialProbability;
         this.finalProbability = finalProbability;
-        this.nSteps = nSteps;
+        this.nSteps = nSteps <= 1 ? 2 : nSteps;
     }
 
     @Override

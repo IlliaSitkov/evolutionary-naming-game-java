@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Random;
 
 import org.example.Config;
+import org.example.strategies.pSurvival.AvgKnowledgePSurvivalStrategy;
+import org.example.strategies.pSurvival.PSurvivalStrategy;
+import org.example.strategies.pSurvival.SuccessRatePSurvivalStrategy;
 
 import lombok.Getter;
 
@@ -19,6 +22,12 @@ public class Agent implements Serializable {
     @Getter
     private int age;
 
+    private int nInitedCommunications = 0;
+    private int nSuccessfulCommunications = 0;
+
+    private final PSurvivalStrategy pSurvivalStrategy = new AvgKnowledgePSurvivalStrategy(Config.A, Config.B);
+    // private final PSurvivalStrategy pSurvivalStrategy = new SuccessRatePSurvivalStrategy(Config.A, Config.C);
+
     public Agent(double learningAbility, Lexicon lexicon, int x, int y) {
         this.learningAbility = learningAbility;
         this.lexicon = lexicon;
@@ -32,6 +41,7 @@ public class Agent implements Serializable {
     }
 
     public String speak() {
+        nInitedCommunications++;
         if (lexicon.isEmpty()) {
             lexicon.addWord(Lexicon.generateWord(Config.WORD_LENGTH), 1.0);
         }
@@ -57,14 +67,8 @@ public class Agent implements Serializable {
         lexicon.addWord(word, 1);
     }
 
-    public double getSurvivalProbability(double avgKnowledge, double A, double B) {
-        return (Math.exp(-A * age) * (1 - Math.exp(-B * lexicon.getWeightsSum() / avgKnowledge)));
-    }
-
-    public boolean survives(double avgKnowledge, double A, double B) {
-        double pSurvival = getSurvivalProbability(avgKnowledge, A, B);
-        double r = new Random().nextDouble();
-        return r < pSurvival;
+    public boolean survives(World world) {
+        return pSurvivalStrategy.survives(this, world);
     }
 
     public Agent reproduce(double mutationProbability) {
@@ -95,8 +99,16 @@ public class Agent implements Serializable {
         age++;
     }
 
+    public void recordSuccessfulCommunication() {
+        nSuccessfulCommunications++;
+    }
+
     public double getKnowledge() {
         return lexicon.getWeightsSum();
+    }
+
+    public double getSuccessRate() {
+        return nInitedCommunications == 0 ? 0 : (double) nSuccessfulCommunications / nInitedCommunications;
     }
 
     public void setPosition(int x, int y) {
