@@ -140,6 +140,10 @@ public class World {
         return new ArrayList<>(agentsGrid.values());
     }
 
+    public int getNAgentsAlive() {
+        return agentsGrid.size();
+    }
+
 
     private void shouldBeEmpty(int x, int y) {
         if (agentsGrid.containsKey(new Position(x, y))) {

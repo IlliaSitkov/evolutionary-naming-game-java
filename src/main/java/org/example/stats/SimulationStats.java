@@ -51,6 +51,10 @@ public class SimulationStats {
         this.nSkipIterations = nSkipIterations;
     }
 
+    public SimulationStats() {
+        this(0);
+    }
+
     public void recordBeforeEvolution(World world, double pCommunication) {
         if (nSkipIterations > 0) {
             return;

@@ -20,20 +20,16 @@ public class Simulation {
     @Setter
     private PCommunicationStrategy pCommunicationStrategy;
     private final double pMutation;
-    private final double A;
-    private final double B;
     @Getter
     @Setter
     private SimulationStats simulationStats;
     private IterationStats iterationStats;
 
-    public Simulation(int nIters, int worldSize, PCommunicationStrategy pCommunicationStrategy, SimulationStats simulationStats, double pMutation, double A, double B) {
+    public Simulation(int nIters, int worldSize, PCommunicationStrategy pCommunicationStrategy, SimulationStats simulationStats, double pMutation) {
         this.world = new World(worldSize);
         this.nIters = nIters;
         this.pCommunicationStrategy = pCommunicationStrategy;
         this.pMutation = pMutation;
-        this.A = A;
-        this.B = B;
         this.simulationStats = simulationStats;
     }
 
@@ -80,6 +76,7 @@ public class Simulation {
     private boolean communicationUpdate(Agent speaker, Agent listener) {
         String word = speaker.speak();
         if (listener.knowsWord(word)) {
+            speaker.recordSuccessfulCommunication();
             speaker.reinforceWord(word);
             listener.reinforceWord(word);
             return true;
@@ -91,7 +88,7 @@ public class Simulation {
     }
 
     private void populationUpdate(Agent agent) {
-        if (agent.survives(world.getAvgKnowledge(), A, B)) {
+        if (agent.survives(world)) {
             Position emptyNeighbourPosition = world.getRandomEmptyNeighbourPosition(agent.getX(), agent.getY());
             if (emptyNeighbourPosition != null) {
                 reproduce(agent, emptyNeighbourPosition);
