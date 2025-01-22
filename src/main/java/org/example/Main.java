@@ -11,6 +11,7 @@ import org.example.plotting.SimulationPlots;
 import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
 import org.example.strategies.pCommunication.ConstantPCommunicationStrategy;
+import org.example.strategies.pCommunication.ContinuousIncreasePCommunicationStrategy;
 import org.example.strategies.pCommunication.PCommunicationStrategy;
 import org.example.strategies.pCommunication.SingleStepPCommunicationStrategy;
 import org.example.strategies.pSurvival.AvgKnowledgePSurvivalStrategy;
@@ -25,13 +26,21 @@ public class Main {
         ExecutorService executorService = Executors.newFixedThreadPool(4);
 
         List<Runnable> simulationTasks = List.of(
-            // Main::runOrdinarySimulation,
-            // Main::runPCommSimulations,
-            () -> abruptPCommIncrease(20),
-            () -> abruptPCommIncrease(40),
-            () -> abruptPCommIncrease(41),
-            () -> abruptPCommIncrease(42),
-            () -> abruptPCommIncrease(43)
+            () -> abruptPCommIncrease(10, 1),
+            () -> abruptPCommIncrease(20, 1),
+            () -> abruptPCommIncrease(30, 1),
+            () -> abruptPCommIncrease(40, 1),
+            () -> abruptPCommIncrease(40, 3),
+            () -> abruptPCommIncrease(40, 5),
+            () -> abruptPCommIncrease(40, 10),
+            () -> abruptPCommIncrease(40, Integer.MAX_VALUE),
+
+            () -> continuousPCommIncrease05(10, 1),
+            () -> continuousPCommIncrease05(20, 1),
+            () -> continuousPCommIncrease05(30, 1),
+            () -> continuousPCommIncrease05(40, 1),
+            () -> continuousPCommIncrease05(40, 5),
+            () -> continuousPCommIncrease05(40, Integer.MAX_VALUE)
         );
 
         for (Runnable task : simulationTasks) {
@@ -41,14 +50,15 @@ public class Main {
         executorService.shutdown();
     }
 
-    public static void abruptPCommIncrease(int L) {
+    public static void abruptPCommIncrease(int L, int N) {
         Timer timer = new Timer();
         timer.start();
 
-        String folder = "abrupt_p_comm_increase/L=" + L;
+        String folder = "abrupt_p_comm_increase/L=" + L + "_N=" + N;
         VarConfig varConfig = new VarConfig(Map.of(
                 "L", L,
-                "T", 5
+                "T", 50000,
+                "N", N
         ));
         StrategyConfig strategyConfig = new StrategyConfig(
                 new SingleStepPCommunicationStrategy(0.1, 8000, 0.98),
@@ -60,7 +70,37 @@ public class Main {
                 List.of()
         );
 
-        PCommunicationStrategy strategy = new SingleStepPCommunicationStrategy(0.1, 8000, 0.98);
+        Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
+
+        SimulationPlots simulationPlots = new SimulationPlots(folder);
+
+        simulation.start();
+
+        timer.stop("Simulation ended");
+
+        simulationPlots.saveSimulationStats(simulationStats, strategyConfig.getPCommunicationStrategy(), varConfig.T());
+        IOUtils.saveRunConfig(folder, varConfig, strategyConfig);
+    }
+
+    public static void continuousPCommIncrease05(int L, int N) {
+        Timer timer = new Timer();
+        timer.start();
+
+        String folder = "continuous_p_comm_increase0.1-0.5/L=" + L+"_N="+N;
+        VarConfig varConfig = new VarConfig(Map.of(
+                "L", L,
+                "T", 80000,
+                "N", N
+        ));
+        StrategyConfig strategyConfig = new StrategyConfig(
+                new ContinuousIncreasePCommunicationStrategy(0.1, 0.5, varConfig.T()),
+                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B())
+        );
+
+        SimulationStats simulationStats = new SimulationStats(
+                List.of(varConfig.T() - 1),
+                List.of(0.1, 0.12, 0.13, 0.15, 0.18, 0.22, 0.25, 0.28, 0.4, 0.49)
+        );
 
         Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 
@@ -70,7 +110,7 @@ public class Main {
 
         timer.stop("Simulation ended");
 
-        simulationPlots.saveSimulationStats(simulationStats, strategy, varConfig.T());
+        simulationPlots.saveSimulationStats(simulationStats, strategyConfig.getPCommunicationStrategy(), varConfig.T());
         IOUtils.saveRunConfig(folder, varConfig, strategyConfig);
     }
     
