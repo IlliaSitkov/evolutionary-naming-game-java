@@ -3,6 +3,8 @@ package org.example;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.example.export.IOUtils;
 import org.example.plotting.SimulationPlots;
@@ -19,6 +21,21 @@ public class Main {
         runOrdinarySimulation();
     }
 
+    public static void runSimulationsInParallel() {
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
+
+        List<Runnable> simulationTasks = List.of(
+            Main::runOrdinarySimulation,
+            Main::runPCommSimulations
+        );
+
+        for (Runnable task : simulationTasks) {
+            executorService.submit(task);
+        }
+
+        executorService.shutdown();
+    }
+
     public static void runOrdinarySimulation() {
         Timer timer = new Timer();
         timer.start();
@@ -26,7 +43,7 @@ public class Main {
         String folder = "TEST";
         VarConfig varConfig = new VarConfig(Map.of(
                 "L", 20,
-                "T", 500
+                "T", 50000
         ));
         StrategyConfig strategyConfig = new StrategyConfig(
                 new SingleStepPCommunicationStrategy(0.1, 8000, 0.98),
@@ -56,16 +73,16 @@ public class Main {
 
         VarConfig varConfig = new VarConfig(Map.of(
                 "L", 20,
-                "T", 50000
+                "T", 5000
         ));
         StrategyConfig strategyConfig = new StrategyConfig(
                 null,
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B())
         );
 
-        int nSkipIterations = 15000;
+        int nSkipIterations = 1500;
 
-        String folder = "Test1_pComm";
+        String folder = "p_comm_test";
         SimulationPlots.setFolderName(folder);
 
         List<Double> pCommunicationValues = List.of(0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17);
