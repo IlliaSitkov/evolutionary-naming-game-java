@@ -18,15 +18,20 @@ import org.example.utils.Timer;
 
 public class Main {
     public static void main(String[] args) {
-        runOrdinarySimulation();
+        runSimulationsInParallel();
     }
 
     public static void runSimulationsInParallel() {
         ExecutorService executorService = Executors.newFixedThreadPool(4);
 
         List<Runnable> simulationTasks = List.of(
-            Main::runOrdinarySimulation,
-            Main::runPCommSimulations
+            // Main::runOrdinarySimulation,
+            // Main::runPCommSimulations,
+            () -> abruptPCommIncrease(20),
+            () -> abruptPCommIncrease(40),
+            () -> abruptPCommIncrease(41),
+            () -> abruptPCommIncrease(42),
+            () -> abruptPCommIncrease(43)
         );
 
         for (Runnable task : simulationTasks) {
@@ -36,6 +41,39 @@ public class Main {
         executorService.shutdown();
     }
 
+    public static void abruptPCommIncrease(int L) {
+        Timer timer = new Timer();
+        timer.start();
+
+        String folder = "abrupt_p_comm_increase/L=" + L;
+        VarConfig varConfig = new VarConfig(Map.of(
+                "L", L,
+                "T", 5
+        ));
+        StrategyConfig strategyConfig = new StrategyConfig(
+                new SingleStepPCommunicationStrategy(0.1, 8000, 0.98),
+                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B())
+        );
+
+        SimulationStats simulationStats = new SimulationStats(
+                List.of(1000, 5000, 7990, 8000, 8500, 10000, 30000, 40000, varConfig.T() - 1),
+                List.of()
+        );
+
+        PCommunicationStrategy strategy = new SingleStepPCommunicationStrategy(0.1, 8000, 0.98);
+
+        Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
+
+        SimulationPlots simulationPlots = new SimulationPlots(folder);
+
+        simulation.start();
+
+        timer.stop("Simulation ended");
+
+        simulationPlots.saveSimulationStats(simulationStats, strategy, varConfig.T());
+        IOUtils.saveRunConfig(folder, varConfig, strategyConfig);
+    }
+    
     public static void runOrdinarySimulation() {
         Timer timer = new Timer();
         timer.start();
@@ -59,13 +97,13 @@ public class Main {
 
         Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 
-        SimulationPlots.setFolderName(folder);
+        SimulationPlots simulationPlots = new SimulationPlots(folder);
 
         simulation.start();
 
         timer.stop("Simulation ended");
 
-        SimulationPlots.saveSimulationStats(simulationStats, strategy, varConfig.T());
+        simulationPlots.saveSimulationStats(simulationStats, strategy, varConfig.T());
         IOUtils.saveRunConfig(folder, varConfig, strategyConfig);
     }
 
@@ -83,7 +121,7 @@ public class Main {
         int nSkipIterations = 1500;
 
         String folder = "p_comm_test";
-        SimulationPlots.setFolderName(folder);
+        SimulationPlots simulationPlots = new SimulationPlots(folder);
 
         List<Double> pCommunicationValues = List.of(0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17);
         List<Double> avgSuccessRates = new ArrayList<>();
@@ -117,7 +155,7 @@ public class Main {
             Double avgSuccessRate = simulationStats.getAvgSuccessRate();
             avgSuccessRates.add(avgSuccessRate);
 
-            SimulationPlots.plotTwoSeriesOverIterations(simulationStats.getAvgLearningAbilities(),
+            simulationPlots.plotTwoSeriesOverIterations(simulationStats.getAvgLearningAbilities(),
                 simulationStats.getSuccessRates(), "l_ab_&_s_rate, pComm = " + pComm, "Iteration",
                 "Value", 0, 1, "Learning Ability", "Success Rate", 0.0, 1.2);
 
@@ -126,8 +164,8 @@ public class Main {
             IOUtils.saveWorld(simulation.getWorld(), "out/" + folder + "/world_after_pComm_"+pComm+".ser");
         }
 
-        SimulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgLearningAbilities, "l_ab_over_p_comm", "P_Communication", "Learning Ability", "Learning Ability", null, null, true);
-        SimulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgSuccessRates, "s_rate_over_p_comm", "P_Communication", "Success Rate", "Success Rate", null, null, true);
+        simulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgLearningAbilities, "l_ab_over_p_comm", "P_Communication", "Learning Ability", "Learning Ability", null, null, true);
+        simulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgSuccessRates, "s_rate_over_p_comm", "P_Communication", "Success Rate", "Success Rate", null, null, true);
         
         IOUtils.exportToJson(avgLearningAbilities, "out/" + folder + "/l_ab_pComm_all.json");
         IOUtils.exportToJson(avgSuccessRates, "out/" + folder + "/s_rate_pComm_all.json");

@@ -19,17 +19,17 @@ import java.util.List;
 
 public class SimulationPlots {
     private static final String OUTPUT_DIR = "out/";
-    private static String folderName = "";
+    private final String folderName;
 
-    public static void setFolderName(String folder) {
-        folderName = folder;
+    public SimulationPlots(String folder) {
+        this.folderName = folder;
     }
 
-    private static String getOutputPath(String fileName) {
+    private String getOutputPath(String fileName) {
         return OUTPUT_DIR + folderName + "/" + fileName;
     }
 
-    private static void saveChartAsPNG(JFreeChart chart, String fileName, int width, int height) {
+    private void saveChartAsPNG(JFreeChart chart, String fileName, int width, int height) {
         try {
             File file = new File(getOutputPath(fileName));
             File directory = file.getParentFile();
@@ -42,7 +42,7 @@ public class SimulationPlots {
         }
     }
 
-    public static void plotTwoSeriesOverIterations(List<Double> series1, List<Double> series2, String title, String xAxisLabel, String yAxisLabel, int series1Shift, int series2Shift, String series1Name, String series2Name, Double rangeMin, Double rangeMax) {
+    public void plotTwoSeriesOverIterations(List<Double> series1, List<Double> series2, String title, String xAxisLabel, String yAxisLabel, int series1Shift, int series2Shift, String series1Name, String series2Name, Double rangeMin, Double rangeMax) {
         XYSeries xySeries1 = new XYSeries(series1Name);
         for (int i = 0; i < series1.size(); i++) {
             xySeries1.add(i + series1Shift, series1.get(i));
@@ -91,11 +91,11 @@ public class SimulationPlots {
         saveChartAsPNG(chart, title.replaceAll(" ", "") + ".png", 800, 600);
     }
     
-    public static <T extends Number> void plotStat(List<T> data, String title, String seriesName, String yAxisLabel, int startIteration) {
+    public <T extends Number> void plotStat(List<T> data, String title, String seriesName, String yAxisLabel, int startIteration) {
         plotStat(data, title, seriesName, yAxisLabel, startIteration, null, null);
     }
 
-    public static <T extends Number> void plotStat(List<T> data, String title, String seriesName, String yAxisLabel, int startIteration, Double rangeMin, Double rangeMax) {
+    public <T extends Number> void plotStat(List<T> data, String title, String seriesName, String yAxisLabel, int startIteration, Double rangeMin, Double rangeMax) {
         XYSeries series = new XYSeries(seriesName);
         for (int i = 0; i < data.size(); i++) {
             series.add(i + startIteration, data.get(i).doubleValue());
@@ -136,11 +136,11 @@ public class SimulationPlots {
         saveChartAsPNG(chart, title.replaceAll(" ", "") + ".png", 800, 600);
     }
 
-    public static void plotSeriesAsDependentOnAnother(List<Double> xData, List<Double> yData, String title, String xAxisLabel, String yAxisLabel, String seriesName, Double rangeMin, Double rangeMax) {
+    public void plotSeriesAsDependentOnAnother(List<Double> xData, List<Double> yData, String title, String xAxisLabel, String yAxisLabel, String seriesName, Double rangeMin, Double rangeMax) {
         plotSeriesAsDependentOnAnother(xData, yData, title, xAxisLabel, yAxisLabel, seriesName, rangeMin, rangeMax, false);
     }
 
-    public static void plotSeriesAsDependentOnAnother(List<Double> xData, List<Double> yData, String title, String xAxisLabel, String yAxisLabel, String seriesName, Double rangeMin, Double rangeMax, boolean showMarkers) {
+    public void plotSeriesAsDependentOnAnother(List<Double> xData, List<Double> yData, String title, String xAxisLabel, String yAxisLabel, String seriesName, Double rangeMin, Double rangeMax, boolean showMarkers) {
         while (yData.size() < xData.size()) {
             yData.add(0, null);
         }
@@ -185,37 +185,37 @@ public class SimulationPlots {
         saveChartAsPNG(chart, title.replaceAll(" ", "") + ".png", 800, 600);
     }
 
-    public static void saveSimulationStats(SimulationStats simulationStats, PCommunicationStrategy strategy, int nIters) {
-        SimulationPlots.plotTwoSeriesOverIterations(simulationStats.getAvgLearningAbilities(),
+    public void saveSimulationStats(SimulationStats simulationStats, PCommunicationStrategy strategy, int nIters) {
+        plotTwoSeriesOverIterations(simulationStats.getAvgLearningAbilities(),
                 simulationStats.getSuccessRates(), "l_ab_&_s_rate_over_iterations", "Iteration",
                 "Value", 0, 1, "Learning Ability", "Success Rate", 0.0, 1.2);
 
-        SimulationPlots.plotStat(simulationStats.getSuccessRates(), "s_rate_over_iterations", "Success Rate",
+        plotStat(simulationStats.getSuccessRates(), "s_rate_over_iterations", "Success Rate",
                 "Success Rate", 1, 0.0, 1.2);
 
-        SimulationPlots.plotStat(simulationStats.getAvgLearningAbilities(), "l_ab_over_iterations",
+        plotStat(simulationStats.getAvgLearningAbilities(), "l_ab_over_iterations",
                 "Average Learning Ability", "Learning Ability", 0, 0.0, 1.2);
 
-        SimulationPlots.plotStat(simulationStats.getLanguagesNumber(), "languages_number",
+        plotStat(simulationStats.getLanguagesNumber(), "languages_number",
                 "Languages Number", "Languages Number", 0);
 
-        SimulationPlots.plotStat(simulationStats.getCommunicationsNumber(), "communications_number",
+        plotStat(simulationStats.getCommunicationsNumber(), "communications_number",
                 "Communications Number", "Communications Number", 1);
 
-        SimulationPlots.plotStat(simulationStats.getAvgAges(), "avg_age", "Average Age", "Age", 0);
+        plotStat(simulationStats.getAvgAges(), "avg_age", "Average Age", "Age", 0);
         
-        SimulationPlots.plotStat(simulationStats.getKilledAgentsNumber(), "killed_agents",
+        plotStat(simulationStats.getKilledAgentsNumber(), "killed_agents",
                 "Killed Agents Number", "Killed Agents Number", 1);
 
-        SimulationPlots.plotStat(simulationStats.getAvgKnowledge(), "avg_knowledge",
+        plotStat(simulationStats.getAvgKnowledge(), "avg_knowledge",
                 "Avg Knowledge", "Avg Knowledge", 0);
 
-        SimulationPlots.plotStat(simulationStats.getBornAgentsNumber(), "born_agents",
+        plotStat(simulationStats.getBornAgentsNumber(), "born_agents",
                 "Number Of Born Agents", "Number Of Born Agents", 1);
-        SimulationPlots.plotStat(simulationStats.getNAgentsAlive(), "alive_agents", "Number Of Alive Agents",
+        plotStat(simulationStats.getNAgentsAlive(), "alive_agents", "Number Of Alive Agents",
                 "Number Of Alive Agents", 0);
 
-        SimulationPlots.plotSeriesAsDependentOnAnother(
+        plotSeriesAsDependentOnAnother(
                 SimulationStats.getPCommunicationOverIterations(strategy, nIters),
                 simulationStats.getSuccessRates(),
                 "s_rate_over_p_comm",
@@ -224,7 +224,7 @@ public class SimulationPlots {
                 "Success rate",
                 0.0, 1.2);
 
-        SimulationPlots.plotSeriesAsDependentOnAnother(
+        plotSeriesAsDependentOnAnother(
                 SimulationStats.getPCommunicationOverIterations(strategy, nIters),
                 simulationStats.getAvgLearningAbilities(),
                 "l_ab_over_p_comm",
@@ -233,7 +233,7 @@ public class SimulationPlots {
                 "Learning ability",
                 0.0, 1.2);
 
-        SimulationPlots.plotSeriesAsDependentOnAnother(
+        plotSeriesAsDependentOnAnother(
                 simulationStats.getAvgLearningAbilities(),
                 simulationStats.getAvgKnowledge(),
                 "knowledge_over_learning_ability",
@@ -242,7 +242,7 @@ public class SimulationPlots {
                 "Knowledge",
                 null, null);
 
-        SimulationPlots.plotSeriesAsDependentOnAnother(
+        plotSeriesAsDependentOnAnother(
                 simulationStats.getAvgKnowledge(),
                 simulationStats.getSuccessRates(),
                 "s_rate_over_knowledge",
