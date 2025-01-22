@@ -2,6 +2,8 @@ package org.example.simulation;
 
 import java.util.Random;
 
+import org.example.StrategyConfig;
+import org.example.VarConfig;
 import org.example.entities.Agent;
 import org.example.entities.World;
 import org.example.stats.IterationStats;
@@ -25,11 +27,11 @@ public class Simulation {
     private SimulationStats simulationStats;
     private IterationStats iterationStats;
 
-    public Simulation(int nIters, int worldSize, PCommunicationStrategy pCommunicationStrategy, SimulationStats simulationStats, double pMutation) {
-        this.world = new World(worldSize);
-        this.nIters = nIters;
-        this.pCommunicationStrategy = pCommunicationStrategy;
-        this.pMutation = pMutation;
+    public Simulation(SimulationStats simulationStats, VarConfig varConfig, StrategyConfig strategyConfig) {
+        this.world = new World(varConfig, strategyConfig);
+        this.nIters = varConfig.T();
+        this.pCommunicationStrategy = strategyConfig.getPCommunicationStrategy();
+        this.pMutation = varConfig.P_MUT();
         this.simulationStats = simulationStats;
     }
 

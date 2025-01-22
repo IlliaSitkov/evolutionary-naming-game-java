@@ -11,5 +11,12 @@ public class ConstantPCommunicationStrategy implements PCommunicationStrategy {
     public double getPCommunication(int iteration) {
         return pCommunication;
     }
+
+    @Override
+    public String toString() {
+        return "ConstantPCommunicationStrategy{" +
+                "pCommunication=" + pCommunication +
+                '}';
+    }
     
 }

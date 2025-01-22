@@ -3,10 +3,8 @@ package org.example.entities;
 import java.io.Serializable;
 import java.util.Random;
 
-import org.example.Config;
-import org.example.strategies.pSurvival.AvgKnowledgePSurvivalStrategy;
+import org.example.VarConfig;
 import org.example.strategies.pSurvival.PSurvivalStrategy;
-import org.example.strategies.pSurvival.SuccessRatePSurvivalStrategy;
 
 import lombok.Getter;
 
@@ -25,25 +23,23 @@ public class Agent implements Serializable {
     private int nInitedCommunications = 0;
     private int nSuccessfulCommunications = 0;
 
-    private final PSurvivalStrategy pSurvivalStrategy = new AvgKnowledgePSurvivalStrategy(Config.A, Config.B);
-    // private final PSurvivalStrategy pSurvivalStrategy = new SuccessRatePSurvivalStrategy(Config.A, Config.C);
+    private final PSurvivalStrategy pSurvivalStrategy;
+    private final VarConfig varConfig;
 
-    public Agent(double learningAbility, Lexicon lexicon, int x, int y) {
+    public Agent(double learningAbility, Lexicon lexicon, VarConfig varConfig, PSurvivalStrategy pSurvivalStrategy) {
         this.learningAbility = learningAbility;
         this.lexicon = lexicon;
-        this.x = x;
-        this.y = y;
+        this.x = -1;
+        this.y = -1;
         this.age = 1;
-    }
-
-    public Agent(double learningAbility, Lexicon lexicon) {
-        this(learningAbility, lexicon, -1, -1);
+        this.varConfig = varConfig;
+        this.pSurvivalStrategy = pSurvivalStrategy;
     }
 
     public String speak() {
         nInitedCommunications++;
         if (lexicon.isEmpty()) {
-            lexicon.addWord(Lexicon.generateWord(Config.WORD_LENGTH), 1.0);
+            lexicon.addWord(Lexicon.generateWord(varConfig.WORD_LENGTH()), 1.0);
         }
         return lexicon.getRandomWord();
     }
@@ -85,14 +81,14 @@ public class Agent implements Serializable {
         double rWordMutation = random.nextDouble();
         String newWord;
         if (rWordMutation < mutationProbability || lexicon.isEmpty()) {
-            newWord = Lexicon.generateWord(Config.WORD_LENGTH);
+            newWord = Lexicon.generateWord(varConfig.WORD_LENGTH());
         } else {
             newWord = lexicon.getTopWord();
         }
 
         Lexicon newLexicon = new Lexicon(lexicon.getMaxSize());
         newLexicon.addWord(newWord, 1);
-        return new Agent(newLearningAbility, newLexicon);
+        return new Agent(newLearningAbility, newLexicon, this.varConfig, this.pSurvivalStrategy);
     }
 
     public void increaseAge() {

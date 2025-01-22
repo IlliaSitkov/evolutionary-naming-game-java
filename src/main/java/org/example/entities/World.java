@@ -3,7 +3,8 @@ package org.example.entities;
 import java.io.Serializable;
 import java.util.*;
 
-import org.example.Config;
+import org.example.StrategyConfig;
+import org.example.VarConfig;
 import org.example.utils.Position;
 
 import lombok.AllArgsConstructor;
@@ -15,9 +16,13 @@ public class World implements Serializable {
     @Getter
     private final int size;
     private final Map<Position, Agent> agentsGrid = new HashMap<>();
+    private final VarConfig varConfig;
+    private final StrategyConfig strategyConfig;
 
-    public World(int size) {
-        this.size = size;
+    public World(VarConfig varConfig, StrategyConfig strategyConfig) {
+        this.varConfig = varConfig;
+        this.size = varConfig.L();
+        this.strategyConfig = strategyConfig;
         init();
     }
 
@@ -84,9 +89,9 @@ public class World implements Serializable {
     }
 
     private Agent initAgent() {
-        Lexicon lexicon = new Lexicon(Config.N);
-        lexicon.addWord(Lexicon.generateWord(Config.WORD_LENGTH), 1);
-        return new Agent(new Random().nextDouble(), lexicon);
+        Lexicon lexicon = new Lexicon(varConfig.N());
+        lexicon.addWord(Lexicon.generateWord(varConfig.WORD_LENGTH()), 1);
+        return new Agent(new Random().nextDouble(), lexicon, this.varConfig, strategyConfig.getPSurvivalStrategy());
     }
 
     public Agent getRandomAgent() {

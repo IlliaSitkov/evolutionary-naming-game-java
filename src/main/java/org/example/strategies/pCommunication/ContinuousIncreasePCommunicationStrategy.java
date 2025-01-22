@@ -16,4 +16,13 @@ public class ContinuousIncreasePCommunicationStrategy implements PCommunicationS
         return initialProbability + (finalProbability - initialProbability) * iteration / (nSteps - 1);
     }
 
+    @Override
+    public String toString() {
+        return "ContinuousIncreasePCommunicationStrategy{" +
+                "initialProbability=" + initialProbability +
+                ", finalProbability=" + finalProbability +
+                ", nSteps=" + nSteps +
+                '}';
+    }
+
 }

@@ -8,7 +8,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import org.example.StrategyConfig;
+import org.example.VarConfig;
 import org.example.entities.World;
 
 public class IOUtils {
@@ -37,5 +42,29 @@ public class IOUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static void createDirectory(String directoryName) {
+        File directory = new File(directoryName);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+    }
+
+    public static void writeStringToFile(String content, String filePath) {
+        try {
+            Path path = Files.writeString(Paths.get(filePath), content);
+            System.out.println("File written to: " + path.toAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveRunConfig(String folderName, VarConfig varConfig, StrategyConfig strategyConfig) {
+        String directory = "out/" + folderName;
+        createDirectory(directory);
+
+        String output = varConfig + "\n\n" + strategyConfig;
+        writeStringToFile(output, directory + "/config.txt");
     }
 }

@@ -18,4 +18,13 @@ public class SingleStepPCommunicationStrategy implements PCommunicationStrategy 
         }
         return initialProbability;
     }
+
+    @Override
+    public String toString() {
+        return "SingleStepPCommunicationStrategy{" +
+                "initialProbability=" + initialProbability +
+                ", changeIteration=" + changeIteration +
+                ", changedProbability=" + changedProbability +
+                '}';
+    }
 }

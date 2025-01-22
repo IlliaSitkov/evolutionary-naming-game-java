@@ -1,5 +1,8 @@
 package org.example.plotting;
 
+import org.example.export.IOUtils;
+import org.example.stats.SimulationStats;
+import org.example.strategies.pCommunication.PCommunicationStrategy;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
@@ -180,5 +183,75 @@ public class SimulationPlots {
         plot.setRangeGridlinePaint(Color.GRAY);
 
         saveChartAsPNG(chart, title.replaceAll(" ", "") + ".png", 800, 600);
+    }
+
+    public static void saveSimulationStats(SimulationStats simulationStats, PCommunicationStrategy strategy, int nIters) {
+        SimulationPlots.plotTwoSeriesOverIterations(simulationStats.getAvgLearningAbilities(),
+                simulationStats.getSuccessRates(), "l_ab_&_s_rate_over_iterations", "Iteration",
+                "Value", 0, 1, "Learning Ability", "Success Rate", 0.0, 1.2);
+
+        SimulationPlots.plotStat(simulationStats.getSuccessRates(), "s_rate_over_iterations", "Success Rate",
+                "Success Rate", 1, 0.0, 1.2);
+
+        SimulationPlots.plotStat(simulationStats.getAvgLearningAbilities(), "l_ab_over_iterations",
+                "Average Learning Ability", "Learning Ability", 0, 0.0, 1.2);
+
+        SimulationPlots.plotStat(simulationStats.getLanguagesNumber(), "languages_number",
+                "Languages Number", "Languages Number", 0);
+
+        SimulationPlots.plotStat(simulationStats.getCommunicationsNumber(), "communications_number",
+                "Communications Number", "Communications Number", 1);
+
+        SimulationPlots.plotStat(simulationStats.getAvgAges(), "avg_age", "Average Age", "Age", 0);
+        
+        SimulationPlots.plotStat(simulationStats.getKilledAgentsNumber(), "killed_agents",
+                "Killed Agents Number", "Killed Agents Number", 1);
+
+        SimulationPlots.plotStat(simulationStats.getAvgKnowledge(), "avg_knowledge",
+                "Avg Knowledge", "Avg Knowledge", 0);
+
+        SimulationPlots.plotStat(simulationStats.getBornAgentsNumber(), "born_agents",
+                "Number Of Born Agents", "Number Of Born Agents", 1);
+        SimulationPlots.plotStat(simulationStats.getNAgentsAlive(), "alive_agents", "Number Of Alive Agents",
+                "Number Of Alive Agents", 0);
+
+        SimulationPlots.plotSeriesAsDependentOnAnother(
+                SimulationStats.getPCommunicationOverIterations(strategy, nIters),
+                simulationStats.getSuccessRates(),
+                "s_rate_over_p_comm",
+                "P_Communication",
+                "Success rate",
+                "Success rate",
+                0.0, 1.2);
+
+        SimulationPlots.plotSeriesAsDependentOnAnother(
+                SimulationStats.getPCommunicationOverIterations(strategy, nIters),
+                simulationStats.getAvgLearningAbilities(),
+                "l_ab_over_p_comm",
+                "P_Communication",
+                "Learning ability",
+                "Learning ability",
+                0.0, 1.2);
+
+        SimulationPlots.plotSeriesAsDependentOnAnother(
+                simulationStats.getAvgLearningAbilities(),
+                simulationStats.getAvgKnowledge(),
+                "knowledge_over_learning_ability",
+                "Learning ability",
+                "Knowledge",
+                "Knowledge",
+                null, null);
+
+        SimulationPlots.plotSeriesAsDependentOnAnother(
+                simulationStats.getAvgKnowledge(),
+                simulationStats.getSuccessRates(),
+                "s_rate_over_knowledge",
+                "Knowledge",
+                "Success Rate",
+                "Success Rate",
+                null, null);
+
+        IOUtils.exportToJson(simulationStats.getLanguageMaps(), getOutputPath("/language_maps.json"));
+        IOUtils.exportToJson(simulationStats.getLearningAbilityMaps(), getOutputPath("/learning_ability_maps.json"));
     }
 }

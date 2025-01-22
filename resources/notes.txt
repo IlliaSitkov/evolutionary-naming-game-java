@@ -5,3 +5,4 @@ Each iteration involves L*L updates of agents. Over iterations, the number of ag
 decreases, but the number of updates remains L*L, so agents communicate/reproduce more
 often per one iteration.
 
+Initial age of agents?
