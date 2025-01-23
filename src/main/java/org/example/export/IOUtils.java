@@ -18,7 +18,7 @@ import org.example.entities.World;
 
 public class IOUtils {
 
-    public static void exportToJson(Object object, String fileName) {
+    public static synchronized void exportToJson(Object object, String fileName) {
         ObjectMapper mapper = new ObjectMapper();
         try {
             mapper.writeValue(new File(fileName), object);
@@ -27,7 +27,7 @@ public class IOUtils {
         }
     }
 
-    public static void saveWorld(World world, String fileName) {
+    public static synchronized void saveWorld(World world, String fileName) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
             oos.writeObject(world);
         } catch (IOException e) {
@@ -35,7 +35,7 @@ public class IOUtils {
         }
     }
 
-    public static World loadWorld(String fileName) {
+    public static synchronized World loadWorld(String fileName) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
             return (World) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
@@ -44,14 +44,14 @@ public class IOUtils {
         }
     }
 
-    public static void createDirectory(String directoryName) {
+    public static synchronized void createDirectory(String directoryName) {
         File directory = new File(directoryName);
         if (!directory.exists()) {
             directory.mkdirs();
         }
     }
 
-    public static void writeStringToFile(String content, String filePath) {
+    public static synchronized void writeStringToFile(String content, String filePath) {
         try {
             Path path = Files.writeString(Paths.get(filePath), content);
             System.out.println("File written to: " + path.toAbsolutePath());
@@ -60,7 +60,7 @@ public class IOUtils {
         }
     }
 
-    public static void saveRunConfig(String folderName, VarConfig varConfig, StrategyConfig strategyConfig) {
+    public static synchronized void saveRunConfig(String folderName, VarConfig varConfig, StrategyConfig strategyConfig) {
         String directory = "out/" + folderName;
         createDirectory(directory);
 

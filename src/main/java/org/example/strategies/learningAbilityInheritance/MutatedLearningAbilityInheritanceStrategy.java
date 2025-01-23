@@ -1,0 +1,26 @@
+package org.example.strategies.learningAbilityInheritance;
+
+import java.util.Random;
+
+import org.example.entities.Agent;
+
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+public class MutatedLearningAbilityInheritanceStrategy implements LearningAbilityInheritanceStrategy {
+
+    private final double stdDev;
+
+    @Override
+    public double inheritLearningAbility(double mutationProbability, Agent parent) {
+        Random random = new Random();
+        double learningAbility = parent.getLearningAbilityAtBirth() + random.nextGaussian(0, stdDev);
+        return Math.max(0, Math.min(1, learningAbility));
+    }
+
+    @Override
+    public String toString() {
+        return "MutatedLearningAbilityInheritanceStrategy";
+    }
+    
+}

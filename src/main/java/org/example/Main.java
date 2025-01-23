@@ -10,6 +10,8 @@ import org.example.export.IOUtils;
 import org.example.plotting.SimulationPlots;
 import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
+import org.example.strategies.learningAbilityInheritance.MutatedLearningAbilityInheritanceStrategy;
+import org.example.strategies.learningAbilityInheritance.RandomLearningAbilityInheritanceStrategy;
 import org.example.strategies.pCommunication.ConstantPCommunicationStrategy;
 import org.example.strategies.pCommunication.ContinuousIncreasePCommunicationStrategy;
 import org.example.strategies.pCommunication.PCommunicationStrategy;
@@ -20,6 +22,7 @@ import org.example.utils.Timer;
 public class Main {
     public static void main(String[] args) {
         runSimulationsInParallel();
+        // runOrdinarySimulation();
     }
 
     public static void runSimulationsInParallel() {
@@ -35,12 +38,12 @@ public class Main {
             () -> abruptPCommIncrease(40, 10),
             () -> abruptPCommIncrease(40, Integer.MAX_VALUE),
 
-            () -> continuousPCommIncrease05(10, 1),
-            () -> continuousPCommIncrease05(20, 1),
-            () -> continuousPCommIncrease05(30, 1),
-            () -> continuousPCommIncrease05(40, 1),
-            () -> continuousPCommIncrease05(40, 5),
-            () -> continuousPCommIncrease05(40, Integer.MAX_VALUE)
+            () -> continuousPCommIncrease(10, 1),
+            () -> continuousPCommIncrease(20, 1),
+            () -> continuousPCommIncrease(30, 1),
+            () -> continuousPCommIncrease(40, 1),
+            () -> continuousPCommIncrease(40, 5),
+            () -> continuousPCommIncrease(40, Integer.MAX_VALUE)
         );
 
         for (Runnable task : simulationTasks) {
@@ -62,7 +65,8 @@ public class Main {
         ));
         StrategyConfig strategyConfig = new StrategyConfig(
                 new SingleStepPCommunicationStrategy(0.1, 8000, 0.98),
-                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B())
+                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
+                new RandomLearningAbilityInheritanceStrategy()
         );
 
         SimulationStats simulationStats = new SimulationStats(
@@ -82,7 +86,7 @@ public class Main {
         IOUtils.saveRunConfig(folder, varConfig, strategyConfig);
     }
 
-    public static void continuousPCommIncrease05(int L, int N) {
+    public static void continuousPCommIncrease(int L, int N) {
         Timer timer = new Timer();
         timer.start();
 
@@ -94,7 +98,8 @@ public class Main {
         ));
         StrategyConfig strategyConfig = new StrategyConfig(
                 new ContinuousIncreasePCommunicationStrategy(0.1, 0.5, varConfig.T()),
-                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B())
+                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
+                new RandomLearningAbilityInheritanceStrategy()
         );
 
         SimulationStats simulationStats = new SimulationStats(
@@ -121,19 +126,15 @@ public class Main {
         String folder = "TEST";
         VarConfig varConfig = new VarConfig(Map.of(
                 "L", 20,
-                "T", 50000
+                "T", 10000
         ));
         StrategyConfig strategyConfig = new StrategyConfig(
-                new SingleStepPCommunicationStrategy(0.1, 8000, 0.98),
-                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B())
+                new SingleStepPCommunicationStrategy(0.1, 5000, 0.98),
+                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
+                new MutatedLearningAbilityInheritanceStrategy(0.1)
         );
 
-        SimulationStats simulationStats = new SimulationStats(
-                List.of(1000, 5000, 7990, 8000, 8500, 10000, 30000, 40000, varConfig.T() - 1),
-                List.of()
-        );
-
-        PCommunicationStrategy strategy = new SingleStepPCommunicationStrategy(0.1, 8000, 0.98);
+        SimulationStats simulationStats = new SimulationStats();
 
         Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 
@@ -143,7 +144,7 @@ public class Main {
 
         timer.stop("Simulation ended");
 
-        simulationPlots.saveSimulationStats(simulationStats, strategy, varConfig.T());
+        simulationPlots.saveSimulationStats(simulationStats, strategyConfig.getPCommunicationStrategy(), varConfig.T());
         IOUtils.saveRunConfig(folder, varConfig, strategyConfig);
     }
 
@@ -155,7 +156,8 @@ public class Main {
         ));
         StrategyConfig strategyConfig = new StrategyConfig(
                 null,
-                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B())
+                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
+                new RandomLearningAbilityInheritanceStrategy()
         );
 
         int nSkipIterations = 1500;

@@ -3,7 +3,9 @@ package org.example.entities;
 import java.io.Serializable;
 import java.util.Random;
 
+import org.example.StrategyConfig;
 import org.example.VarConfig;
+import org.example.strategies.learningAbilityInheritance.LearningAbilityInheritanceStrategy;
 import org.example.strategies.pSurvival.PSurvivalStrategy;
 
 import lombok.Getter;
@@ -11,6 +13,8 @@ import lombok.Getter;
 public class Agent implements Serializable {
     @Getter
     private final double learningAbility;
+    @Getter
+    private final double learningAbilityAtBirth;
     @Getter
     private final Lexicon lexicon;
     @Getter
@@ -24,16 +28,22 @@ public class Agent implements Serializable {
     private int nSuccessfulCommunications = 0;
 
     private final PSurvivalStrategy pSurvivalStrategy;
-    private final VarConfig varConfig;
+    private final LearningAbilityInheritanceStrategy learningAbilityInheritanceStrategy;
 
-    public Agent(double learningAbility, Lexicon lexicon, VarConfig varConfig, PSurvivalStrategy pSurvivalStrategy) {
+    private final VarConfig varConfig;
+    private final StrategyConfig strategyConfig;
+
+    public Agent(double learningAbility, Lexicon lexicon, VarConfig varConfig, StrategyConfig strategyConfig) {
         this.learningAbility = learningAbility;
+        this.learningAbilityAtBirth = learningAbility;
         this.lexicon = lexicon;
         this.x = -1;
         this.y = -1;
         this.age = 1;
         this.varConfig = varConfig;
-        this.pSurvivalStrategy = pSurvivalStrategy;
+        this.pSurvivalStrategy = strategyConfig.getPSurvivalStrategy();
+        this.learningAbilityInheritanceStrategy = strategyConfig.getLearningAbilityInheritanceStrategy();
+        this.strategyConfig = strategyConfig;
     }
 
     public String speak() {
@@ -70,13 +80,7 @@ public class Agent implements Serializable {
     public Agent reproduce(double mutationProbability) {
         Random random = new Random();
 
-        double rLearningAbility = random.nextDouble();
-        double newLearningAbility;
-        if (rLearningAbility < mutationProbability) {
-            newLearningAbility = random.nextDouble();
-        } else {
-            newLearningAbility = learningAbility;
-        }
+        double newLearningAbility = learningAbilityInheritanceStrategy.inheritLearningAbility(mutationProbability, this);
 
         double rWordMutation = random.nextDouble();
         String newWord;
@@ -88,7 +92,7 @@ public class Agent implements Serializable {
 
         Lexicon newLexicon = new Lexicon(lexicon.getMaxSize());
         newLexicon.addWord(newWord, 1);
-        return new Agent(newLearningAbility, newLexicon, this.varConfig, this.pSurvivalStrategy);
+        return new Agent(newLearningAbility, newLexicon, this.varConfig, this.strategyConfig);
     }
 
     public void increaseAge() {

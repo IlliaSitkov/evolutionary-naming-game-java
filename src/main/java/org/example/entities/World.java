@@ -91,7 +91,7 @@ public class World implements Serializable {
     private Agent initAgent() {
         Lexicon lexicon = new Lexicon(varConfig.N());
         lexicon.addWord(Lexicon.generateWord(varConfig.WORD_LENGTH()), 1);
-        return new Agent(new Random().nextDouble(), lexicon, this.varConfig, strategyConfig.getPSurvivalStrategy());
+        return new Agent(new Random().nextDouble(), lexicon, this.varConfig, strategyConfig);
     }
 
     public Agent getRandomAgent() {

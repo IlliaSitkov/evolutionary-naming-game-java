@@ -1,12 +1,15 @@
 package org.example;
 
+import org.example.strategies.learningAbilityInheritance.LearningAbilityInheritanceStrategy;
 import org.example.strategies.pCommunication.PCommunicationStrategy;
 import org.example.strategies.pSurvival.PSurvivalStrategy;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 @AllArgsConstructor
+@ToString
 public class StrategyConfig {
 
     @Getter
@@ -15,13 +18,7 @@ public class StrategyConfig {
     @Getter
     private final PSurvivalStrategy pSurvivalStrategy;
 
-
-    @Override
-    public String toString() {
-        return "Strategies Config {\n" +
-                "pCommunicationStrategy: " + pCommunicationStrategy +
-                ",\npSurvivalStrategy: " + pSurvivalStrategy +
-                "\n}";
-    }
+    @Getter
+    private final LearningAbilityInheritanceStrategy learningAbilityInheritanceStrategy;
     
 }
