@@ -26,24 +26,40 @@ public class Main {
     }
 
     public static void runSimulationsInParallel() {
-        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        ExecutorService executorService = Executors.newFixedThreadPool(16);
 
         List<Runnable> simulationTasks = List.of(
-            () -> abruptPCommIncrease(10, 1),
-            () -> abruptPCommIncrease(20, 1),
-            () -> abruptPCommIncrease(30, 1),
-            () -> abruptPCommIncrease(40, 1),
-            () -> abruptPCommIncrease(40, 3),
-            () -> abruptPCommIncrease(40, 5),
-            () -> abruptPCommIncrease(40, 10),
-            () -> abruptPCommIncrease(40, Integer.MAX_VALUE),
+            // () -> abruptPCommIncrease(10, 1),
+            // () -> abruptPCommIncrease(20, 1),
+            // () -> abruptPCommIncrease(30, 1),
+            // () -> abruptPCommIncrease(40, 1),
+            // () -> abruptPCommIncrease(40, 3),
+            // () -> abruptPCommIncrease(40, 5),
+            // () -> abruptPCommIncrease(40, 10),
+            // () -> abruptPCommIncrease(40, Integer.MAX_VALUE),
 
-            () -> continuousPCommIncrease(10, 1),
-            () -> continuousPCommIncrease(20, 1),
-            () -> continuousPCommIncrease(30, 1),
-            () -> continuousPCommIncrease(40, 1),
-            () -> continuousPCommIncrease(40, 5),
-            () -> continuousPCommIncrease(40, Integer.MAX_VALUE)
+            // () -> continuousPCommIncrease(10, 1),
+            // () -> continuousPCommIncrease(20, 1),
+            // () -> continuousPCommIncrease(30, 1),
+            // () -> continuousPCommIncrease(40, 1),
+            // () -> continuousPCommIncrease(40, 5),
+            // () -> continuousPCommIncrease(40, Integer.MAX_VALUE)
+
+            () -> abruptPCommIncrease(40, 1, 0.01),
+            () -> abruptPCommIncrease(40, 1, 0.03),
+            () -> abruptPCommIncrease(40, 1, 0.05),
+            () -> abruptPCommIncrease(40, 1, 0.075),
+            () -> abruptPCommIncrease(40, 1, 0.1),
+            () -> abruptPCommIncrease(40, 1, 0.15),
+            () -> abruptPCommIncrease(40, 1, 0.2),
+
+            () -> continuousPCommIncrease(40, 1, 0.01),
+            () -> continuousPCommIncrease(40, 1, 0.03),
+            () -> continuousPCommIncrease(40, 1, 0.05),
+            () -> continuousPCommIncrease(40, 1, 0.075),
+            () -> continuousPCommIncrease(40, 1, 0.1),
+            () -> continuousPCommIncrease(40, 1, 0.15),
+            () -> continuousPCommIncrease(40, 1, 0.2)
         );
 
         for (Runnable task : simulationTasks) {
@@ -53,11 +69,11 @@ public class Main {
         executorService.shutdown();
     }
 
-    public static void abruptPCommIncrease(int L, int N) {
+    public static void abruptPCommIncrease(int L, int N, double stdDev) {
         Timer timer = new Timer();
         timer.start();
 
-        String folder = "abrupt_p_comm_increase/L=" + L + "_N=" + N;
+        String folder = "abrupt_p_comm_increase/L=" + L + "_N=" + N+"_stdDev="+stdDev;
         VarConfig varConfig = new VarConfig(Map.of(
                 "L", L,
                 "T", 50000,
@@ -66,7 +82,7 @@ public class Main {
         StrategyConfig strategyConfig = new StrategyConfig(
                 new SingleStepPCommunicationStrategy(0.1, 8000, 0.98),
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-                new RandomLearningAbilityInheritanceStrategy()
+                new MutatedLearningAbilityInheritanceStrategy(stdDev)
         );
 
         SimulationStats simulationStats = new SimulationStats(
@@ -86,7 +102,7 @@ public class Main {
         IOUtils.saveRunConfig(folder, varConfig, strategyConfig);
     }
 
-    public static void continuousPCommIncrease(int L, int N) {
+    public static void continuousPCommIncrease(int L, int N, double stdDev) {
         Timer timer = new Timer();
         timer.start();
 
@@ -99,7 +115,7 @@ public class Main {
         StrategyConfig strategyConfig = new StrategyConfig(
                 new ContinuousIncreasePCommunicationStrategy(0.1, 0.5, varConfig.T()),
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-                new RandomLearningAbilityInheritanceStrategy()
+                new MutatedLearningAbilityInheritanceStrategy(stdDev)
         );
 
         SimulationStats simulationStats = new SimulationStats(
