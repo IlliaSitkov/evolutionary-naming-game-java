@@ -5,8 +5,10 @@ import java.util.Random;
 import org.example.entities.Agent;
 
 import lombok.AllArgsConstructor;
+import lombok.ToString;
 
 @AllArgsConstructor
+@ToString
 public class MutatedLearningAbilityInheritanceStrategy implements LearningAbilityInheritanceStrategy {
 
     private final double stdDev;
@@ -17,10 +19,4 @@ public class MutatedLearningAbilityInheritanceStrategy implements LearningAbilit
         double learningAbility = parent.getLearningAbilityAtBirth() + random.nextGaussian(0, stdDev);
         return Math.max(0, Math.min(1, learningAbility));
     }
-
-    @Override
-    public String toString() {
-        return "MutatedLearningAbilityInheritanceStrategy";
-    }
-    
 }

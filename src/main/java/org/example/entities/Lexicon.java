@@ -61,7 +61,7 @@ public class Lexicon implements Serializable {
     }
 
     public boolean isWordObsolete(String word) {
-        return words.get(word) < 0;
+        return words.get(word) <= 0;
     }
 
     public boolean has(String word) {

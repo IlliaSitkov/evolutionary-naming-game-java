@@ -26,7 +26,7 @@ public class Main {
     }
 
     public static void runSimulationsInParallel() {
-        ExecutorService executorService = Executors.newFixedThreadPool(16);
+        ExecutorService executorService = Executors.newFixedThreadPool(8);
 
         List<Runnable> simulationTasks = List.of(
             // () -> abruptPCommIncrease(10, 1),
@@ -45,20 +45,20 @@ public class Main {
             // () -> continuousPCommIncrease(40, 5),
             // () -> continuousPCommIncrease(40, Integer.MAX_VALUE)
 
-            () -> abruptPCommIncrease(40, 1, 0.01),
-            () -> abruptPCommIncrease(40, 1, 0.03),
-            () -> abruptPCommIncrease(40, 1, 0.05),
-            () -> abruptPCommIncrease(40, 1, 0.075),
-            () -> abruptPCommIncrease(40, 1, 0.1),
-            () -> abruptPCommIncrease(40, 1, 0.15),
-            () -> abruptPCommIncrease(40, 1, 0.2),
+            // () -> abruptPCommIncrease(40, 1, 0.01),
+            // // () -> abruptPCommIncrease(40, 1, 0.03),
+            // () -> abruptPCommIncrease(40, 1, 0.05),
+            // // () -> abruptPCommIncrease(40, 1, 0.075),
+            // () -> abruptPCommIncrease(40, 1, 0.1),
+            // // () -> abruptPCommIncrease(40, 1, 0.15),
+            // () -> abruptPCommIncrease(40, 1, 0.2),
 
             () -> continuousPCommIncrease(40, 1, 0.01),
-            () -> continuousPCommIncrease(40, 1, 0.03),
+            // () -> continuousPCommIncrease(40, 1, 0.03),
             () -> continuousPCommIncrease(40, 1, 0.05),
-            () -> continuousPCommIncrease(40, 1, 0.075),
+            // () -> continuousPCommIncrease(40, 1, 0.075),
             () -> continuousPCommIncrease(40, 1, 0.1),
-            () -> continuousPCommIncrease(40, 1, 0.15),
+            // () -> continuousPCommIncrease(40, 1, 0.15),
             () -> continuousPCommIncrease(40, 1, 0.2)
         );
 
@@ -106,7 +106,7 @@ public class Main {
         Timer timer = new Timer();
         timer.start();
 
-        String folder = "continuous_p_comm_increase0.1-0.5/L=" + L+"_N="+N;
+        String folder = "continuous_p_comm_increase0.1-0.5/L=" + L+"_N="+N+"_stdDev="+stdDev;
         VarConfig varConfig = new VarConfig(Map.of(
                 "L", L,
                 "T", 80000,
