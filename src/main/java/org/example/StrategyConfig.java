@@ -5,6 +5,7 @@ import org.example.strategies.learningAbilityInheritance.LearningAbilityInherita
 import org.example.strategies.neighborPositions.NeighborPositionsStrategy;
 import org.example.strategies.pCommunication.PCommunicationStrategy;
 import org.example.strategies.pSurvival.PSurvivalStrategy;
+import org.example.strategies.wordAcquisition.WordAcquisitionStrategy;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,5 +29,8 @@ public class StrategyConfig {
 
     @Getter
     private final NeighborPositionsStrategy neighborPositionsStrategy;
+
+    @Getter
+    private final WordAcquisitionStrategy wordAcquisitionStrategy;
     
 }

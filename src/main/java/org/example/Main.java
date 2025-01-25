@@ -19,6 +19,7 @@ import org.example.strategies.pCommunication.ContinuousIncreasePCommunicationStr
 import org.example.strategies.pCommunication.PCommunicationStrategy;
 import org.example.strategies.pCommunication.SingleStepPCommunicationStrategy;
 import org.example.strategies.pSurvival.AvgKnowledgePSurvivalStrategy;
+import org.example.strategies.wordAcquisition.UnitWordAcquisitionStrategy;
 import org.example.utils.Timer;
 
 public class Main {
@@ -86,7 +87,8 @@ public class Main {
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
                 new MutatedLearningAbilityInheritanceStrategy(stdDev),
                 new ConstantLAbAgingStrategy(),
-                new Neighbor8PositionsStrategy()
+                new Neighbor8PositionsStrategy(),
+                new UnitWordAcquisitionStrategy()
         );
 
         SimulationStats simulationStats = new SimulationStats(
@@ -121,7 +123,8 @@ public class Main {
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
                 new MutatedLearningAbilityInheritanceStrategy(stdDev),
                 new ConstantLAbAgingStrategy(),
-                new Neighbor8PositionsStrategy()
+                new Neighbor8PositionsStrategy(),
+                new UnitWordAcquisitionStrategy()
         );
 
         SimulationStats simulationStats = new SimulationStats(
@@ -155,7 +158,8 @@ public class Main {
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
                 new MutatedLearningAbilityInheritanceStrategy(0.1),
                 new ConstantLAbAgingStrategy(),
-                new Neighbor8PositionsStrategy()
+                new Neighbor8PositionsStrategy(),
+                new UnitWordAcquisitionStrategy()
         );
 
         SimulationStats simulationStats = new SimulationStats();
@@ -183,7 +187,8 @@ public class Main {
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
                 new RandomLearningAbilityInheritanceStrategy(),
                 new ConstantLAbAgingStrategy(),
-                new Neighbor8PositionsStrategy()
+                new Neighbor8PositionsStrategy(),
+                new UnitWordAcquisitionStrategy()
         );
 
         int nSkipIterations = 1500;

@@ -8,7 +8,7 @@ import org.example.VarConfig;
 import org.example.strategies.learningAbilityAging.LAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.LearningAbilityInheritanceStrategy;
 import org.example.strategies.pSurvival.PSurvivalStrategy;
-import org.example.utils.Position;
+import org.example.strategies.wordAcquisition.WordAcquisitionStrategy;
 
 import lombok.Getter;
 
@@ -32,6 +32,7 @@ public class Agent implements Serializable {
     private final PSurvivalStrategy pSurvivalStrategy;
     private final LearningAbilityInheritanceStrategy learningAbilityInheritanceStrategy;
     private final LAbAgingStrategy learningAbilityAgingStrategy;
+    private final WordAcquisitionStrategy wordAcquisitionStrategy;
 
     private final VarConfig varConfig;
     private final StrategyConfig strategyConfig;
@@ -44,16 +45,17 @@ public class Agent implements Serializable {
         this.y = -1;
         this.age = 1;
         this.varConfig = varConfig;
+        this.strategyConfig = strategyConfig;
         this.pSurvivalStrategy = strategyConfig.getPSurvivalStrategy();
         this.learningAbilityAgingStrategy = strategyConfig.getLearingAbilityAgingStrategy();
         this.learningAbilityInheritanceStrategy = strategyConfig.getLearningAbilityInheritanceStrategy();
-        this.strategyConfig = strategyConfig;
+        this.wordAcquisitionStrategy = strategyConfig.getWordAcquisitionStrategy();
     }
 
     public String speak() {
         nInitedCommunications++;
         if (lexicon.isEmpty()) {
-            lexicon.addWord(Lexicon.generateWord(varConfig.WORD_LENGTH()), 1.0);
+            lexicon.addWord(Lexicon.generateWord(varConfig.WORD_LENGTH()), wordAcquisitionStrategy.getInventedWordWeight(this));
         }
         return lexicon.getRandomWord();
     }
@@ -74,7 +76,7 @@ public class Agent implements Serializable {
     }
 
     public void learnWord(String word) {
-        lexicon.addWord(word, 1);
+        lexicon.addWord(word, wordAcquisitionStrategy.getLearntWordWeight(this));
     }
 
     public boolean survives(World world) {
@@ -95,7 +97,7 @@ public class Agent implements Serializable {
         }
 
         Lexicon newLexicon = new Lexicon(lexicon.getMaxSize());
-        newLexicon.addWord(newWord, 1);
+        newLexicon.addWord(newWord, wordAcquisitionStrategy.getInheritedWordWeight(newLearningAbility));
         return new Agent(newLearningAbility, newLexicon, this.varConfig, this.strategyConfig);
     }
 
