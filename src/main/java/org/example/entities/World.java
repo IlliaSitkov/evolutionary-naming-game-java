@@ -5,6 +5,7 @@ import java.util.*;
 
 import org.example.StrategyConfig;
 import org.example.VarConfig;
+import org.example.strategies.neighborPositions.NeighborPositionsStrategy;
 import org.example.utils.Position;
 
 import lombok.AllArgsConstructor;
@@ -19,10 +20,13 @@ public class World implements Serializable {
     private final VarConfig varConfig;
     private final StrategyConfig strategyConfig;
 
+    private final NeighborPositionsStrategy neighborPositionsStrategy;
+
     public World(VarConfig varConfig, StrategyConfig strategyConfig) {
         this.varConfig = varConfig;
         this.size = varConfig.L();
         this.strategyConfig = strategyConfig;
+        this.neighborPositionsStrategy = strategyConfig.getNeighborPositionsStrategy();
         init();
     }
 
@@ -47,18 +51,7 @@ public class World implements Serializable {
     }
 
     public List<Position> getNeighbourPositions(int x, int y) {
-        List<Position> neighbourPositions = new ArrayList<>();
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                if (i == 0 && j == 0) continue;
-                int newX = x + i;
-                int newY = y + j;
-                if (newX >= 0 && newX < size && newY >= 0 && newY < size) {
-                    neighbourPositions.add(new Position(newX, newY));
-                }
-            }
-        }
-        return neighbourPositions;
+        return neighborPositionsStrategy.getNeighbourPositions(x, y, size);
     }
 
     public Agent getRandomNeighbour(int x, int y) {

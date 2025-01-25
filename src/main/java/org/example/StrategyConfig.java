@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.strategies.learningAbilityAging.LAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.LearningAbilityInheritanceStrategy;
+import org.example.strategies.neighborPositions.NeighborPositionsStrategy;
 import org.example.strategies.pCommunication.PCommunicationStrategy;
 import org.example.strategies.pSurvival.PSurvivalStrategy;
 
@@ -24,5 +25,8 @@ public class StrategyConfig {
 
     @Getter
     private final LAbAgingStrategy learingAbilityAgingStrategy;
+
+    @Getter
+    private final NeighborPositionsStrategy neighborPositionsStrategy;
     
 }
