@@ -106,6 +106,14 @@ public class World implements Serializable {
         return totalKnowledge / agentsGrid.size();
     }
 
+    public double getWeighedAvgKnowledge(double otherAgentsKnowledgeCoefficient, int x, int y) {
+        double totalKnowledge = 0;
+        for (Agent agent : agentsGrid.values()) {
+            totalKnowledge += agent.getKnowledge() * (agent.isAtPostion(x, y) ? 1 : otherAgentsKnowledgeCoefficient);
+        }
+        return totalKnowledge / agentsGrid.size();
+    }
+
     public Stats getStats() {
         double totalLearningAbility = 0;
         Set<String> languages = new HashSet<>();

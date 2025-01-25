@@ -8,6 +8,7 @@ import org.example.VarConfig;
 import org.example.strategies.learningAbilityAging.LAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.LearningAbilityInheritanceStrategy;
 import org.example.strategies.pSurvival.PSurvivalStrategy;
+import org.example.utils.Position;
 
 import lombok.Getter;
 
@@ -118,5 +119,9 @@ public class Agent implements Serializable {
     public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public boolean isAtPostion(int x, int y) {
+        return this.x == x && this.y == y;
     }
 }
