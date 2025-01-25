@@ -10,6 +10,7 @@ import org.example.export.IOUtils;
 import org.example.plotting.SimulationPlots;
 import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
+import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.MutatedLearningAbilityInheritanceStrategy;
 import org.example.strategies.learningAbilityInheritance.RandomLearningAbilityInheritanceStrategy;
 import org.example.strategies.pCommunication.ConstantPCommunicationStrategy;
@@ -82,7 +83,8 @@ public class Main {
         StrategyConfig strategyConfig = new StrategyConfig(
                 new SingleStepPCommunicationStrategy(0.1, 8000, 0.98),
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-                new MutatedLearningAbilityInheritanceStrategy(stdDev)
+                new MutatedLearningAbilityInheritanceStrategy(stdDev),
+                new ConstantLAbAgingStrategy()
         );
 
         SimulationStats simulationStats = new SimulationStats(
@@ -115,7 +117,8 @@ public class Main {
         StrategyConfig strategyConfig = new StrategyConfig(
                 new ContinuousIncreasePCommunicationStrategy(0.1, 0.5, varConfig.T()),
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-                new MutatedLearningAbilityInheritanceStrategy(stdDev)
+                new MutatedLearningAbilityInheritanceStrategy(stdDev),
+                new ConstantLAbAgingStrategy()
         );
 
         SimulationStats simulationStats = new SimulationStats(
@@ -147,7 +150,8 @@ public class Main {
         StrategyConfig strategyConfig = new StrategyConfig(
                 new SingleStepPCommunicationStrategy(0.1, 5000, 0.98),
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-                new MutatedLearningAbilityInheritanceStrategy(0.1)
+                new MutatedLearningAbilityInheritanceStrategy(0.1),
+                new ConstantLAbAgingStrategy()
         );
 
         SimulationStats simulationStats = new SimulationStats();
@@ -173,7 +177,8 @@ public class Main {
         StrategyConfig strategyConfig = new StrategyConfig(
                 null,
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-                new RandomLearningAbilityInheritanceStrategy()
+                new RandomLearningAbilityInheritanceStrategy(),
+                new ConstantLAbAgingStrategy()
         );
 
         int nSkipIterations = 1500;

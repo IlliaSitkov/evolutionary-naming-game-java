@@ -5,6 +5,7 @@ import java.util.Random;
 
 import org.example.StrategyConfig;
 import org.example.VarConfig;
+import org.example.strategies.learningAbilityAging.LAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.LearningAbilityInheritanceStrategy;
 import org.example.strategies.pSurvival.PSurvivalStrategy;
 
@@ -12,7 +13,7 @@ import lombok.Getter;
 
 public class Agent implements Serializable {
     @Getter
-    private final double learningAbility;
+    private double learningAbility;
     @Getter
     private final double learningAbilityAtBirth;
     @Getter
@@ -29,6 +30,7 @@ public class Agent implements Serializable {
 
     private final PSurvivalStrategy pSurvivalStrategy;
     private final LearningAbilityInheritanceStrategy learningAbilityInheritanceStrategy;
+    private final LAbAgingStrategy learningAbilityAgingStrategy;
 
     private final VarConfig varConfig;
     private final StrategyConfig strategyConfig;
@@ -42,6 +44,7 @@ public class Agent implements Serializable {
         this.age = 1;
         this.varConfig = varConfig;
         this.pSurvivalStrategy = strategyConfig.getPSurvivalStrategy();
+        this.learningAbilityAgingStrategy = strategyConfig.getLearingAbilityAgingStrategy();
         this.learningAbilityInheritanceStrategy = strategyConfig.getLearningAbilityInheritanceStrategy();
         this.strategyConfig = strategyConfig;
     }
@@ -96,6 +99,7 @@ public class Agent implements Serializable {
     }
 
     public void increaseAge() {
+        learningAbility = learningAbilityAgingStrategy.ageLearningAbility(this);
         age++;
     }
 
