@@ -8,6 +8,7 @@ import org.example.entities.Agent;
 import org.example.entities.World;
 import org.example.stats.IterationStats;
 import org.example.stats.SimulationStats;
+import org.example.strategies.evolution.EvolutionStrategy;
 import org.example.strategies.pCommunication.PCommunicationStrategy;
 import org.example.utils.Position;
 import org.example.utils.Timer;
@@ -22,10 +23,11 @@ public class Simulation {
     @Setter
     private PCommunicationStrategy pCommunicationStrategy;
     private final double pMutation;
-    @Getter
     @Setter
     private SimulationStats simulationStats;
     private IterationStats iterationStats;
+
+    private final EvolutionStrategy evolutionStrategy;
 
     public Simulation(SimulationStats simulationStats, VarConfig varConfig, StrategyConfig strategyConfig) {
         this.world = new World(varConfig, strategyConfig);
@@ -33,6 +35,7 @@ public class Simulation {
         this.pCommunicationStrategy = strategyConfig.getPCommunicationStrategy();
         this.pMutation = varConfig.P_MUT();
         this.simulationStats = simulationStats;
+        this.evolutionStrategy = strategyConfig.getEvolutionStrategy();
     }
 
     public void start() {
@@ -61,8 +64,10 @@ public class Simulation {
 
     private void updateAgent(int iteration) {
         Agent speaker = world.getRandomAgent();
-        double rCommunication = new Random().nextDouble();
-        if (rCommunication < pCommunicationStrategy.getPCommunication(iteration)) {
+        boolean[] steps = evolutionStrategy.determineEvolutionSteps(pCommunicationStrategy.getPCommunication(iteration));
+        boolean shouldCommunicate = steps[0];
+        boolean shouldUpdatePopulation = steps[1];
+        if (shouldCommunicate) {
             Agent listener = world.getRandomNeighbour(speaker.getX(), speaker.getY());
             if (listener == null) {
                 populationUpdate(speaker);
@@ -70,7 +75,8 @@ public class Simulation {
                 boolean isCommunicationSuccessful = communicationUpdate(speaker, listener);
                 iterationStats.trackSuccessRate(isCommunicationSuccessful);
             }
-        } else {
+        }
+        if (shouldUpdatePopulation) {
             populationUpdate(speaker);
         }
     }

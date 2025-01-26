@@ -10,6 +10,7 @@ import org.example.export.IOUtils;
 import org.example.plotting.SimulationPlots;
 import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
+import org.example.strategies.evolution.ProbabilisticEvolutionStrategy;
 import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.MutatedLearningAbilityInheritanceStrategy;
 import org.example.strategies.learningAbilityInheritance.RandomLearningAbilityInheritanceStrategy;
@@ -88,7 +89,8 @@ public class Main {
                 new MutatedLearningAbilityInheritanceStrategy(stdDev),
                 new ConstantLAbAgingStrategy(),
                 new Neighbor8PositionsStrategy(),
-                new UnitWordAcquisitionStrategy()
+                new UnitWordAcquisitionStrategy(),
+                new ProbabilisticEvolutionStrategy()
         );
 
         SimulationStats simulationStats = new SimulationStats(
@@ -124,7 +126,8 @@ public class Main {
                 new MutatedLearningAbilityInheritanceStrategy(stdDev),
                 new ConstantLAbAgingStrategy(),
                 new Neighbor8PositionsStrategy(),
-                new UnitWordAcquisitionStrategy()
+                new UnitWordAcquisitionStrategy(),
+                new ProbabilisticEvolutionStrategy()
         );
 
         SimulationStats simulationStats = new SimulationStats(
@@ -159,7 +162,8 @@ public class Main {
                 new MutatedLearningAbilityInheritanceStrategy(0.1),
                 new ConstantLAbAgingStrategy(),
                 new Neighbor8PositionsStrategy(),
-                new UnitWordAcquisitionStrategy()
+                new UnitWordAcquisitionStrategy(),
+                new ProbabilisticEvolutionStrategy()
         );
 
         SimulationStats simulationStats = new SimulationStats();
@@ -188,7 +192,8 @@ public class Main {
                 new RandomLearningAbilityInheritanceStrategy(),
                 new ConstantLAbAgingStrategy(),
                 new Neighbor8PositionsStrategy(),
-                new UnitWordAcquisitionStrategy()
+                new UnitWordAcquisitionStrategy(),
+                new ProbabilisticEvolutionStrategy()
         );
 
         int nSkipIterations = 1500;

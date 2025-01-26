@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.strategies.evolution.EvolutionStrategy;
 import org.example.strategies.learningAbilityAging.LAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.LearningAbilityInheritanceStrategy;
 import org.example.strategies.neighborPositions.NeighborPositionsStrategy;
@@ -32,5 +33,8 @@ public class StrategyConfig {
 
     @Getter
     private final WordAcquisitionStrategy wordAcquisitionStrategy;
+
+    @Getter
+    private final EvolutionStrategy evolutionStrategy;
     
 }
