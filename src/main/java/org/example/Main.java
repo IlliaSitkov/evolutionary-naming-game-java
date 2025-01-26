@@ -107,7 +107,7 @@ public class Main {
         timer.stop("Simulation ended");
 
         simulationPlots.saveSimulationStats(simulationStats, strategyConfig.getPCommunicationStrategy(), varConfig.T());
-        IOUtils.saveRunConfig(folder, varConfig, strategyConfig);
+        IOUtils.saveSimulationConfig(folder, simulation);
     }
 
     public static void continuousPCommIncrease(int L, int N, double stdDev) {
@@ -144,7 +144,7 @@ public class Main {
         timer.stop("Simulation ended");
 
         simulationPlots.saveSimulationStats(simulationStats, strategyConfig.getPCommunicationStrategy(), varConfig.T());
-        IOUtils.saveRunConfig(folder, varConfig, strategyConfig);
+        IOUtils.saveSimulationConfig(folder, simulation);
     }
     
     public static void runOrdinarySimulation() {
@@ -177,7 +177,7 @@ public class Main {
         timer.stop("Simulation ended");
 
         simulationPlots.saveSimulationStats(simulationStats, strategyConfig.getPCommunicationStrategy(), varConfig.T());
-        IOUtils.saveRunConfig(folder, varConfig, strategyConfig);
+        IOUtils.saveSimulationConfig(folder, simulation);
     }
 
     public static void runPCommSimulations() {
@@ -207,7 +207,7 @@ public class Main {
 
         Simulation simulation = new Simulation(null, varConfig, strategyConfig);
 
-        IOUtils.saveRunConfig(folder, varConfig, strategyConfig);
+        IOUtils.saveSimulationConfig(folder, simulation);
 
         Timer timer = new Timer();
         timer.start();

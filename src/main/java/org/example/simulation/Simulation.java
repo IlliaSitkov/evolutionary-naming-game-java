@@ -1,7 +1,5 @@
 package org.example.simulation;
 
-import java.util.Random;
-
 import org.example.StrategyConfig;
 import org.example.VarConfig;
 import org.example.entities.Agent;
@@ -26,16 +24,26 @@ public class Simulation {
     @Setter
     private SimulationStats simulationStats;
     private IterationStats iterationStats;
+    @Getter
+    private final VarConfig varConfig;
+    @Getter
+    private final StrategyConfig strategyConfig;
 
     private final EvolutionStrategy evolutionStrategy;
 
     public Simulation(SimulationStats simulationStats, VarConfig varConfig, StrategyConfig strategyConfig) {
-        this.world = new World(varConfig, strategyConfig);
+        this(new World(varConfig, strategyConfig), simulationStats, varConfig, strategyConfig);
+    }
+
+    public Simulation(World world, SimulationStats simulationStats, VarConfig varConfig, StrategyConfig strategyConfig) {
+        this.world = world;
         this.nIters = varConfig.T();
         this.pCommunicationStrategy = strategyConfig.getPCommunicationStrategy();
         this.pMutation = varConfig.P_MUT();
         this.simulationStats = simulationStats;
         this.evolutionStrategy = strategyConfig.getEvolutionStrategy();
+        this.varConfig = varConfig;
+        this.strategyConfig = strategyConfig;
     }
 
     public void start() {
@@ -56,7 +64,7 @@ public class Simulation {
     }
 
     private void evolveWorld(int iteration) {
-        for (int i = 0; i < world.getSize() * world.getSize() && world.hasAgents(); i++) {
+        for (int i = 0; i < world.getCellsNumber() && world.hasAgents(); i++) {
             updateAgent(iteration);
         }
         world.increaseAgentsAge();

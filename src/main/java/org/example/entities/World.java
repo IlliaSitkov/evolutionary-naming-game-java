@@ -15,7 +15,10 @@ public class World implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Getter
-    private final int size;
+    private final int rows;
+    @Getter
+    private final int cols;
+
     private final Map<Position, Agent> agentsGrid = new HashMap<>();
     private final VarConfig varConfig;
     private final StrategyConfig strategyConfig;
@@ -24,15 +27,16 @@ public class World implements Serializable {
 
     public World(VarConfig varConfig, StrategyConfig strategyConfig) {
         this.varConfig = varConfig;
-        this.size = varConfig.L();
+        this.rows = varConfig.L_ROWS() <= 0 ? varConfig.L() : varConfig.L_ROWS();
+        this.cols = varConfig.L_COLS() <= 0 ? varConfig.L() : varConfig.L_COLS();
         this.strategyConfig = strategyConfig;
         this.neighborPositionsStrategy = strategyConfig.getNeighborPositionsStrategy();
         init();
     }
 
     private void init() {
-        for (int y = 0; y < size; y++) {
-            for (int x = 0; x < size; x++) {
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < cols; x++) {
                 Agent agent = initAgent();
                 addAgent(x, y, agent);
             }
@@ -51,7 +55,7 @@ public class World implements Serializable {
     }
 
     public List<Position> getNeighbourPositions(int x, int y) {
-        return neighborPositionsStrategy.getNeighbourPositions(x, y, size);
+        return neighborPositionsStrategy.getNeighbourPositions(x, y, rows, cols);
     }
 
     public Agent getRandomNeighbour(int x, int y) {
@@ -153,6 +157,9 @@ public class World implements Serializable {
         return agentsGrid.size();
     }
 
+    public int getCellsNumber() {
+        return rows * cols;
+    }
 
     private void shouldBeEmpty(int x, int y) {
         if (agentsGrid.containsKey(new Position(x, y))) {
@@ -176,5 +183,16 @@ public class World implements Serializable {
         private final double avgAge;
         @Getter
         private final double avgKnowledge;
+    }
+
+    public static World mergeWorlds(World world1, World world2, VarConfig varConfig, StrategyConfig strategyConfig) {
+        World mergedWorld = new World(varConfig, strategyConfig);
+        for (Agent agent : world1.getAgents()) {
+            mergedWorld.addAgent(agent.getX(), agent.getY(), agent);
+        }
+        for (Agent agent : world2.getAgents()) {
+            mergedWorld.addAgent(agent.getX() + world1.getCols(), agent.getY(), agent);
+        }
+        return mergedWorld;
     }
 }

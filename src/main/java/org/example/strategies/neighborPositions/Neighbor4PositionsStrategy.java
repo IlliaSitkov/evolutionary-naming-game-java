@@ -15,21 +15,21 @@ public class Neighbor4PositionsStrategy implements NeighborPositionsStrategy {
     private final boolean isDiagonal;
 
     @Override
-    public List<Position> getNeighbourPositions(int x, int y, int size) {
+    public List<Position> getNeighbourPositions(int x, int y, int rows, int cols) {
         if (isDiagonal) {
-            return getDiagonalNeighbourPositions(x, y, size);
+            return getDiagonalNeighbourPositions(x, y, rows, cols);
         } else {
-            return getOrthogonalNeighbourPositions(x, y, size);
+            return getOrthogonalNeighbourPositions(x, y, rows, cols);
         }
     }
 
-    private List<Position> getOrthogonalNeighbourPositions(int x, int y, int size) {
+    private List<Position> getOrthogonalNeighbourPositions(int x, int y, int rows, int cols) {
         List<Position> neighbourPositions = new ArrayList<>();
         for (int i = -1; i <= 1; i++) {
             if (i == 0) continue;
             int newX = x + i;
             int newY = y;
-            if (isValidPosition(newX, newY, size)) {
+            if (isValidPosition(newX, newY, rows, cols)) {
                 neighbourPositions.add(new Position(newX, newY));
             }
         }
@@ -37,20 +37,20 @@ public class Neighbor4PositionsStrategy implements NeighborPositionsStrategy {
             if (j == 0) continue;
             int newX = x;
             int newY = y + j;
-            if (isValidPosition(newX, newY, size)) {
+            if (isValidPosition(newX, newY, rows, cols)) {
                 neighbourPositions.add(new Position(newX, newY));
             }
         }
         return neighbourPositions;
     }
 
-    private List<Position> getDiagonalNeighbourPositions(int x, int y, int size) {
+    private List<Position> getDiagonalNeighbourPositions(int x, int y, int rows, int cols) {
         List<Position> neighbourPositions = new ArrayList<>();
         for (int i = -1; i <= 1; i++) {
             if (i == 0) continue;
             int newX = x + i;
             int newY = y + i;
-            if (isValidPosition(newX, newY, size)) {
+            if (isValidPosition(newX, newY, rows, cols)) {
                 neighbourPositions.add(new Position(newX, newY));
             }
         }
@@ -58,15 +58,15 @@ public class Neighbor4PositionsStrategy implements NeighborPositionsStrategy {
             if (i == 0) continue;
             int newX = x + i;
             int newY = y - i;
-            if (isValidPosition(newX, newY, size)) {
+            if (isValidPosition(newX, newY, rows, cols)) {
                 neighbourPositions.add(new Position(newX, newY));
             }
         }
         return neighbourPositions;   
     }
 
-    private boolean isValidPosition(int x, int y, int size) {
-        return x >= 0 && x < size && y >= 0 && y < size;
+    private boolean isValidPosition(int x, int y, int rows, int cols) {
+        return x >= 0 && x < cols && y >= 0 && y < rows;
     }
     
 }

@@ -16,7 +16,9 @@ public class VarConfig {
         "B", 5.0,
         "C", 0.005,
         "T", 10000,
-        "P_MUT", 0.001
+        "P_MUT", 0.001,
+        "L_ROWS", 0,
+        "L_COLS", 0
     ));
 
     public VarConfig(Map<String, Number> config) {
@@ -55,9 +57,16 @@ public class VarConfig {
         return config.get("P_MUT").doubleValue();
     }
 
+    public int L_ROWS() {
+        return config.get("L_ROWS").intValue();
+    }
+
+    public int L_COLS() {
+        return config.get("L_COLS").intValue();
+    }
+
     @Override
     public String toString() {
         return config.toString();
     }
-
 }

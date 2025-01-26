@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import org.example.StrategyConfig;
 import org.example.VarConfig;
 import org.example.entities.World;
+import org.example.simulation.Simulation;
 
 public class IOUtils {
 
@@ -60,6 +61,10 @@ public class IOUtils {
         }
     }
 
+    public static synchronized void saveSimulationConfig(String folderName, Simulation simulation) {
+        saveRunConfig(folderName, simulation.getVarConfig(), simulation.getStrategyConfig());
+    }
+    
     public static synchronized void saveRunConfig(String folderName, VarConfig varConfig, StrategyConfig strategyConfig) {
         String directory = "out/" + folderName;
         createDirectory(directory);

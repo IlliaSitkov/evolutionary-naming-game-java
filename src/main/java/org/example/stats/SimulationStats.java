@@ -111,11 +111,10 @@ public class SimulationStats {
     }
 
     private void recordWorldLearningAbilities(World world, int iteration, double pCommunication) {
-        int size = world.getSize();
-        double[][] learningAbilities = new double[size][size];
+        double[][] learningAbilities = new double[world.getRows()][world.getCols()];
 
-        for (int y = 0; y < world.getSize(); y++) {
-            for (int x = 0; x < world.getSize(); x++) {
+        for (int y = 0; y < world.getRows(); y++) {
+            for (int x = 0; x < world.getCols(); x++) {
                 Agent agent = world.getAgentAt(x, y);
                 if (agent != null) {
                     learningAbilities[y][x] = agent.getLearningAbility();
@@ -130,11 +129,10 @@ public class SimulationStats {
     }
 
     private void recordWorldLanguages(World world, int iteration, double pCommunication) {
-        int size = world.getSize();
-        String[][] languages = new String[size][size];
+        String[][] languages = new String[world.getRows()][world.getCols()];
 
-        for (int y = 0; y < world.getSize(); y++) {
-            for (int x = 0; x < world.getSize(); x++) {
+        for (int y = 0; y < world.getRows(); y++) {
+            for (int x = 0; x < world.getCols(); x++) {
                 Agent agent = world.getAgentAt(x, y);
                 if (agent != null) {
                     languages[y][x] = agent.getLexicon().isEmpty() ? "-" : agent.getLexicon().getTopWord();
