@@ -5,6 +5,9 @@ import java.util.Random;
 import org.example.entities.Agent;
 import org.example.entities.World;
 
+import lombok.ToString;
+
+@ToString
 public class SuccessRatePSurvivalStrategy implements PSurvivalStrategy {
 
     private final double A;
@@ -25,10 +28,4 @@ public class SuccessRatePSurvivalStrategy implements PSurvivalStrategy {
     private double getSurvivalProbability(int age, double successRate) {
         return (Math.exp(-A * age) * Math.pow(successRate, C));
     }
-
-    @Override
-    public String toString() {
-        return "SuccessRatePSurvivalStrategy";
-    }
-
 }

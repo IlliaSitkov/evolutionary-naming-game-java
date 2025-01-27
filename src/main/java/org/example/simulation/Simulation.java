@@ -22,6 +22,7 @@ public class Simulation {
     private PCommunicationStrategy pCommunicationStrategy;
     private final double pMutation;
     @Setter
+    @Getter
     private SimulationStats simulationStats;
     private IterationStats iterationStats;
     @Getter

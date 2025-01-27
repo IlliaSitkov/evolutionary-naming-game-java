@@ -2,7 +2,7 @@ package org.example;
 
 import org.example.strategies.evolution.EvolutionStrategy;
 import org.example.strategies.learningAbilityAging.LAbAgingStrategy;
-import org.example.strategies.learningAbilityInheritance.LearningAbilityInheritanceStrategy;
+import org.example.strategies.learningAbilityInheritance.LAbInheritanceStrategy;
 import org.example.strategies.neighborPositions.NeighborPositionsStrategy;
 import org.example.strategies.pCommunication.PCommunicationStrategy;
 import org.example.strategies.pSurvival.PSurvivalStrategy;
@@ -23,7 +23,7 @@ public class StrategyConfig {
     private final PSurvivalStrategy pSurvivalStrategy;
 
     @Getter
-    private final LearningAbilityInheritanceStrategy learningAbilityInheritanceStrategy;
+    private final LAbInheritanceStrategy learningAbilityInheritanceStrategy;
 
     @Getter
     private final LAbAgingStrategy learingAbilityAgingStrategy;

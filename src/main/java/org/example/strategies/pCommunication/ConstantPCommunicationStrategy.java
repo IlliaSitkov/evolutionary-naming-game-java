@@ -1,5 +1,8 @@
 package org.example.strategies.pCommunication;
 
+import lombok.ToString;
+
+@ToString
 public class ConstantPCommunicationStrategy implements PCommunicationStrategy {
     private final double pCommunication;
 
@@ -11,12 +14,4 @@ public class ConstantPCommunicationStrategy implements PCommunicationStrategy {
     public double getPCommunication(int iteration) {
         return pCommunication;
     }
-
-    @Override
-    public String toString() {
-        return "ConstantPCommunicationStrategy{" +
-                "pCommunication=" + pCommunication +
-                '}';
-    }
-    
 }

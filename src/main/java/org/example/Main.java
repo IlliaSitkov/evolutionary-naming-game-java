@@ -12,8 +12,8 @@ import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
 import org.example.strategies.evolution.ProbabilisticEvolutionStrategy;
 import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
-import org.example.strategies.learningAbilityInheritance.MutatedLearningAbilityInheritanceStrategy;
-import org.example.strategies.learningAbilityInheritance.RandomLearningAbilityInheritanceStrategy;
+import org.example.strategies.learningAbilityInheritance.MutatedLAbInheritanceStrategy;
+import org.example.strategies.learningAbilityInheritance.RandomLAbInheritanceStrategy;
 import org.example.strategies.neighborPositions.Neighbor8PositionsStrategy;
 import org.example.strategies.pCommunication.ConstantPCommunicationStrategy;
 import org.example.strategies.pCommunication.ContinuousIncreasePCommunicationStrategy;
@@ -74,9 +74,6 @@ public class Main {
     }
 
     public static void abruptPCommIncrease(int L, int N, double stdDev) {
-        Timer timer = new Timer();
-        timer.start();
-
         String folder = "abrupt_p_comm_increase/L=" + L + "_N=" + N+"_stdDev="+stdDev;
         VarConfig varConfig = new VarConfig(Map.of(
                 "L", L,
@@ -86,7 +83,7 @@ public class Main {
         StrategyConfig strategyConfig = new StrategyConfig(
                 new SingleStepPCommunicationStrategy(0.1, 8000, 0.98),
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-                new MutatedLearningAbilityInheritanceStrategy(stdDev),
+                new MutatedLAbInheritanceStrategy(stdDev),
                 new ConstantLAbAgingStrategy(),
                 new Neighbor8PositionsStrategy(),
                 new UnitWordAcquisitionStrategy(),
@@ -100,20 +97,28 @@ public class Main {
 
         Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 
+        runSimulation(simulation, folder);
+    }
+
+    public static void runSimulation(Simulation simulation, String folder) {
+        Timer timer = new Timer();
+        timer.start();
+
         SimulationPlots simulationPlots = new SimulationPlots(folder);
 
         simulation.start();
 
         timer.stop("Simulation ended");
 
-        simulationPlots.saveSimulationStats(simulationStats, strategyConfig.getPCommunicationStrategy(), varConfig.T());
+        simulationPlots.saveSimulationStats(
+            simulation.getSimulationStats(),
+            simulation.getStrategyConfig().getPCommunicationStrategy(),
+            simulation.getVarConfig().T());
         IOUtils.saveSimulationConfig(folder, simulation);
     }
 
-    public static void continuousPCommIncrease(int L, int N, double stdDev) {
-        Timer timer = new Timer();
-        timer.start();
 
+    public static void continuousPCommIncrease(int L, int N, double stdDev) {
         String folder = "continuous_p_comm_increase0.1-0.5/L=" + L+"_N="+N+"_stdDev="+stdDev;
         VarConfig varConfig = new VarConfig(Map.of(
                 "L", L,
@@ -123,7 +128,7 @@ public class Main {
         StrategyConfig strategyConfig = new StrategyConfig(
                 new ContinuousIncreasePCommunicationStrategy(0.1, 0.5, varConfig.T()),
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-                new MutatedLearningAbilityInheritanceStrategy(stdDev),
+                new MutatedLAbInheritanceStrategy(stdDev),
                 new ConstantLAbAgingStrategy(),
                 new Neighbor8PositionsStrategy(),
                 new UnitWordAcquisitionStrategy(),
@@ -137,20 +142,10 @@ public class Main {
 
         Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 
-        SimulationPlots simulationPlots = new SimulationPlots(folder);
-
-        simulation.start();
-
-        timer.stop("Simulation ended");
-
-        simulationPlots.saveSimulationStats(simulationStats, strategyConfig.getPCommunicationStrategy(), varConfig.T());
-        IOUtils.saveSimulationConfig(folder, simulation);
+        runSimulation(simulation, folder);
     }
     
     public static void runOrdinarySimulation() {
-        Timer timer = new Timer();
-        timer.start();
-
         String folder = "TEST";
         VarConfig varConfig = new VarConfig(Map.of(
                 "L", 20,
@@ -159,7 +154,7 @@ public class Main {
         StrategyConfig strategyConfig = new StrategyConfig(
                 new SingleStepPCommunicationStrategy(0.1, 5000, 0.98),
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-                new MutatedLearningAbilityInheritanceStrategy(0.1),
+                new MutatedLAbInheritanceStrategy(0.1),
                 new ConstantLAbAgingStrategy(),
                 new Neighbor8PositionsStrategy(),
                 new UnitWordAcquisitionStrategy(),
@@ -170,14 +165,7 @@ public class Main {
 
         Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 
-        SimulationPlots simulationPlots = new SimulationPlots(folder);
-
-        simulation.start();
-
-        timer.stop("Simulation ended");
-
-        simulationPlots.saveSimulationStats(simulationStats, strategyConfig.getPCommunicationStrategy(), varConfig.T());
-        IOUtils.saveSimulationConfig(folder, simulation);
+        runSimulation(simulation, folder);
     }
 
     public static void runPCommSimulations() {
@@ -189,7 +177,7 @@ public class Main {
         StrategyConfig strategyConfig = new StrategyConfig(
                 null,
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-                new RandomLearningAbilityInheritanceStrategy(),
+                new RandomLAbInheritanceStrategy(),
                 new ConstantLAbAgingStrategy(),
                 new Neighbor8PositionsStrategy(),
                 new UnitWordAcquisitionStrategy(),

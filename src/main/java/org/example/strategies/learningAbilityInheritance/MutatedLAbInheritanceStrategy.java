@@ -9,7 +9,7 @@ import lombok.ToString;
 
 @AllArgsConstructor
 @ToString
-public class MutatedLearningAbilityInheritanceStrategy implements LearningAbilityInheritanceStrategy {
+public class MutatedLAbInheritanceStrategy implements LAbInheritanceStrategy {
 
     private final double stdDev;
 

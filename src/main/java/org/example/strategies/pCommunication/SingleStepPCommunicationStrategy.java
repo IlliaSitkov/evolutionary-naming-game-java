@@ -1,5 +1,8 @@
 package org.example.strategies.pCommunication;
 
+import lombok.ToString;
+
+@ToString
 public class SingleStepPCommunicationStrategy implements PCommunicationStrategy {
     private final double initialProbability;
     private final int changeIteration;
@@ -17,14 +20,5 @@ public class SingleStepPCommunicationStrategy implements PCommunicationStrategy 
             return changedProbability;
         }
         return initialProbability;
-    }
-
-    @Override
-    public String toString() {
-        return "SingleStepPCommunicationStrategy{" +
-                "initialProbability=" + initialProbability +
-                ", changeIteration=" + changeIteration +
-                ", changedProbability=" + changedProbability +
-                '}';
     }
 }

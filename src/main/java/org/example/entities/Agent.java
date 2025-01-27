@@ -6,7 +6,7 @@ import java.util.Random;
 import org.example.StrategyConfig;
 import org.example.VarConfig;
 import org.example.strategies.learningAbilityAging.LAbAgingStrategy;
-import org.example.strategies.learningAbilityInheritance.LearningAbilityInheritanceStrategy;
+import org.example.strategies.learningAbilityInheritance.LAbInheritanceStrategy;
 import org.example.strategies.pSurvival.PSurvivalStrategy;
 import org.example.strategies.wordAcquisition.WordAcquisitionStrategy;
 
@@ -30,7 +30,7 @@ public class Agent implements Serializable {
     private int nSuccessfulCommunications = 0;
 
     private final PSurvivalStrategy pSurvivalStrategy;
-    private final LearningAbilityInheritanceStrategy learningAbilityInheritanceStrategy;
+    private final LAbInheritanceStrategy learningAbilityInheritanceStrategy;
     private final LAbAgingStrategy learningAbilityAgingStrategy;
     private final WordAcquisitionStrategy wordAcquisitionStrategy;
 

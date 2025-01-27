@@ -4,7 +4,10 @@ import java.util.Random;
 
 import org.example.entities.Agent;
 
-public class RandomLearningAbilityInheritanceStrategy implements LearningAbilityInheritanceStrategy {
+import lombok.ToString;
+
+@ToString
+public class RandomLAbInheritanceStrategy implements LAbInheritanceStrategy {
     @Override
     public double inheritLearningAbility(double mutationProbability, Agent parent) {
         Random random = new Random();
@@ -16,10 +19,5 @@ public class RandomLearningAbilityInheritanceStrategy implements LearningAbility
             newLearningAbility = parent.getLearningAbility();
         }
         return newLearningAbility;
-    }
-
-    @Override
-    public String toString() {
-        return "RandomLearningAbilityInheritanceStrategy";
     }
 }

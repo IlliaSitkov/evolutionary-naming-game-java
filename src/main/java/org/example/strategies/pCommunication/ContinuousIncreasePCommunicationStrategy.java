@@ -1,5 +1,8 @@
 package org.example.strategies.pCommunication;
 
+import lombok.ToString;
+
+@ToString
 public class ContinuousIncreasePCommunicationStrategy implements PCommunicationStrategy {
     private final double initialProbability;
     private final double finalProbability;
@@ -14,15 +17,6 @@ public class ContinuousIncreasePCommunicationStrategy implements PCommunicationS
     @Override
     public double getPCommunication(int iteration) {
         return initialProbability + (finalProbability - initialProbability) * iteration / (nSteps - 1);
-    }
-
-    @Override
-    public String toString() {
-        return "ContinuousIncreasePCommunicationStrategy{" +
-                "initialProbability=" + initialProbability +
-                ", finalProbability=" + finalProbability +
-                ", nSteps=" + nSteps +
-                '}';
     }
 
 }
