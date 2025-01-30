@@ -1,5 +1,7 @@
 package org.example.strategies.learningAbilityAging;
 
+import java.io.Serializable;
+
 import org.example.entities.Agent;
 
 import lombok.AllArgsConstructor;
@@ -7,7 +9,7 @@ import lombok.ToString;
 
 @AllArgsConstructor
 @ToString
-public class ConstantDecreaseLAbAgingStrategy  implements LAbAgingStrategy {
+public class ConstantDecreaseLAbAgingStrategy  implements LAbAgingStrategy, Serializable {
     private final int startAge;
 
     @Override

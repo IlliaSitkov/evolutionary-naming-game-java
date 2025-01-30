@@ -1,12 +1,13 @@
 package org.example;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class VarConfig {
+public class VarConfig implements Serializable {
     
     private final Map<String, Number> config = new HashMap<>(Map.of(
         "N", 1,

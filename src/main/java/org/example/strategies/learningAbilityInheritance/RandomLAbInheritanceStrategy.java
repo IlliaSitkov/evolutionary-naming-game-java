@@ -1,5 +1,6 @@
 package org.example.strategies.learningAbilityInheritance;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import org.example.entities.Agent;
@@ -7,7 +8,7 @@ import org.example.entities.Agent;
 import lombok.ToString;
 
 @ToString
-public class RandomLAbInheritanceStrategy implements LAbInheritanceStrategy {
+public class RandomLAbInheritanceStrategy implements LAbInheritanceStrategy, Serializable {
     @Override
     public double inheritLearningAbility(double mutationProbability, Agent parent) {
         Random random = new Random();

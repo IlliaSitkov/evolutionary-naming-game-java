@@ -1,5 +1,6 @@
 package org.example.strategies.neighborPositions;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import lombok.ToString;
 
 @AllArgsConstructor
 @ToString
-public class Neighbor4PositionsStrategy implements NeighborPositionsStrategy {
+public class Neighbor4PositionsStrategy implements NeighborPositionsStrategy, Serializable {
 
     private final boolean isDiagonal;
 

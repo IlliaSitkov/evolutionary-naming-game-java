@@ -1,5 +1,6 @@
 package org.example.strategies.learningAbilityInheritance;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import org.example.entities.Agent;
@@ -9,7 +10,7 @@ import lombok.ToString;
 
 @AllArgsConstructor
 @ToString
-public class MutatedLAbInheritanceStrategy implements LAbInheritanceStrategy {
+public class MutatedLAbInheritanceStrategy implements LAbInheritanceStrategy, Serializable {
 
     private final double stdDev;
 

@@ -1,9 +1,11 @@
 package org.example.strategies.pCommunication;
 
+import java.io.Serializable;
+
 import lombok.ToString;
 
 @ToString
-public class ContinuousIncreasePCommunicationStrategy implements PCommunicationStrategy {
+public class ContinuousIncreasePCommunicationStrategy implements PCommunicationStrategy, Serializable {
     private final double initialProbability;
     private final double finalProbability;
     private final int nSteps;

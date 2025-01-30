@@ -1,5 +1,7 @@
 package org.example;
 
+import java.io.Serializable;
+
 import org.example.strategies.evolution.EvolutionStrategy;
 import org.example.strategies.learningAbilityAging.LAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.LAbInheritanceStrategy;
@@ -14,7 +16,7 @@ import lombok.ToString;
 
 @AllArgsConstructor
 @ToString
-public class StrategyConfig {
+public class StrategyConfig implements Serializable {
 
     @Getter
     private final PCommunicationStrategy pCommunicationStrategy;

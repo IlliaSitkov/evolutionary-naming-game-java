@@ -1,5 +1,6 @@
 package org.example.strategies.pSurvival;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import org.example.entities.Agent;
@@ -8,7 +9,7 @@ import org.example.entities.World;
 import lombok.ToString;
 
 @ToString
-public class SuccessRatePSurvivalStrategy implements PSurvivalStrategy {
+public class SuccessRatePSurvivalStrategy implements PSurvivalStrategy, Serializable {
 
     private final double A;
     private final double C;

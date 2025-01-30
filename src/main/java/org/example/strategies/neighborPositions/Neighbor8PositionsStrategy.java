@@ -1,5 +1,6 @@
 package org.example.strategies.neighborPositions;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import org.example.utils.Position;
 import lombok.ToString;
 
 @ToString
-public class Neighbor8PositionsStrategy implements NeighborPositionsStrategy {
+public class Neighbor8PositionsStrategy implements NeighborPositionsStrategy, Serializable {
 
     @Override
     public List<Position> getNeighbourPositions(int x, int y, int rows, int cols) {
