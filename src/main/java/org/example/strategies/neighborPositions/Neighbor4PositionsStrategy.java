@@ -9,6 +9,9 @@ import org.example.utils.Position;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 
+/**
+ * Selects 4 neighbor positions: up, down, left, right (when isDiagonal = false) or up-right, up-left, down-right, down-left (when isDiagonal = true)
+ */
 @AllArgsConstructor
 @ToString
 public class Neighbor4PositionsStrategy implements NeighborPositionsStrategy, Serializable {

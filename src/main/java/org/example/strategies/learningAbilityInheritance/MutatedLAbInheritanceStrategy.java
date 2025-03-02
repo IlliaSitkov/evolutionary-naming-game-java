@@ -8,6 +8,10 @@ import org.example.entities.Agent;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 
+/**
+ * Child's learning ability is derived from parent's: l_child = l_parent_at_birth + N(0, epsilon)
+ * p_mutation = 1
+ */
 @AllArgsConstructor
 @ToString
 public class MutatedLAbInheritanceStrategy implements LAbInheritanceStrategy, Serializable {

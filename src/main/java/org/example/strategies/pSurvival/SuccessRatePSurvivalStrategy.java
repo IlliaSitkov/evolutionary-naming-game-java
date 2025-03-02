@@ -8,6 +8,11 @@ import org.example.entities.World;
 
 import lombok.ToString;
 
+/**
+ * The survival probability is a function of the agent's age and success rate
+ * successRate = nSuccessfulCommunications / nInitedCommunications
+ * p_surv = exp(-A * age) * successRate^C
+ */
 @ToString
 public class SuccessRatePSurvivalStrategy implements PSurvivalStrategy, Serializable {
 

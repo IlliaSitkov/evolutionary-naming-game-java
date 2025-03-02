@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import lombok.ToString;
 
+/**
+ * Communication probability continuously changes from initialProbability to finalProbability over nSteps
+ */
 @ToString
 public class ContinuousIncreasePCommunicationStrategy implements PCommunicationStrategy, Serializable {
     private final double initialProbability;

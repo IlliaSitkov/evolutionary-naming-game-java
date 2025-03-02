@@ -26,7 +26,13 @@ public class Agent implements Serializable {
     @Getter
     private int age;
 
+    /**
+     * Number of communications where the agent was a speaker
+     */
     private int nInitedCommunications = 0;
+    /**
+     * Number of communications where the agent was a speaker and the communication was successful
+     */
     private int nSuccessfulCommunications = 0;
 
     private final PSurvivalStrategy pSurvivalStrategy;

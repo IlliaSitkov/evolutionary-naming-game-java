@@ -78,7 +78,7 @@ public class Simulation {
                 populationUpdate(speaker);
             } else {
                 boolean isCommunicationSuccessful = communicationUpdate(speaker, listener);
-                iterationStats.trackSuccessRate(isCommunicationSuccessful);
+                iterationStats.trackCommunicationResult(isCommunicationSuccessful);
             }
         }
         if (shouldUpdatePopulation) {

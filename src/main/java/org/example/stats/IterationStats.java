@@ -17,7 +17,7 @@ public class IterationStats {
         this.iteration = iteration;
     }
 
-    public void trackSuccessRate(boolean success) {
+    public void trackCommunicationResult(boolean success) {
         nCommunications++;
         if (success) {
             nSuccessfulCommunications++;

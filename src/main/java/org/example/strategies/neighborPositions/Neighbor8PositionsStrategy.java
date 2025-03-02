@@ -8,6 +8,9 @@ import org.example.utils.Position;
 
 import lombok.ToString;
 
+/**
+ * Selects 8 neighbor positions: up, down, left, right, up-right, up-left, down-right, down-left
+ */
 @ToString
 public class Neighbor8PositionsStrategy implements NeighborPositionsStrategy, Serializable {
 

@@ -5,6 +5,9 @@ import java.util.Random;
 
 import lombok.ToString;
 
+/**
+ * Evolution Process as in Moloney: p_pop_upd = 1, p_comm = 1
+ */
 @ToString
 public class ProbabilisticEvolutionStrategy implements EvolutionStrategy, Serializable {
     

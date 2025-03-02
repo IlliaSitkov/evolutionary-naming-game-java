@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import lombok.ToString;
 
+/**
+ * Communication probability changes once from initialProbability to changedProbability at changeIteration
+ */
 @ToString
 public class SingleStepPCommunicationStrategy implements PCommunicationStrategy, Serializable {
     private final double initialProbability;

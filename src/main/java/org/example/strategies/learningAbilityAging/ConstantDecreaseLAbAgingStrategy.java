@@ -7,6 +7,10 @@ import org.example.entities.Agent;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 
+/**
+ * Learning ability changes l_t+1 = l_t - 0.01 * l_at_birth
+ * starting from a certain startAge
+ */
 @AllArgsConstructor
 @ToString
 public class ConstantDecreaseLAbAgingStrategy  implements LAbAgingStrategy, Serializable {

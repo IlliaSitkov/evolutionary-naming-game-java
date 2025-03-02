@@ -6,6 +6,9 @@ import org.example.entities.Agent;
 
 import lombok.ToString;
 
+/**
+ * The weight of invented, learnt, and inherited words is equal to 1
+ */
 @ToString
 public class UnitWordAcquisitionStrategy implements WordAcquisitionStrategy, Serializable {
     @Override

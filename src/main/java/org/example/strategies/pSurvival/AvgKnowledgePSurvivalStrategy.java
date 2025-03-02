@@ -8,6 +8,12 @@ import org.example.entities.World;
 
 import lombok.ToString;
 
+/**
+ * The survival probability of an agent is determined by the average knowledge of all agents in the world
+ * (other agents' knowledge is weighed by otherAgentsKnowledgeCoefficient)
+ * 
+ * p_surv = exp(-A * age) * (1 - exp(-B * agentKnowledge / avgKnowledge))
+ */
 @ToString
 public class AvgKnowledgePSurvivalStrategy implements PSurvivalStrategy, Serializable {
 
