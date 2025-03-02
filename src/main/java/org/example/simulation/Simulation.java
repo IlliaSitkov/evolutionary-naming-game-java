@@ -17,10 +17,8 @@ import lombok.Setter;
 public class Simulation {
     @Getter
     private final World world;
-    private final int nIters;
     @Setter
     private PCommunicationStrategy pCommunicationStrategy;
-    private final double pMutation;
     @Setter
     @Getter
     private SimulationStats simulationStats;
@@ -38,9 +36,7 @@ public class Simulation {
 
     public Simulation(World world, SimulationStats simulationStats, VarConfig varConfig, StrategyConfig strategyConfig) {
         this.world = world;
-        this.nIters = varConfig.T();
         this.pCommunicationStrategy = strategyConfig.getPCommunicationStrategy();
-        this.pMutation = varConfig.P_MUT();
         this.simulationStats = simulationStats;
         this.evolutionStrategy = strategyConfig.getEvolutionStrategy();
         this.varConfig = varConfig;
@@ -49,7 +45,7 @@ public class Simulation {
 
     public void start() {
         simulationStats.recordBeforeEvolution(world, pCommunicationStrategy.getPCommunication(0));
-        for (int iteration = 0; iteration < nIters && world.hasAgents(); iteration++) {
+        for (int iteration = 0; iteration < varConfig.T() && world.hasAgents(); iteration++) {
             iterationStats = new IterationStats(iteration);
 
             Timer timer = new Timer();
@@ -118,7 +114,7 @@ public class Simulation {
     }
 
     private void reproduce(Agent agent, Position position) {
-        Agent childAgent = agent.reproduce(pMutation);
+        Agent childAgent = agent.reproduce(varConfig.P_MUT());
         world.addAgent(position.x(), position.y(), childAgent);
     }
 }

@@ -53,6 +53,9 @@ public class VarConfig implements Serializable {
     public int T() {
         return config.get("T").intValue();
     }
+    public void setT(int value) {
+        config.put("T", value);
+    }
 
     public double P_MUT() {
         return config.get("P_MUT").doubleValue();
