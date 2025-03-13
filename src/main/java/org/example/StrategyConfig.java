@@ -2,6 +2,8 @@ package org.example;
 
 import java.io.Serializable;
 
+import org.example.strategies.agentInitializer.AgentInitializer;
+import org.example.strategies.agentInitializer.RandomAgentInitializer;
 import org.example.strategies.evolution.EvolutionStrategy;
 import org.example.strategies.learningAbilityAging.LAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.LAbInheritanceStrategy;
@@ -12,8 +14,10 @@ import org.example.strategies.wordAcquisition.WordAcquisitionStrategy;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+@RequiredArgsConstructor
 @AllArgsConstructor
 @ToString
 public class StrategyConfig implements Serializable {
@@ -38,5 +42,8 @@ public class StrategyConfig implements Serializable {
 
     @Getter
     private final EvolutionStrategy evolutionStrategy;
+    
+    @Getter
+    private AgentInitializer agentInitializer = new RandomAgentInitializer();
     
 }

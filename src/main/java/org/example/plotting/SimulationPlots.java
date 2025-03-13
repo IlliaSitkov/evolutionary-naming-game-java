@@ -74,8 +74,8 @@ public class SimulationPlots {
         }
 
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-        renderer.setSeriesPaint(0, Color.BLUE);
-        renderer.setSeriesPaint(1, Color.GREEN);
+        renderer.setSeriesPaint(0, Color.GREEN);
+        renderer.setSeriesPaint(1, Color.BLUE);
         renderer.setSeriesShapesVisible(0, false);
         renderer.setSeriesShapesVisible(1, false);
 

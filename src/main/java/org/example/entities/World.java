@@ -5,6 +5,7 @@ import java.util.*;
 
 import org.example.StrategyConfig;
 import org.example.VarConfig;
+import org.example.strategies.agentInitializer.AgentInitializer;
 import org.example.strategies.neighborPositions.NeighborPositionsStrategy;
 import org.example.utils.Position;
 
@@ -24,6 +25,7 @@ public class World implements Serializable {
     private final StrategyConfig strategyConfig;
 
     private final NeighborPositionsStrategy neighborPositionsStrategy;
+    private final AgentInitializer agentInitializer;
 
     public World(VarConfig varConfig, StrategyConfig strategyConfig) {
         this.varConfig = varConfig;
@@ -31,13 +33,14 @@ public class World implements Serializable {
         this.cols = varConfig.L_COLS() <= 0 ? varConfig.L() : varConfig.L_COLS();
         this.strategyConfig = strategyConfig;
         this.neighborPositionsStrategy = strategyConfig.getNeighborPositionsStrategy();
+        this.agentInitializer = strategyConfig.getAgentInitializer();
         init();
     }
 
     private void init() {
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < cols; x++) {
-                Agent agent = initAgent();
+                Agent agent = this.agentInitializer.initAgent(varConfig, strategyConfig);
                 addAgent(x, y, agent);
             }
         }
@@ -83,12 +86,6 @@ public class World implements Serializable {
             return null;
         }
         return emptyPositions.get(new Random().nextInt(emptyPositions.size()));
-    }
-
-    private Agent initAgent() {
-        Lexicon lexicon = new Lexicon(varConfig.N());
-        lexicon.addWord(Lexicon.generateWord(varConfig.WORD_LENGTH()), 1);
-        return new Agent(new Random().nextDouble(), lexicon, this.varConfig, strategyConfig);
     }
 
     public Agent getRandomAgent() {

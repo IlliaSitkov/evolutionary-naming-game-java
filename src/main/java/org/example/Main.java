@@ -8,12 +8,16 @@ import java.util.concurrent.Executors;
 
 import org.example.export.IOUtils;
 import org.example.plotting.SimulationPlots;
+import org.example.scenarios.AbruptTransitionRuns;
+import org.example.scenarios.PCommDecrease;
 import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
+import org.example.strategies.evolution.FullEvolutionStrategy;
 import org.example.strategies.evolution.ProbabilisticEvolutionStrategy;
 import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.MutatedLAbInheritanceStrategy;
 import org.example.strategies.learningAbilityInheritance.RandomLAbInheritanceStrategy;
+import org.example.strategies.neighborPositions.Neighbor4PositionsStrategy;
 import org.example.strategies.neighborPositions.Neighbor8PositionsStrategy;
 import org.example.strategies.pCommunication.ConstantPCommunicationStrategy;
 import org.example.strategies.pCommunication.ContinuousIncreasePCommunicationStrategy;
@@ -25,14 +29,16 @@ import org.example.utils.Timer;
 
 public class Main {
     public static void main(String[] args) {
-        // runSimulationsInParallel();
+        runSimulationsInParallel();
         // runOrdinarySimulation();
         // runPCommIncreaseSimulations();
-        runPCommDecreaseSimulations();
+        // runPCommDecreaseSimulations();
+        // PCommDecrease.controlledWorld(60);
+        // PCommDecrease.controlledWorld(40);
     }
 
     public static void runSimulationsInParallel() {
-        ExecutorService executorService = Executors.newFixedThreadPool(8);
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
 
         List<Runnable> simulationTasks = List.of(
             // () -> abruptPCommIncrease(10, 1),
@@ -67,8 +73,26 @@ public class Main {
             // () -> continuousPCommIncrease(40, 1, 0.15),
             // () -> continuousPCommIncrease(40, 1, 0.2)
 
-            () -> runPCommIncreaseSimulations(),
-            () -> runPCommDecreaseSimulations()
+            // () -> runPCommIncreaseSimulations(),
+            // () -> runPCommDecreaseSimulations()
+
+            // () -> AbruptTransitionRuns.original(10, 1),
+            // () -> AbruptTransitionRuns.original(20, 1),
+            // () -> AbruptTransitionRuns.original(30, 1),
+            // () -> AbruptTransitionRuns.original(40, 1),
+            // () -> AbruptTransitionRuns.original(60, 1),
+            // () -> AbruptTransitionRuns.original(40, 3),
+            // () -> AbruptTransitionRuns.original(40, 5),
+            // () -> AbruptTransitionRuns.original(40, 10),
+            // () -> AbruptTransitionRuns.original(40, 100),
+            // () -> AbruptTransitionRuns.original(40, Integer.MAX_VALUE),
+            // () -> AbruptTransitionRuns.neighbors(40, 1, new Neighbor4PositionsStrategy(false)),
+            // () -> AbruptTransitionRuns.neighbors(40, 1, new Neighbor4PositionsStrategy(true))
+
+            () -> PCommDecrease.controlledWorld(40),
+            () -> PCommDecrease.controlledWorld(60),
+            () -> PCommDecrease.runPCommDecreaseSimulations(40),
+            () -> PCommDecrease.runPCommDecreaseSimulations(60)
         );
 
         for (Runnable task : simulationTasks) {
@@ -246,7 +270,7 @@ public class Main {
     public static void runPCommDecreaseSimulations() {
 
         VarConfig varConfig = new VarConfig(Map.of(
-                "T", 10000
+                "T", 100
         ));
         StrategyConfig strategyConfig = new StrategyConfig(
                 new ConstantPCommunicationStrategy(0.99),
@@ -255,9 +279,9 @@ public class Main {
                 new ConstantLAbAgingStrategy(),
                 new Neighbor8PositionsStrategy(),
                 new UnitWordAcquisitionStrategy(),
-                new ProbabilisticEvolutionStrategy()
+                new FullEvolutionStrategy()
         );
-        String folder = "p_comm_decrease_0.11-0.27_3k_iters_1";
+        String folder = "p_comm_decrease/full_pre-sim";
         String preSimulationStatsFolder = folder + "/pre-simulation";
         SimulationPlots preSimulationPlots = new SimulationPlots(preSimulationStatsFolder);
         SimulationPlots simulationPlots = new SimulationPlots(folder);
