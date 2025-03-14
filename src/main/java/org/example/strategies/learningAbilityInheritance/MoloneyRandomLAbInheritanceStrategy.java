@@ -8,19 +8,19 @@ import org.example.entities.Agent;
 import lombok.ToString;
 
 /**
- * Child acquires random learning ability with p_mutation probability, otherwise inherits parent's learning ability at birth
+ * Child inherits parent's learning ability at birth with p_mutation probability, otherwise acquires random learning ability
  */
 @ToString
-public class RandomLAbInheritanceStrategy implements LAbInheritanceStrategy, Serializable {
+public class MoloneyRandomLAbInheritanceStrategy implements LAbInheritanceStrategy, Serializable {
     @Override
     public double[] inheritLearningAbility(double mutationProbability, Agent parent) {
         Random random = new Random();
         double rLearningAbility = random.nextDouble();
         double newLearningAbility;
         if (rLearningAbility < mutationProbability) {
-            newLearningAbility = random.nextDouble();
-        } else {
             newLearningAbility = parent.getLearningAbilityAtBirth();
+        } else {
+            newLearningAbility = random.nextDouble();
         }
         return new double[]{newLearningAbility, rLearningAbility};
     }

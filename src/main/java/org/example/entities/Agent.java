@@ -31,7 +31,8 @@ public class Agent implements Serializable {
      */
     private int nInitedCommunications = 0;
     /**
-     * Number of communications where the agent was a speaker and the communication was successful
+     * Number of communications where the agent was a speaker and the communication
+     * was successful
      */
     private int nSuccessfulCommunications = 0;
 
@@ -61,7 +62,8 @@ public class Agent implements Serializable {
     public String speak() {
         nInitedCommunications++;
         if (lexicon.isEmpty()) {
-            lexicon.addWord(Lexicon.generateWord(varConfig.WORD_LENGTH()), wordAcquisitionStrategy.getInventedWordWeight(this));
+            lexicon.addWord(Lexicon.generateWord(varConfig.WORD_LENGTH()),
+                    wordAcquisitionStrategy.getInventedWordWeight(this));
         }
         return lexicon.getRandomWord();
     }
@@ -85,14 +87,20 @@ public class Agent implements Serializable {
         lexicon.addWord(word, wordAcquisitionStrategy.getLearntWordWeight(this));
     }
 
-    public boolean survives(World world) {
+    public double[] survives(World world) {
         return pSurvivalStrategy.survives(this, world);
     }
 
     public Agent reproduce(double mutationProbability) {
+        return varConfig.REPR_LIPOWSKA() == 0 ? reproduceMoloney(mutationProbability)
+                : reproduceLipowska(mutationProbability);
+    }
+
+    private Agent reproduceLipowska(double mutationProbability) {
         Random random = new Random();
 
-        double newLearningAbility = learningAbilityInheritanceStrategy.inheritLearningAbility(mutationProbability, this);
+        double newLearningAbility = learningAbilityInheritanceStrategy.inheritLearningAbility(mutationProbability,
+                this)[0];
 
         double rWordMutation = random.nextDouble();
         String newWord;
@@ -100,6 +108,25 @@ public class Agent implements Serializable {
             newWord = Lexicon.generateWord(varConfig.WORD_LENGTH());
         } else {
             newWord = lexicon.getTopWord();
+        }
+
+        Lexicon newLexicon = new Lexicon(lexicon.getMaxSize());
+        newLexicon.addWord(newWord, wordAcquisitionStrategy.getInheritedWordWeight(newLearningAbility));
+        return new Agent(newLearningAbility, newLexicon, this.varConfig, this.strategyConfig);
+    }
+
+    private Agent reproduceMoloney(double mutationProbability) {
+        double[] newLearningAbilityResult = learningAbilityInheritanceStrategy.inheritLearningAbility(mutationProbability,
+                this);
+
+        double newLearningAbility = newLearningAbilityResult[0];
+        double rWordMutation = newLearningAbilityResult[1];
+
+        String newWord;
+        if (rWordMutation < mutationProbability || lexicon.isEmpty()) {
+            newWord = lexicon.getTopWord();
+        } else {
+            newWord = Lexicon.generateWord(varConfig.WORD_LENGTH());
         }
 
         Lexicon newLexicon = new Lexicon(lexicon.getMaxSize());

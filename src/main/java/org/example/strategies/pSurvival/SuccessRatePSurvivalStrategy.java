@@ -25,10 +25,10 @@ public class SuccessRatePSurvivalStrategy implements PSurvivalStrategy, Serializ
     }
 
     @Override
-    public boolean survives(Agent agent, World world) {
+    public double[] survives(Agent agent, World world) {
         double pSurvival = getSurvivalProbability(agent.getAge(), agent.getSuccessRate());
         double r = new Random().nextDouble();
-        return r < pSurvival;
+        return new double[]{r < pSurvival ? 1 : 0, pSurvival};
     }
 
     private double getSurvivalProbability(int age, double successRate) {

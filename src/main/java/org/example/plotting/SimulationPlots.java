@@ -15,6 +15,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SimulationPlots {
@@ -98,7 +99,13 @@ public class SimulationPlots {
     public <T extends Number> void plotStat(List<T> data, String title, String seriesName, String yAxisLabel, int startIteration, Double rangeMin, Double rangeMax) {
         XYSeries series = new XYSeries(seriesName);
         for (int i = 0; i < data.size(); i++) {
-            series.add(i + startIteration, data.get(i).doubleValue());
+            T value = data.get(i);
+            if (value == null) {
+                series.add(i + startIteration, null);
+            } else {
+                series.add(i + startIteration, data.get(i).doubleValue());
+            }
+            
         }
 
         XYSeriesCollection dataset = new XYSeriesCollection();
@@ -141,6 +148,9 @@ public class SimulationPlots {
     }
 
     public void plotSeriesAsDependentOnAnother(List<Double> xData, List<Double> yData, String title, String xAxisLabel, String yAxisLabel, String seriesName, Double rangeMin, Double rangeMax, boolean showMarkers) {
+        xData = new ArrayList<>(xData);
+        yData = new ArrayList<>(yData);
+        
         while (yData.size() < xData.size()) {
             yData.add(0, null);
         }

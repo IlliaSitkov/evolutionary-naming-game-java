@@ -101,7 +101,9 @@ public class Simulation {
     }
 
     private void populationUpdate(Agent agent) {
-        if (agent.survives(world)) {
+        double[] survivalResult = agent.survives(world);
+        iterationStats.trackPSurv(survivalResult[1]);
+        if (survivalResult[0] == 1) {
             Position emptyNeighbourPosition = world.getRandomEmptyNeighbourPosition(agent.getX(), agent.getY());
             if (emptyNeighbourPosition != null) {
                 reproduce(agent, emptyNeighbourPosition);

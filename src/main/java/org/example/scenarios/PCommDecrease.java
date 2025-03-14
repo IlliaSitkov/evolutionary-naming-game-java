@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.example.StrategyConfig;
 import org.example.VarConfig;
+import org.example.VarConfig.ConfigKey;
 import org.example.export.IOUtils;
 import org.example.plotting.SimulationPlots;
 import org.example.simulation.Simulation;
@@ -31,7 +32,7 @@ public class PCommDecrease {
     int nSkipIterations = 1000;
     
     VarConfig varConfig = new VarConfig(Map.of(
-        "T", 3000, "L", L));
+        ConfigKey.T, 3000, ConfigKey.L, L));
 
     StrategyConfig strategyConfig = new StrategyConfig(
         null,
@@ -98,7 +99,7 @@ public class PCommDecrease {
   public static void runPCommDecreaseSimulations(int L) {
 
     VarConfig varConfig = new VarConfig(Map.of(
-        "T", 15000, "L", L));
+        ConfigKey.T, 15000, ConfigKey.L, L));
     StrategyConfig strategyConfig = new StrategyConfig(
         new ConstantPCommunicationStrategy(0.99),
         new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),

@@ -21,6 +21,8 @@ public class SimulationStats {
     @Getter
     private final List<Integer> communicationsNumber = new ArrayList<>();
     @Getter
+    private final List<Integer> successfulCommunicationsNumber = new ArrayList<>();
+    @Getter
     private final List<Double> avgAges = new ArrayList<>();
     @Getter
     private final List<Integer> killedAgentsNumber = new ArrayList<>();
@@ -28,6 +30,8 @@ public class SimulationStats {
     private final List<Integer> bornAgentsNumber = new ArrayList<>();
     @Getter
     private final List<Double> avgKnowledge = new ArrayList<>();
+    @Getter
+    private final List<Double> avgPSurvs = new ArrayList<>();
     @Getter
     private final Map<String, double[][]> learningAbilityMaps = new HashMap<>();
     @Getter
@@ -70,8 +74,10 @@ public class SimulationStats {
         }
         successRates.add(iterationStats.getSuccessRate());
         communicationsNumber.add(iterationStats.getNCommunications());
+        successfulCommunicationsNumber.add(iterationStats.getNSuccessfulCommunications());
         killedAgentsNumber.add(iterationStats.getNKilledAgents());
         bornAgentsNumber.add(iterationStats.getNBornAgents());
+        avgPSurvs.add(iterationStats.getAvgPSurv());
     }
 
     public void recordAfterIteration(World world, int iteration, double pCommunication) {

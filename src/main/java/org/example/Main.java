@@ -1,14 +1,17 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.example.VarConfig.ConfigKey;
 import org.example.export.IOUtils;
 import org.example.plotting.SimulationPlots;
 import org.example.scenarios.AbruptTransitionRuns;
+import org.example.scenarios.ContinuousPCommTransition;
 import org.example.scenarios.PCommDecrease;
 import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
@@ -29,70 +32,17 @@ import org.example.utils.Timer;
 
 public class Main {
     public static void main(String[] args) {
-        runSimulationsInParallel();
-        // runOrdinarySimulation();
-        // runPCommIncreaseSimulations();
-        // runPCommDecreaseSimulations();
-        // PCommDecrease.controlledWorld(60);
-        // PCommDecrease.controlledWorld(40);
+        // runSimulationsInParallel();
+        // AbruptTransitionRuns.originalMoloney(40, 1);
+        // ContinuousPCommTransition.originalMoloney(40, 1);
+        AbruptTransitionRuns.test(10, 1);
     }
 
     public static void runSimulationsInParallel() {
         ExecutorService executorService = Executors.newFixedThreadPool(4);
 
         List<Runnable> simulationTasks = List.of(
-            // () -> abruptPCommIncrease(10, 1),
-            // () -> abruptPCommIncrease(20, 1),
-            // () -> abruptPCommIncrease(30, 1),
-            // () -> abruptPCommIncrease(40, 1),
-            // () -> abruptPCommIncrease(40, 3),
-            // () -> abruptPCommIncrease(40, 5),
-            // () -> abruptPCommIncrease(40, 10),
-            // () -> abruptPCommIncrease(40, Integer.MAX_VALUE),
-
-            // () -> continuousPCommIncrease(10, 1),
-            // () -> continuousPCommIncrease(20, 1),
-            // () -> continuousPCommIncrease(30, 1),
-            // () -> continuousPCommIncrease(40, 1),
-            // () -> continuousPCommIncrease(40, 5),
-            // () -> continuousPCommIncrease(40, Integer.MAX_VALUE)
-
-            // () -> abruptPCommIncrease(40, 1, 0.01),
-            // // () -> abruptPCommIncrease(40, 1, 0.03),
-            // () -> abruptPCommIncrease(40, 1, 0.05),
-            // // () -> abruptPCommIncrease(40, 1, 0.075),
-            // () -> abruptPCommIncrease(40, 1, 0.1),
-            // // () -> abruptPCommIncrease(40, 1, 0.15),
-            // () -> abruptPCommIncrease(40, 1, 0.2),
-
-            // () -> continuousPCommIncrease(40, 1, 0.01),
-            // () -> continuousPCommIncrease(40, 1, 0.03),
-            // () -> continuousPCommIncrease(40, 1, 0.05),
-            // () -> continuousPCommIncrease(40, 1, 0.075),
-            // () -> continuousPCommIncrease(40, 1, 0.1),
-            // () -> continuousPCommIncrease(40, 1, 0.15),
-            // () -> continuousPCommIncrease(40, 1, 0.2)
-
-            // () -> runPCommIncreaseSimulations(),
-            // () -> runPCommDecreaseSimulations()
-
-            // () -> AbruptTransitionRuns.original(10, 1),
-            // () -> AbruptTransitionRuns.original(20, 1),
-            // () -> AbruptTransitionRuns.original(30, 1),
-            // () -> AbruptTransitionRuns.original(40, 1),
-            // () -> AbruptTransitionRuns.original(60, 1),
-            // () -> AbruptTransitionRuns.original(40, 3),
-            // () -> AbruptTransitionRuns.original(40, 5),
-            // () -> AbruptTransitionRuns.original(40, 10),
-            // () -> AbruptTransitionRuns.original(40, 100),
-            // () -> AbruptTransitionRuns.original(40, Integer.MAX_VALUE),
-            // () -> AbruptTransitionRuns.neighbors(40, 1, new Neighbor4PositionsStrategy(false)),
-            // () -> AbruptTransitionRuns.neighbors(40, 1, new Neighbor4PositionsStrategy(true))
-
-            () -> PCommDecrease.controlledWorld(40),
-            () -> PCommDecrease.controlledWorld(60),
-            () -> PCommDecrease.runPCommDecreaseSimulations(40),
-            () -> PCommDecrease.runPCommDecreaseSimulations(60)
+           () -> AbruptTransitionRuns.original(0, 0)
         );
 
         for (Runnable task : simulationTasks) {
@@ -105,9 +55,9 @@ public class Main {
     public static void abruptPCommIncrease(int L, int N, double stdDev) {
         String folder = "abrupt_p_comm_increase/L=" + L + "_N=" + N+"_stdDev="+stdDev;
         VarConfig varConfig = new VarConfig(Map.of(
-                "L", L,
-                "T", 50000,
-                "N", N
+                ConfigKey.L, L,
+                ConfigKey.T, 50000,
+                ConfigKey.N, N
         ));
         StrategyConfig strategyConfig = new StrategyConfig(
                 new SingleStepPCommunicationStrategy(0.1, 8000, 0.98),
@@ -150,9 +100,9 @@ public class Main {
     public static void continuousPCommIncrease(int L, int N, double stdDev) {
         String folder = "continuous_p_comm_increase0.1-0.5/L=" + L+"_N="+N+"_stdDev="+stdDev;
         VarConfig varConfig = new VarConfig(Map.of(
-                "L", L,
-                "T", 80000,
-                "N", N
+                ConfigKey.L, L,
+                ConfigKey.T, 80000,
+                ConfigKey.N, N
         ));
         StrategyConfig strategyConfig = new StrategyConfig(
                 new ContinuousIncreasePCommunicationStrategy(0.1, 0.5, varConfig.T()),
@@ -177,8 +127,8 @@ public class Main {
     public static void runOrdinarySimulation() {
         String folder = "TEST";
         VarConfig varConfig = new VarConfig(Map.of(
-                "L", 20,
-                "T", 10000
+                ConfigKey.L, 20,
+                ConfigKey.T, 10000
         ));
         StrategyConfig strategyConfig = new StrategyConfig(
                 new SingleStepPCommunicationStrategy(0.1, 5000, 0.98),
@@ -200,7 +150,7 @@ public class Main {
     public static void runPCommIncreaseSimulations() {
 
         VarConfig varConfig = new VarConfig(Map.of(
-                "T", 3000
+                ConfigKey.T, 3000
         ));
         StrategyConfig strategyConfig = new StrategyConfig(
                 null,
@@ -270,7 +220,7 @@ public class Main {
     public static void runPCommDecreaseSimulations() {
 
         VarConfig varConfig = new VarConfig(Map.of(
-                "T", 100
+                ConfigKey.T, 100
         ));
         StrategyConfig strategyConfig = new StrategyConfig(
                 new ConstantPCommunicationStrategy(0.99),

@@ -19,9 +19,9 @@ public class MutatedLAbInheritanceStrategy implements LAbInheritanceStrategy, Se
     private final double stdDev;
 
     @Override
-    public double inheritLearningAbility(double mutationProbability, Agent parent) {
+    public double[] inheritLearningAbility(double mutationProbability, Agent parent) {
         Random random = new Random();
         double learningAbility = parent.getLearningAbilityAtBirth() + random.nextGaussian(0, stdDev);
-        return Math.max(0, Math.min(1, learningAbility));
+        return new double[]{Math.max(0, Math.min(1, learningAbility)), 0};
     }
 }

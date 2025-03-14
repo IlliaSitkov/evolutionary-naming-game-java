@@ -7,5 +7,9 @@ import org.example.entities.World;
  * Survival strategy to determine if an agent survives
  */
 public interface PSurvivalStrategy {
-  boolean survives(Agent agent, World world);
+  /**
+   * res[0] - true/false
+   * res[1] - p_surv
+   */
+  double[] survives(Agent agent, World world);
 }
