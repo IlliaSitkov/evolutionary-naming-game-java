@@ -8,6 +8,7 @@ import org.example.export.IOUtils;
 import org.example.plotting.SimulationPlots;
 import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
+import org.example.strategies.pCommunication.PCommunicationStrategy;
 
 public class RunUtils {
   public static void runSimulationsInParallel(List<Runnable> simulationTasks) {
@@ -31,12 +32,16 @@ public class RunUtils {
     timer.stop("Simulation ended");
 
     SimulationStats stats = simulation.getSimulationStats();
+    PCommunicationStrategy pCommStrategy = simulation.getStrategyConfig().getPCommunicationStrategy();
+    int nIters = simulation.getVarConfig().T();
+    List<Double> pCommOverIterations = SimulationStats.getPCommunicationOverIterations(pCommStrategy, nIters, true);
 
     IOUtils.exportToCSV(folder + "/run_stats.csv", stats.getLanguagesNumber().size(), List.of(
         new Object[] { "ScsRate", stats.getSuccessRates() },
         new Object[] { "ScsCommN", stats.getSuccessfulCommunicationsNumber() },
         new Object[] { "CommN", stats.getCommunicationsNumber() },
         new Object[] { "AvgPSurv", stats.getAvgPSurvs() },
+        new Object[] { "PComm", pCommOverIterations },
         new Object[] { "AvgLAb", stats.getAvgLearningAbilities() },
         new Object[] { "AvgKnldg", stats.getAvgKnowledge() },
         new Object[] { "LangN", stats.getLanguagesNumber() },
@@ -47,8 +52,8 @@ public class RunUtils {
 
     simulationPlots.saveSimulationStats(
         stats,
-        simulation.getStrategyConfig().getPCommunicationStrategy(),
-        simulation.getVarConfig().T());
+        pCommStrategy,
+        nIters);
     IOUtils.saveSimulationConfig(folder, simulation);
   }
 

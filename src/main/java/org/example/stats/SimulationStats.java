@@ -109,7 +109,15 @@ public class SimulationStats {
     }
 
     public static List<Double> getPCommunicationOverIterations(PCommunicationStrategy strategy, int nIters) {
+        return getPCommunicationOverIterations(strategy, nIters, false);
+    }
+
+    public static List<Double> getPCommunicationOverIterations(PCommunicationStrategy strategy, int nIters, boolean padInitialValue) {
         List<Double> pCommunications = new ArrayList<>();
+        if (padInitialValue) {
+            // used for aligning with "zero" (initial setup) iteration stats
+            pCommunications.add(strategy.getPCommunication(0));
+        }
         for (int i = 0; i < nIters; i++) {
             pCommunications.add(strategy.getPCommunication(i));
         }
