@@ -49,10 +49,11 @@ public class AbruptTransitionRuns {
     RunUtils.runSimulation(simulation, folder);
   }
 
-  public static void original(int L, int N) {
+  public static void original(int L, int N, double A) {
     String folder = RunUtils.makePath(AbruptTransitionRuns.folder, "/original/L", L, "N", N, "/", new Date().getTime());
     VarConfig varConfig = new VarConfig(Map.of(
         ConfigKey.L, L,
+        ConfigKey.A, A,
         ConfigKey.T, 50000,
         ConfigKey.N, N));
     StrategyConfig strategyConfig = new StrategyConfig(
@@ -73,10 +74,11 @@ public class AbruptTransitionRuns {
     RunUtils.runSimulation(simulation, folder);
   }
 
-  public static void originalMoloney(int L, int N) {
+  public static void originalMoloney(int L, int N, double A) {
     String folder = RunUtils.makePath(AbruptTransitionRuns.folder, "/original_moloney/L", L, "N", N, "/", new Date().getTime());
     VarConfig varConfig = new VarConfig(Map.of(
         ConfigKey.L, L,
+        ConfigKey.A, A,
         ConfigKey.T, 50000,
         ConfigKey.N, N,
         ConfigKey.REPR_LIPOWSKA, 0

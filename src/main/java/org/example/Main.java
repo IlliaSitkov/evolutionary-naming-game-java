@@ -32,18 +32,19 @@ import org.example.utils.Timer;
 
 public class Main {
     public static void main(String[] args) {
-        // runSimulationsInParallel();
+        runSimulationsInParallel();
         // AbruptTransitionRuns.originalMoloney(40, 1);
         // ContinuousPCommTransition.originalMoloney(40, 1);
         // AbruptTransitionRuns.test(10, 1);
-        AbruptTransitionRuns.original(40, 1);
+        // AbruptTransitionRuns.original(40, 1, 0.005);
     }
 
     public static void runSimulationsInParallel() {
         ExecutorService executorService = Executors.newFixedThreadPool(2);
 
         List<Runnable> simulationTasks = List.of(
-           () -> AbruptTransitionRuns.original(40, 1)
+           () -> AbruptTransitionRuns.original(40, 1, 0.005),
+           () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.005)
         //    () -> ContinuousPCommTransition.original(60, 1)
         //    () -> AbruptTransitionRuns.originalMoloney(40, 1),
         //    () -> ContinuousPCommTransition.originalMoloney(60, 1)
