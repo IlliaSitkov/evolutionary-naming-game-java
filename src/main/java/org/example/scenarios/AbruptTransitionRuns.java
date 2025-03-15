@@ -65,7 +65,7 @@ public class AbruptTransitionRuns {
         new ProbabilisticEvolutionStrategy());
 
     SimulationStats simulationStats = new SimulationStats(
-        List.of(1000, 5000, 7990, 8000, 8500, 10000, 30000, 40000, varConfig.T() - 1),
+        List.of(1000, 5000, 7990, 8000, 8100, 8500, 10000, 30000, 40000, varConfig.T() - 1),
         List.of());
 
     Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
@@ -91,7 +91,7 @@ public class AbruptTransitionRuns {
         new ProbabilisticEvolutionStrategy());
 
     SimulationStats simulationStats = new SimulationStats(
-        List.of(1000, 5000, 7990, 8000, 8500, 10000, 30000, 40000, varConfig.T() - 1),
+        List.of(1000, 5000, 7990, 8000, 8100, 8500, 10000, 30000, 40000, varConfig.T() - 1),
         List.of());
 
     Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);

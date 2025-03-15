@@ -40,15 +40,24 @@ public class RunUtils {
         new Object[] { "ScsRate", stats.getSuccessRates() },
         new Object[] { "ScsCommN", stats.getSuccessfulCommunicationsNumber() },
         new Object[] { "CommN", stats.getCommunicationsNumber() },
-        new Object[] { "AvgPSurv", stats.getAvgPSurvs() },
         new Object[] { "PComm", pCommOverIterations },
+        new Object[] { "AvgLAbBirth", stats.getAvgLearningAbilitiesAtBirth() },
         new Object[] { "AvgLAb", stats.getAvgLearningAbilities() },
-        new Object[] { "AvgKnldg", stats.getAvgKnowledge() },
-        new Object[] { "LangN", stats.getLanguagesNumber() },
-        new Object[] { "AvgAge", stats.getAvgAges() },
+        new Object[] { "AvgPSurv", stats.getAvgPSurvs() },
         new Object[] { "KilledN", stats.getKilledAgentsNumber() },
         new Object[] { "BornN", stats.getBornAgentsNumber() },
-        new Object[] { "AliveN", stats.getNAgentsAlive() }));
+        new Object[] { "SurvN", stats.getSurvivorAgentsNumber() },
+        new Object[] { "AliveN", stats.getNAgentsAlive() },
+        new Object[] { "BornLAbBirth", stats.getAvgBornLAbsAtBirth() },
+        new Object[] { "BornLAb", stats.getAvgBornLAbs() },
+        new Object[] { "KilledLAbBirth", stats.getAvgKilledLAbsAtBirth() },
+        new Object[] { "KilledLAb", stats.getAvgKilledLAbs() },
+        new Object[] { "SurvLAbBirth", stats.getAvgSurvLAbsAtBirth() },
+        new Object[] { "SurvLAb", stats.getAvgSurvLAbs() },
+        new Object[] { "AvgKnldg", stats.getAvgKnowledge() },
+        new Object[] { "LangN", stats.getLanguagesNumber() },
+        new Object[] { "AvgAge", stats.getAvgAges() }
+        ));
 
     simulationPlots.saveSimulationStats(
         stats,

@@ -17,6 +17,8 @@ public class SimulationStats {
     @Getter
     private final List<Double> avgLearningAbilities = new ArrayList<>();
     @Getter
+    private final List<Double> avgLearningAbilitiesAtBirth = new ArrayList<>();
+    @Getter
     private final List<Integer> languagesNumber = new ArrayList<>();
     @Getter
     private final List<Integer> communicationsNumber = new ArrayList<>();
@@ -29,9 +31,24 @@ public class SimulationStats {
     @Getter
     private final List<Integer> bornAgentsNumber = new ArrayList<>();
     @Getter
+    private final List<Integer> survivorAgentsNumber = new ArrayList<>();
+    @Getter
     private final List<Double> avgKnowledge = new ArrayList<>();
     @Getter
     private final List<Double> avgPSurvs = new ArrayList<>();
+    @Getter
+    private final List<Double> avgKilledLAbsAtBirth = new ArrayList<>();
+    @Getter
+    private final List<Double> avgKilledLAbs = new ArrayList<>();
+    @Getter
+    private final List<Double> avgBornLAbsAtBirth = new ArrayList<>();
+    @Getter
+    private final List<Double> avgBornLAbs = new ArrayList<>();
+    @Getter
+    private final List<Double> avgSurvLAbsAtBirth = new ArrayList<>();
+    @Getter
+    private final List<Double> avgSurvLAbs = new ArrayList<>();
+
     @Getter
     private final Map<String, double[][]> learningAbilityMaps = new HashMap<>();
     @Getter
@@ -77,7 +94,14 @@ public class SimulationStats {
         successfulCommunicationsNumber.add(iterationStats.getNSuccessfulCommunications());
         killedAgentsNumber.add(iterationStats.getNKilledAgents());
         bornAgentsNumber.add(iterationStats.getNBornAgents());
+        survivorAgentsNumber.add(iterationStats.getNSurvivorAgents());
         avgPSurvs.add(iterationStats.getAvgPSurv());
+        avgKilledLAbsAtBirth.add(iterationStats.getAvgKilledLAbAtBirth());
+        avgKilledLAbs.add(iterationStats.getAvgKilledLAb());
+        avgBornLAbsAtBirth.add(iterationStats.getAvgBornLAbAtBirth());
+        avgBornLAbs.add(iterationStats.getAvgBornLAb());
+        avgSurvLAbsAtBirth.add(iterationStats.getAvgSurvivorLAbAtBirth());
+        avgSurvLAbs.add(iterationStats.getAvgSurvivorLAb());
     }
 
     public void recordAfterIteration(World world, int iteration, double pCommunication) {
@@ -102,6 +126,7 @@ public class SimulationStats {
     private void recordCommonWorldStats(World world) {
         World.Stats stats = world.getStats();
         avgLearningAbilities.add(stats.getAvgLearningAbility());
+        avgLearningAbilitiesAtBirth.add(stats.getAvgLearningAbilityAtBirth());
         languagesNumber.add(stats.getLanguagesNumber());
         avgAges.add(stats.getAvgAge());
         avgKnowledge.add(stats.getAvgKnowledge());
@@ -122,6 +147,13 @@ public class SimulationStats {
             pCommunications.add(strategy.getPCommunication(i));
         }
         return pCommunications;
+    }
+
+    public static Double getDoubleListAvg(List<Double> list) {
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.stream().mapToDouble(Double::doubleValue).sum() / list.size();
     }
 
     private void recordWorldLearningAbilities(World world, int iteration, double pCommunication) {

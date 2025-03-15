@@ -3,6 +3,8 @@ package org.example.stats;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.example.entities.Agent;
+
 import lombok.Getter;
 
 public class IterationStats {
@@ -11,9 +13,17 @@ public class IterationStats {
     @Getter
     private int nSuccessfulCommunications = 0;
     @Getter
-    private int nKilledAgents = 0;
+    private List<Double> killedLAbsAtBirth = new ArrayList<>();
     @Getter
-    private int nBornAgents = 0;
+    private List<Double> killedLAbs = new ArrayList<>();
+    @Getter
+    private List<Double> survivorLAbsAtBirth = new ArrayList<>();
+    @Getter
+    private List<Double> survivorLAbs = new ArrayList<>();
+    @Getter
+    private List<Double> bornLAbsAtBirth = new ArrayList<>();
+    @Getter
+    private List<Double> bornLAbs = new ArrayList<>();
     @Getter
     private final int iteration;
     @Getter
@@ -38,21 +48,61 @@ public class IterationStats {
     }
 
     public Double getAvgPSurv() {
-        if (pSurvList.isEmpty()) {
-            return null;
-        }
-        return pSurvList.stream().mapToDouble(Double::doubleValue).sum() / pSurvList.size();
+        return SimulationStats.getDoubleListAvg(pSurvList);
     }
 
-    public void trackAgentKilled() {
-        nKilledAgents++;
+    public Double getAvgKilledLAbAtBirth() {
+        return SimulationStats.getDoubleListAvg(killedLAbsAtBirth);
+    }
+    
+    public Double getAvgKilledLAb() {
+        return SimulationStats.getDoubleListAvg(killedLAbs);
     }
 
-    public void trackAgentBorn() {
-        nBornAgents++;
+    public Double getAvgBornLAbAtBirth() {
+        return SimulationStats.getDoubleListAvg(bornLAbsAtBirth);
+    }
+    
+    public Double getAvgBornLAb() {
+        return SimulationStats.getDoubleListAvg(bornLAbs);
+    }
+
+    public Double getAvgSurvivorLAbAtBirth() {
+        return SimulationStats.getDoubleListAvg(survivorLAbsAtBirth);
+    }
+    
+    public Double getAvgSurvivorLAb() {
+        return SimulationStats.getDoubleListAvg(survivorLAbs);
+    }
+
+    public void trackAgentKilled(Agent agent) {
+        killedLAbsAtBirth.add(agent.getLearningAbilityAtBirth());
+        killedLAbs.add(agent.getLearningAbility());
+    }
+
+    public void trackAgentBorn(Agent agent) {
+        bornLAbsAtBirth.add(agent.getLearningAbilityAtBirth());
+        bornLAbs.add(agent.getLearningAbility());
+    }
+
+    public void trackSurvivor(Agent agent) {
+        survivorLAbsAtBirth.add(agent.getLearningAbilityAtBirth());
+        survivorLAbs.add(agent.getLearningAbility());
     }
 
     public void trackPSurv(double pSurv) {
         pSurvList.add(pSurv);
+    }
+
+    public Integer getNKilledAgents() {
+      return killedLAbs.size();
+    }
+    
+    public Integer getNBornAgents() {
+      return bornLAbs.size();
+    }
+    
+    public Integer getNSurvivorAgents() {
+      return survivorLAbs.size();
     }
 }

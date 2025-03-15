@@ -104,7 +104,7 @@ public class Agent implements Serializable {
 
         double rWordMutation = random.nextDouble();
         String newWord;
-        if (rWordMutation < mutationProbability || lexicon.isEmpty()) {
+        if (rWordMutation < mutationProbability) {
             newWord = Lexicon.generateWord(varConfig.WORD_LENGTH());
         } else {
             newWord = lexicon.getTopWord();
@@ -123,7 +123,7 @@ public class Agent implements Serializable {
         double rWordMutation = newLearningAbilityResult[1];
 
         String newWord;
-        if (rWordMutation < mutationProbability || lexicon.isEmpty()) {
+        if (rWordMutation < mutationProbability) {
             newWord = lexicon.getTopWord();
         } else {
             newWord = Lexicon.generateWord(varConfig.WORD_LENGTH());

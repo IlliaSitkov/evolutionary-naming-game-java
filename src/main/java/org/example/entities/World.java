@@ -117,12 +117,15 @@ public class World implements Serializable {
 
     public Stats getStats() {
         double totalLearningAbility = 0;
+        double totalLearningAbilityAtBirth = 0;
         Set<String> languages = new HashSet<>();
         int totalAge = 0;
         double totalKnowledge = 0;
 
         for (Agent agent : agentsGrid.values()) {
             totalLearningAbility += agent.getLearningAbility();
+            totalLearningAbilityAtBirth += agent.getLearningAbilityAtBirth();
+            
             if (!agent.getLexicon().isEmpty()) {
                 languages.add(agent.getLexicon().getTopWord());
             }            
@@ -131,11 +134,12 @@ public class World implements Serializable {
         }
 
         double avgLearningAbility = totalLearningAbility / agentsGrid.size();
+        double avgLearningAbilityAtBirth = totalLearningAbilityAtBirth / agentsGrid.size();
         int languagesNumber = languages.size();
         double avgAge = (double) totalAge / agentsGrid.size();
         double avgKnowledge = totalKnowledge / agentsGrid.size();
 
-        return new Stats(avgLearningAbility, languagesNumber, avgAge, avgKnowledge);
+        return new Stats(avgLearningAbilityAtBirth, avgLearningAbility, languagesNumber, avgAge, avgKnowledge);
     }
 
     public Agent getAgentAt(int x, int y) {
@@ -172,6 +176,8 @@ public class World implements Serializable {
 
     @AllArgsConstructor
     public static class Stats {
+        @Getter
+        private final double avgLearningAbilityAtBirth;
         @Getter
         private final double avgLearningAbility;
         @Getter

@@ -12,8 +12,11 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.example.StrategyConfig;
 import org.example.VarConfig;
@@ -82,32 +85,36 @@ public class IOUtils {
     public static synchronized void exportToCSV(String filePath, int nIterations, List<Object[]> headerDataPairs) {
         filePath = IOUtils.rootFolder + filePath;
         File file = new File(filePath);
-    
+
         if (file.getParentFile() != null) {
             file.getParentFile().mkdirs();
         }
-    
+
         try (FileWriter writer = new FileWriter(file, false)) {
             List<String> headers = new ArrayList<>();
             List<List<Object>> dataLists = new ArrayList<>();
-    
+
             for (Object[] pair : headerDataPairs) {
                 headers.add((String) pair[0]);
                 dataLists.add(new ArrayList<>((List<Object>) pair[1]));
             }
-    
+
             writer.append("It");
             for (String header : headers) {
                 writer.append(",").append(header);
             }
             writer.append("\n");
-    
+
             for (List<Object> list : dataLists) {
                 while (list.size() < nIterations) {
-                    list.add(0, "---");
+                    list.add(0, null);
                 }
             }
-    
+
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+            symbols.setDecimalSeparator('.');
+            DecimalFormat decimalFormat = new DecimalFormat("0.0####", symbols); // 5 decimal places
+
             for (int i = 0; i < nIterations; i++) {
                 writer.append(String.valueOf(i));
                 for (List<Object> list : dataLists) {
@@ -115,12 +122,15 @@ public class IOUtils {
                     if (value == null) {
                         writer.append(",").append("---");
                     } else {
-                        writer.append(",").append(value.toString());
+                        String formattedValue = (value instanceof Integer)
+                                ? value.toString()
+                                : decimalFormat.format(value);
+                        writer.append(",").append(formattedValue);
                     }
                 }
                 writer.append("\n");
             }
-    
+
             System.out.println("CSV file created successfully: " + filePath);
         } catch (IOException e) {
             e.printStackTrace();

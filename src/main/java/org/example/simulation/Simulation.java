@@ -104,19 +104,20 @@ public class Simulation {
         double[] survivalResult = agent.survives(world);
         iterationStats.trackPSurv(survivalResult[1]);
         if (survivalResult[0] == 1) {
+            iterationStats.trackSurvivor(agent);
             Position emptyNeighbourPosition = world.getRandomEmptyNeighbourPosition(agent.getX(), agent.getY());
             if (emptyNeighbourPosition != null) {
                 reproduce(agent, emptyNeighbourPosition);
-                iterationStats.trackAgentBorn();
             }
         } else {
             world.killAgent(agent.getX(), agent.getY());
-            iterationStats.trackAgentKilled();
+            iterationStats.trackAgentKilled(agent);
         }
     }
 
     private void reproduce(Agent agent, Position position) {
         Agent childAgent = agent.reproduce(varConfig.P_MUT());
         world.addAgent(position.x(), position.y(), childAgent);
+        iterationStats.trackAgentBorn(childAgent);
     }
 }
