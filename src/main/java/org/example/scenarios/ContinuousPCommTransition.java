@@ -28,7 +28,7 @@ public class ContinuousPCommTransition {
         String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/original/L", L, "N", N, '/', new Date().getTime());
         VarConfig varConfig = new VarConfig(Map.of(
                 ConfigKey.L, L,
-                ConfigKey.T, 100000,
+                ConfigKey.T, 80000,
                 ConfigKey.N, N
         ));
         StrategyConfig strategyConfig = new StrategyConfig(
@@ -55,7 +55,7 @@ public class ContinuousPCommTransition {
       String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/original_moloney/L", L, "N", N, '/', new Date().getTime());
       VarConfig varConfig = new VarConfig(Map.of(
               ConfigKey.L, L,
-              ConfigKey.T, 100000,
+              ConfigKey.T, 80000,
               ConfigKey.N, N,
               ConfigKey.REPR_LIPOWSKA, 0
       ));

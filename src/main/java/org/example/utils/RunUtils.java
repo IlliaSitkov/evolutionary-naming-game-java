@@ -52,9 +52,13 @@ public class RunUtils {
         new Object[] { "BornLAb", stats.getAvgBornLAbs() },
         new Object[] { "KilledLAbBirth", stats.getAvgKilledLAbsAtBirth() },
         new Object[] { "KilledLAb", stats.getAvgKilledLAbs() },
+        new Object[] { "KilledKnwldg", stats.getAvgKilledKnowledge() },
+        new Object[] { "KilledAge", stats.getAvgKilledAge() },
         new Object[] { "SurvLAbBirth", stats.getAvgSurvLAbsAtBirth() },
         new Object[] { "SurvLAb", stats.getAvgSurvLAbs() },
-        new Object[] { "AvgKnldg", stats.getAvgKnowledge() },
+        new Object[] { "SurvKnwldg", stats.getAvgSurvKnowledge() },
+        new Object[] { "SurvAge", stats.getAvgSurvAge() },
+        new Object[] { "AvgKnwldg", stats.getAvgKnowledge() },
         new Object[] { "LangN", stats.getLanguagesNumber() },
         new Object[] { "AvgAge", stats.getAvgAges() }
         ));

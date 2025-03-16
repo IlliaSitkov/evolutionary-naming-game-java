@@ -17,9 +17,17 @@ public class IterationStats {
     @Getter
     private List<Double> killedLAbs = new ArrayList<>();
     @Getter
+    private List<Double> killedKnowledge = new ArrayList<>();
+    @Getter
+    private List<Integer> killedAges = new ArrayList<>();
+    @Getter
     private List<Double> survivorLAbsAtBirth = new ArrayList<>();
     @Getter
     private List<Double> survivorLAbs = new ArrayList<>();
+    @Getter
+    private List<Double> survivorKnowledge = new ArrayList<>();
+    @Getter
+    private List<Integer> survivorAges = new ArrayList<>();
     @Getter
     private List<Double> bornLAbsAtBirth = new ArrayList<>();
     @Getter
@@ -58,6 +66,14 @@ public class IterationStats {
     public Double getAvgKilledLAb() {
         return SimulationStats.getDoubleListAvg(killedLAbs);
     }
+    
+    public Double getAvgKilledKnowledge() {
+        return SimulationStats.getDoubleListAvg(killedKnowledge);
+    }
+   
+    public Double getAvgKilledAge() {
+        return SimulationStats.getDoubleListAvg(killedAges);
+    }
 
     public Double getAvgBornLAbAtBirth() {
         return SimulationStats.getDoubleListAvg(bornLAbsAtBirth);
@@ -75,9 +91,19 @@ public class IterationStats {
         return SimulationStats.getDoubleListAvg(survivorLAbs);
     }
 
+    public Double getAvgSurvivorKnowledge() {
+        return SimulationStats.getDoubleListAvg(survivorKnowledge);
+    }
+    
+    public Double getAvgSurvivorAge() {
+        return SimulationStats.getDoubleListAvg(survivorAges);
+    }
+
     public void trackAgentKilled(Agent agent) {
         killedLAbsAtBirth.add(agent.getLearningAbilityAtBirth());
         killedLAbs.add(agent.getLearningAbility());
+        killedKnowledge.add(agent.getKnowledge());
+        killedAges.add(agent.getAge());
     }
 
     public void trackAgentBorn(Agent agent) {
@@ -88,6 +114,8 @@ public class IterationStats {
     public void trackSurvivor(Agent agent) {
         survivorLAbsAtBirth.add(agent.getLearningAbilityAtBirth());
         survivorLAbs.add(agent.getLearningAbility());
+        survivorKnowledge.add(agent.getKnowledge());
+        survivorAges.add(agent.getAge());
     }
 
     public void trackPSurv(double pSurv) {

@@ -41,6 +41,10 @@ public class SimulationStats {
     @Getter
     private final List<Double> avgKilledLAbs = new ArrayList<>();
     @Getter
+    private final List<Double> avgKilledKnowledge = new ArrayList<>();
+    @Getter
+    private final List<Double> avgKilledAge = new ArrayList<>();
+    @Getter
     private final List<Double> avgBornLAbsAtBirth = new ArrayList<>();
     @Getter
     private final List<Double> avgBornLAbs = new ArrayList<>();
@@ -48,6 +52,10 @@ public class SimulationStats {
     private final List<Double> avgSurvLAbsAtBirth = new ArrayList<>();
     @Getter
     private final List<Double> avgSurvLAbs = new ArrayList<>();
+    @Getter
+    private final List<Double> avgSurvKnowledge = new ArrayList<>();
+    @Getter
+    private final List<Double> avgSurvAge = new ArrayList<>();
 
     @Getter
     private final Map<String, double[][]> learningAbilityMaps = new HashMap<>();
@@ -98,10 +106,14 @@ public class SimulationStats {
         avgPSurvs.add(iterationStats.getAvgPSurv());
         avgKilledLAbsAtBirth.add(iterationStats.getAvgKilledLAbAtBirth());
         avgKilledLAbs.add(iterationStats.getAvgKilledLAb());
+        avgKilledKnowledge.add(iterationStats.getAvgKilledKnowledge());
+        avgKilledAge.add(iterationStats.getAvgKilledAge());
         avgBornLAbsAtBirth.add(iterationStats.getAvgBornLAbAtBirth());
         avgBornLAbs.add(iterationStats.getAvgBornLAb());
         avgSurvLAbsAtBirth.add(iterationStats.getAvgSurvivorLAbAtBirth());
         avgSurvLAbs.add(iterationStats.getAvgSurvivorLAb());
+        avgSurvKnowledge.add(iterationStats.getAvgSurvivorKnowledge());
+        avgSurvAge.add(iterationStats.getAvgSurvivorAge());
     }
 
     public void recordAfterIteration(World world, int iteration, double pCommunication) {
@@ -149,11 +161,11 @@ public class SimulationStats {
         return pCommunications;
     }
 
-    public static Double getDoubleListAvg(List<Double> list) {
+    public static Double getDoubleListAvg(List<? extends Number> list) {
         if (list.isEmpty()) {
             return null;
         }
-        return list.stream().mapToDouble(Double::doubleValue).sum() / list.size();
+        return list.stream().mapToDouble(Number::doubleValue).sum() / list.size();
     }
 
     private void recordWorldLearningAbilities(World world, int iteration, double pCommunication) {
