@@ -33,22 +33,33 @@ import org.example.utils.Timer;
 public class Main {
     public static void main(String[] args) {
         // runSimulationsInParallel();
-        AbruptTransitionRuns.original(40, 1, 0.05);
-        // AbruptTransitionRuns.originalMoloney(40, 1);
-        // ContinuousPCommTransition.originalMoloney(40, 1);
+        AbruptTransitionRuns.original(40, 1, 0.005);
+        // AbruptTransitionRuns.original(20, 1, 0.005);
+        // AbruptTransitionRuns.originalMoloney(20, 1, 0.05);
+        // ContinuousPCommTransition.originalMoloney(20, 1, 0.5, 0.005);
         // AbruptTransitionRuns.test(10, 1);
         // AbruptTransitionRuns.original(20, 1, 0.05);
-        // System.out.println((Math.exp(-0.05 * 16) * (1 - Math.exp(-5 * 1 / 1))));
+        // System.out.println((Math.exp(-0.05 * 6) * (1 - Math.exp(-5 * 1.5 / 1))));
     }
 
     public static void runSimulationsInParallel() {
         ExecutorService executorService = Executors.newFixedThreadPool(4);
 
         List<Runnable> simulationTasks = List.of(
+        //    () -> AbruptTransitionRuns.original(40, 1, 0.05),
+        //    () -> AbruptTransitionRuns.original(40, 1, 0.005),
+        //    () -> ContinuousPCommTransition.original(40, 1, 0.98,0.05),
+        //    () -> ContinuousPCommTransition.original(40, 1, 0.5,0.005),
+        //    () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05)
+        
+        //    () -> ContinuousPCommTransition.originalMoloney(40, 1, 0.5, 0.05),
            () -> AbruptTransitionRuns.original(40, 1, 0.05),
-           () -> ContinuousPCommTransition.original(40, 1),
-           () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05),
-           () -> ContinuousPCommTransition.originalMoloney(40, 1)
+           () -> AbruptTransitionRuns.original(40, 1, 0.005)
+        //    () -> ContinuousPCommTransition.original(40, 1, 0.5,0.005),
+        //    () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05)
+
+        //    () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05),
+        //    () -> ContinuousPCommTransition.originalMoloney(40, 1)
         );
 
         for (Runnable task : simulationTasks) {

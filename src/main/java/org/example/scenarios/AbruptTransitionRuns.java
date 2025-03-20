@@ -50,7 +50,7 @@ public class AbruptTransitionRuns {
   }
 
   public static void original(int L, int N, double A) {
-    String folder = RunUtils.makePath(AbruptTransitionRuns.folder, "/original/L", L, "N", N, "/", new Date().getTime());
+    String folder = RunUtils.makePath(AbruptTransitionRuns.folder, "/original/L", L, "N", N);
     VarConfig varConfig = new VarConfig(Map.of(
         ConfigKey.L, L,
         ConfigKey.A, A,

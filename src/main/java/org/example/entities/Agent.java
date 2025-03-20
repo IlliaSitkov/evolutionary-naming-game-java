@@ -50,7 +50,7 @@ public class Agent implements Serializable {
         this.lexicon = lexicon;
         this.x = -1;
         this.y = -1;
-        this.age = 1;
+        this.age = 0;
         this.varConfig = varConfig;
         this.strategyConfig = strategyConfig;
         this.pSurvivalStrategy = strategyConfig.getPSurvivalStrategy();
@@ -104,7 +104,7 @@ public class Agent implements Serializable {
 
         double rWordMutation = random.nextDouble();
         String newWord;
-        if (rWordMutation < mutationProbability) {
+        if (rWordMutation < mutationProbability || lexicon.isEmpty()) {
             newWord = Lexicon.generateWord(varConfig.WORD_LENGTH());
         } else {
             newWord = lexicon.getTopWord();
@@ -123,7 +123,7 @@ public class Agent implements Serializable {
         double rWordMutation = newLearningAbilityResult[1];
 
         String newWord;
-        if (rWordMutation < mutationProbability) {
+        if (rWordMutation < mutationProbability && !lexicon.isEmpty()) {
             newWord = lexicon.getTopWord();
         } else {
             newWord = Lexicon.generateWord(varConfig.WORD_LENGTH());

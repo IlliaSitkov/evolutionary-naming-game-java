@@ -1,5 +1,6 @@
 package org.example.utils;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,12 +26,14 @@ public class RunUtils {
     Timer timer = new Timer();
     timer.start();
 
-    SimulationPlots simulationPlots = new SimulationPlots(folder);
-
+    
     simulation.start();
-
+    
     timer.stop("Simulation ended");
 
+    folder = makePath(folder, "/", new Date().getTime());
+    
+    SimulationPlots simulationPlots = new SimulationPlots(folder);
     SimulationStats stats = simulation.getSimulationStats();
     PCommunicationStrategy pCommStrategy = simulation.getStrategyConfig().getPCommunicationStrategy();
     int nIters = simulation.getVarConfig().T();

@@ -24,15 +24,16 @@ public class ContinuousPCommTransition {
 
   public static final String folder = "continuous_p_comm_transition";
   
-  public static void original(int L, int N) {
+  public static void original(int L, int N, double finalPComm, double A) {
         String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/original/L", L, "N", N, '/', new Date().getTime());
         VarConfig varConfig = new VarConfig(Map.of(
                 ConfigKey.L, L,
+                ConfigKey.A, A,
                 ConfigKey.T, 80000,
                 ConfigKey.N, N
         ));
         StrategyConfig strategyConfig = new StrategyConfig(
-                new ContinuousIncreasePCommunicationStrategy(0.1, 0.5, varConfig.T()),
+                new ContinuousIncreasePCommunicationStrategy(0.1, finalPComm, varConfig.T()),
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
                 new RandomLAbInheritanceStrategy(),
                 new ConstantLAbAgingStrategy(),
@@ -51,16 +52,17 @@ public class ContinuousPCommTransition {
         RunUtils.runSimulation(simulation, folder);
     }
 
-    public static void originalMoloney(int L, int N) {
+    public static void originalMoloney(int L, int N, double finalPComm, double A) {
       String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/original_moloney/L", L, "N", N, '/', new Date().getTime());
       VarConfig varConfig = new VarConfig(Map.of(
               ConfigKey.L, L,
+              ConfigKey.A, A,
               ConfigKey.T, 80000,
               ConfigKey.N, N,
               ConfigKey.REPR_LIPOWSKA, 0
       ));
       StrategyConfig strategyConfig = new StrategyConfig(
-              new ContinuousIncreasePCommunicationStrategy(0.1, 0.5, varConfig.T()),
+              new ContinuousIncreasePCommunicationStrategy(0.1, finalPComm, varConfig.T()),
               new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
               new MoloneyRandomLAbInheritanceStrategy(),
               new ConstantLAbAgingStrategy(),
