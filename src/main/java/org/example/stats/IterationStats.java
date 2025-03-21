@@ -13,6 +13,14 @@ public class IterationStats {
     @Getter
     private int nSuccessfulCommunications = 0;
     @Getter
+    private int nNewWordSpeak = 0;
+    @Getter
+    private int nNewWordEmptyLexicon = 0;
+    @Getter
+    private int nNewWordMutation = 0;
+    @Getter
+    private int nWordRemoved = 0;
+    @Getter
     private List<Double> killedLAbsAtBirth = new ArrayList<>();
     @Getter
     private List<Double> killedLAbs = new ArrayList<>();
@@ -116,6 +124,22 @@ public class IterationStats {
         survivorLAbs.add(agent.getLearningAbility());
         survivorKnowledge.add(agent.getKnowledge());
         survivorAges.add(agent.getAge());
+    }
+
+    public void trackNewWordSpeak() {
+        nNewWordSpeak++;
+    }
+
+    public void trackNewWordEmptyLexicon() {
+        nNewWordEmptyLexicon++;
+    }
+
+    public void trackNewWordMutation() {
+        nNewWordMutation++;
+    }
+
+    public void trackWordRemoved() {
+        nWordRemoved++;
     }
 
     public void trackPSurv(double pSurv) {

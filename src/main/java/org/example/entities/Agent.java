@@ -5,6 +5,7 @@ import java.util.Random;
 
 import org.example.StrategyConfig;
 import org.example.VarConfig;
+import org.example.stats.IterationStats;
 import org.example.strategies.learningAbilityAging.LAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.LAbInheritanceStrategy;
 import org.example.strategies.pSurvival.PSurvivalStrategy;
@@ -59,9 +60,10 @@ public class Agent implements Serializable {
         this.wordAcquisitionStrategy = strategyConfig.getWordAcquisitionStrategy();
     }
 
-    public String speak() {
+    public String speak(IterationStats iterationStats) {
         nInitedCommunications++;
         if (lexicon.isEmpty()) {
+            iterationStats.trackNewWordSpeak();
             lexicon.addWord(Lexicon.generateWord(varConfig.WORD_LENGTH()),
                     wordAcquisitionStrategy.getInventedWordWeight(this));
         }
@@ -76,9 +78,10 @@ public class Agent implements Serializable {
         lexicon.updateWeight(word, learningAbility);
     }
 
-    public void diminishWord(String word) {
+    public void diminishWord(String word, IterationStats iterationStats) {
         lexicon.updateWeight(word, -learningAbility);
         if (lexicon.isWordObsolete(word)) {
+            iterationStats.trackWordRemoved();
             lexicon.removeWord(word);
         }
     }
@@ -91,12 +94,12 @@ public class Agent implements Serializable {
         return pSurvivalStrategy.survives(this, world);
     }
 
-    public Agent reproduce(double mutationProbability) {
-        return varConfig.REPR_LIPOWSKA() == 0 ? reproduceMoloney(mutationProbability)
-                : reproduceLipowska(mutationProbability);
+    public Agent reproduce(double mutationProbability, IterationStats iterationStats) {
+        return varConfig.REPR_LIPOWSKA() == 0 ? reproduceMoloney(mutationProbability, iterationStats)
+                : reproduceLipowska(mutationProbability, iterationStats);
     }
 
-    private Agent reproduceLipowska(double mutationProbability) {
+    private Agent reproduceLipowska(double mutationProbability, IterationStats iterationStats) {
         Random random = new Random();
 
         double newLearningAbility = learningAbilityInheritanceStrategy.inheritLearningAbility(mutationProbability,
@@ -105,6 +108,11 @@ public class Agent implements Serializable {
         double rWordMutation = random.nextDouble();
         String newWord;
         if (rWordMutation < mutationProbability || lexicon.isEmpty()) {
+            if (rWordMutation < mutationProbability) {
+                iterationStats.trackNewWordMutation();
+            } else {
+                iterationStats.trackNewWordEmptyLexicon();
+            }
             newWord = Lexicon.generateWord(varConfig.WORD_LENGTH());
         } else {
             newWord = lexicon.getTopWord();
@@ -115,7 +123,7 @@ public class Agent implements Serializable {
         return new Agent(newLearningAbility, newLexicon, this.varConfig, this.strategyConfig);
     }
 
-    private Agent reproduceMoloney(double mutationProbability) {
+    private Agent reproduceMoloney(double mutationProbability, IterationStats iterationStats) {
         double[] newLearningAbilityResult = learningAbilityInheritanceStrategy.inheritLearningAbility(mutationProbability,
                 this);
 
@@ -126,6 +134,11 @@ public class Agent implements Serializable {
         if (rWordMutation < mutationProbability && !lexicon.isEmpty()) {
             newWord = lexicon.getTopWord();
         } else {
+            if (lexicon.isEmpty()) {
+                iterationStats.trackNewWordEmptyLexicon();
+            } else {
+                iterationStats.trackNewWordMutation();
+            }
             newWord = Lexicon.generateWord(varConfig.WORD_LENGTH());
         }
 

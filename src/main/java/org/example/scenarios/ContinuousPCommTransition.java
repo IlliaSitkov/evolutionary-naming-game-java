@@ -25,7 +25,7 @@ public class ContinuousPCommTransition {
   public static final String folder = "continuous_p_comm_transition";
   
   public static void original(int L, int N, double finalPComm, double A) {
-        String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/original/L", L, "N", N, '/', new Date().getTime());
+        String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/original/L", L, "N", N);
         VarConfig varConfig = new VarConfig(Map.of(
                 ConfigKey.L, L,
                 ConfigKey.A, A,
@@ -44,7 +44,7 @@ public class ContinuousPCommTransition {
 
         SimulationStats simulationStats = new SimulationStats(
                 List.of(varConfig.T() - 1),
-                List.of(0.1, 0.12, 0.13, 0.15, 0.18, 0.22, 0.25, 0.28, 0.4, 0.49, 0.5)
+                List.of(0.1, 0.12, 0.13, 0.15,0.16,0.17, 0.18,0.2, 0.22, 0.25,0.26, 0.28,0.3,0.35, 0.4, 0.49, 0.5)
         );
 
         Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);

@@ -87,7 +87,7 @@ public class Simulation {
     }
 
     private boolean communicationUpdate(Agent speaker, Agent listener) {
-        String word = speaker.speak();
+        String word = speaker.speak(iterationStats);
         if (listener.knowsWord(word)) {
             speaker.recordSuccessfulCommunication();
             speaker.reinforceWord(word);
@@ -95,7 +95,7 @@ public class Simulation {
             return true;
         }
 
-        speaker.diminishWord(word);
+        speaker.diminishWord(word, iterationStats);
         listener.learnWord(word);
         return false;
     }
@@ -117,7 +117,7 @@ public class Simulation {
     }
 
     private void reproduce(Agent agent, Position position) {
-        Agent childAgent = agent.reproduce(varConfig.P_MUT());
+        Agent childAgent = agent.reproduce(varConfig.P_MUT(), iterationStats);
         world.addAgent(position.x(), position.y(), childAgent);
         iterationStats.trackAgentBorn(childAgent);
     }

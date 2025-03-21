@@ -56,6 +56,14 @@ public class SimulationStats {
     private final List<Double> avgSurvKnowledge = new ArrayList<>();
     @Getter
     private final List<Double> avgSurvAge = new ArrayList<>();
+    @Getter
+    private final List<Integer> nNewWordsSpeak = new ArrayList<>();
+    @Getter
+    private final List<Integer> nNewWordsEmptyLexicon = new ArrayList<>();
+    @Getter
+    private final List<Integer> nNewWordsMutation = new ArrayList<>();
+    @Getter
+    private final List<Integer> nWordsRemoved = new ArrayList<>();
 
     @Getter
     private final Map<String, double[][]> learningAbilityMaps = new HashMap<>();
@@ -114,6 +122,10 @@ public class SimulationStats {
         avgSurvLAbs.add(iterationStats.getAvgSurvivorLAb());
         avgSurvKnowledge.add(iterationStats.getAvgSurvivorKnowledge());
         avgSurvAge.add(iterationStats.getAvgSurvivorAge());
+        nNewWordsSpeak.add(iterationStats.getNNewWordSpeak());
+        nNewWordsEmptyLexicon.add(iterationStats.getNNewWordEmptyLexicon());
+        nNewWordsMutation.add(iterationStats.getNNewWordMutation());
+        nWordsRemoved.add(iterationStats.getNWordRemoved());
     }
 
     public void recordAfterIteration(World world, int iteration, double pCommunication) {

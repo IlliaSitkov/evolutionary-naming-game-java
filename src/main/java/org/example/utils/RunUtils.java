@@ -63,7 +63,11 @@ public class RunUtils {
         new Object[] { "SurvAge", stats.getAvgSurvAge() },
         new Object[] { "AvgKnwldg", stats.getAvgKnowledge() },
         new Object[] { "LangN", stats.getLanguagesNumber() },
-        new Object[] { "AvgAge", stats.getAvgAges() }
+        new Object[] { "AvgAge", stats.getAvgAges() },
+        new Object[] { "NewWordsSpeak", stats.getNNewWordsSpeak() },
+        new Object[] { "NewWordsEmptL", stats.getNNewWordsEmptyLexicon() },
+        new Object[] { "NewWordsMut", stats.getNNewWordsMutation() },
+        new Object[] { "WordsRmvd", stats.getNWordsRemoved() }
         ));
 
     simulationPlots.saveSimulationStats(
