@@ -53,7 +53,9 @@ public class Simulation {
 
             evolveWorld(iteration);
 
-            timer.stop("Iteration " + iteration);
+            if (iteration % 1000 == 0) {
+                timer.stop("Iteration " + iteration);
+            }
 
             simulationStats.recordIteration(iterationStats);
             simulationStats.recordAfterIteration(world, iteration, pCommunicationStrategy.getPCommunication(iteration));

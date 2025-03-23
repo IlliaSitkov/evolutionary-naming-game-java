@@ -21,6 +21,7 @@ import org.example.strategies.pCommunication.ConstantPCommunicationStrategy;
 import org.example.strategies.pCommunication.PCommunicationStrategy;
 import org.example.strategies.pSurvival.AvgKnowledgePSurvivalStrategy;
 import org.example.strategies.wordAcquisition.UnitWordAcquisitionStrategy;
+import org.example.utils.RunUtils;
 import org.example.utils.Timer;
 
 public class PCommDecrease {
@@ -99,21 +100,23 @@ public class PCommDecrease {
   public static void runPCommDecreaseSimulations(int L) {
 
     VarConfig varConfig = new VarConfig(Map.of(
-        ConfigKey.T, 15000, ConfigKey.L, L));
+        ConfigKey.T, 30000, ConfigKey.L, L));
+
     StrategyConfig strategyConfig = new StrategyConfig(
-        new ConstantPCommunicationStrategy(0.99),
+        new ConstantPCommunicationStrategy(0.5),
         new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
         new RandomLAbInheritanceStrategy(),
         new ConstantLAbAgingStrategy(),
         new Neighbor8PositionsStrategy(),
         new UnitWordAcquisitionStrategy(),
         new ProbabilisticEvolutionStrategy());
-    String folder = "p_comm_decrease/natural_world/L=" + L + "/" + new Date().getTime();
+
+    String folder = RunUtils.makePath("p_comm_decrease", "/", "natural_world", "/", "L", L, "/", new Date().getTime());
     String preSimulationStatsFolder = folder + "/pre-simulation";
     SimulationPlots preSimulationPlots = new SimulationPlots(preSimulationStatsFolder);
     SimulationPlots simulationPlots = new SimulationPlots(folder);
 
-    Simulation simulation = new Simulation(new SimulationStats(List.of(4000, 4500, 4999), List.of()), varConfig,
+    Simulation simulation = new Simulation(new SimulationStats(List.of(4000, 4500, 4999, 10000, 13000, 14999), List.of()), varConfig,
         strategyConfig);
 
     IOUtils.saveSimulationConfig(preSimulationStatsFolder, simulation);
@@ -160,7 +163,7 @@ public class PCommDecrease {
 
       IOUtils.exportToJson(avgLearningAbility, "out/" + folder + "/l_ab_pComm_" + pComm + ".json");
       IOUtils.exportToJson(avgSuccessRate, "out/" + folder + "/s_rate_pComm_" + pComm + ".json");
-      IOUtils.saveWorld(simulation.getWorld(), "out/" + folder + "/world_after_pComm_" + pComm + ".ser");
+    //   IOUtils.saveWorld(simulation.getWorld(), "out/" + folder + "/world_after_pComm_" + pComm + ".ser");
     }
 
     simulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgLearningAbilities, "l_ab_over_p_comm_avg",

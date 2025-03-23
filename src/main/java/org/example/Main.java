@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -13,6 +14,7 @@ import org.example.plotting.SimulationPlots;
 import org.example.scenarios.AbruptTransitionRuns;
 import org.example.scenarios.ContinuousPCommTransition;
 import org.example.scenarios.PCommDecrease;
+import org.example.scenarios.PCommIncrease;
 import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
 import org.example.strategies.evolution.FullEvolutionStrategy;
@@ -33,14 +35,18 @@ import org.example.utils.Timer;
 public class Main {
     public static void main(String[] args) {
         // runSimulationsInParallel();
-        // AbruptTransitionRuns.original(20, 1, 0.005);
-        // AbruptTransitionRuns.original(20, 1, 0.005);
+        // AbruptTransitionRuns.original(40, 1, 0.05);
+        // AbruptTransitionRuns.original(40, 1, 0.05);
         // AbruptTransitionRuns.originalMoloney(20, 1, 0.05);
         // ContinuousPCommTransition.originalMoloney(20, 1, 0.5, 0.005);
         // AbruptTransitionRuns.test(10, 1);
         // AbruptTransitionRuns.original(20, 1, 0.05);
         // System.out.println((Math.exp(-0.05 * 6) * (1 - Math.exp(-5 * 1.5 / 1))));
-        ContinuousPCommTransition.original(40, 1, 0.5,0.05);
+        // ContinuousPCommTransition.original(40, 1, 0.5,0.05);
+        // System.out.println(new Random().nextDouble());
+        // System.out.println(Map.of("word1", 0.1).entrySet().stream().min(Map.Entry.comparingByValue()).get().getKey());;
+        // PCommDecrease.runPCommDecreaseSimulations(40);
+        PCommIncrease.original(60, 0.05);
     }
 
     public static void runSimulationsInParallel() {
@@ -56,8 +62,8 @@ public class Main {
         //    () -> ContinuousPCommTransition.originalMoloney(40, 1, 0.5, 0.05),
         //    () -> AbruptTransitionRuns.original(40, 1, 0.05),
         //    () -> AbruptTransitionRuns.original(40, 1, 0.005)
-        //    () -> ContinuousPCommTransition.original(40, 1, 0.5,0.005),
-           () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05)
+           () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05),
+           () -> ContinuousPCommTransition.original(20, 1, 0.5,0.05)
 
         //    () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05),
         //    () -> ContinuousPCommTransition.originalMoloney(40, 1)
