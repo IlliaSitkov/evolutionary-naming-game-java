@@ -66,7 +66,7 @@ public class AbruptTransitionRuns {
         new ProbabilisticEvolutionStrategy());
 
     SimulationStats simulationStats = new SimulationStats(
-        List.of(1000, 5000, 7990, 8000, 8100, 8500, 10000, 30000, 40000, varConfig.T() - 1),
+        List.of(1000, 5000, 7990, 8000, 8050, 8100, 8200, 8500, 10000,15000, 20000, 30000, 35000,37000, 40000, varConfig.T() - 1),
         List.of());
 
     Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
@@ -75,7 +75,7 @@ public class AbruptTransitionRuns {
   }
 
   public static void originalMoloney(int L, int N, double A) {
-    String folder = RunUtils.makePath(AbruptTransitionRuns.folder, "/original_moloney/L", L, "N", N, "/", new Date().getTime());
+    String folder = RunUtils.makePath(AbruptTransitionRuns.folder, "/original_moloney/L", L, "N", N);
     VarConfig varConfig = new VarConfig(Map.of(
         ConfigKey.L, L,
         ConfigKey.A, A,
@@ -93,7 +93,7 @@ public class AbruptTransitionRuns {
         new ProbabilisticEvolutionStrategy());
 
     SimulationStats simulationStats = new SimulationStats(
-        List.of(1000, 5000, 7990, 8000, 8100, 8500, 10000, 30000, 40000, varConfig.T() - 1),
+        List.of(1000, 5000, 7990, 8000, 8050, 8100, 8200, 8500, 10000,15000, 20000, 30000, 35000,37000, 40000, varConfig.T() - 1),
         List.of());
 
     Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);

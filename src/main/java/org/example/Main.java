@@ -35,8 +35,8 @@ import org.example.utils.Timer;
 public class Main {
     public static void main(String[] args) {
         // runSimulationsInParallel();
-        // AbruptTransitionRuns.original(40, 1, 0.05);
-        // AbruptTransitionRuns.original(40, 1, 0.05);
+        AbruptTransitionRuns.original(40, 1, 0.005);
+        AbruptTransitionRuns.originalMoloney(40, 1, 0.005);
         // AbruptTransitionRuns.originalMoloney(20, 1, 0.05);
         // ContinuousPCommTransition.originalMoloney(20, 1, 0.5, 0.005);
         // AbruptTransitionRuns.test(10, 1);
@@ -49,7 +49,7 @@ public class Main {
         // PCommIncrease.original(60, 0.05);
         // AbruptTransitionRuns.original(60, 1, 0.05);
         // System.out.println(new Random().nextDouble(12.0));
-        ContinuousPCommTransition.original(60, 1, 0.5,0.05);
+        // ContinuousPCommTransition.original(60, 1, 0.5,0.05);
     }
 
     public static void runSimulationsInParallel() {

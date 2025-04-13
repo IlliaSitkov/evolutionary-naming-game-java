@@ -34,7 +34,8 @@ public class Simulation {
         this(new World(varConfig, strategyConfig), simulationStats, varConfig, strategyConfig);
     }
 
-    public Simulation(World world, SimulationStats simulationStats, VarConfig varConfig, StrategyConfig strategyConfig) {
+    public Simulation(World world, SimulationStats simulationStats, VarConfig varConfig,
+            StrategyConfig strategyConfig) {
         this.world = world;
         this.pCommunicationStrategy = strategyConfig.getPCommunicationStrategy();
         this.simulationStats = simulationStats;
@@ -71,13 +72,16 @@ public class Simulation {
 
     private void updateAgent(int iteration) {
         Agent speaker = world.getRandomAgent();
-        boolean[] steps = evolutionStrategy.determineEvolutionSteps(pCommunicationStrategy.getPCommunication(iteration));
+        boolean[] steps = evolutionStrategy
+                .determineEvolutionSteps(pCommunicationStrategy.getPCommunication(iteration));
         boolean shouldCommunicate = steps[0];
         boolean shouldUpdatePopulation = steps[1];
         if (shouldCommunicate) {
             Agent listener = world.getRandomNeighbour(speaker.getX(), speaker.getY());
             if (listener == null) {
-                populationUpdate(speaker);
+                if (varConfig.REPR_LIPOWSKA() == 0) {
+                    populationUpdate(speaker);
+                }
             } else {
                 boolean isCommunicationSuccessful = communicationUpdate(speaker, listener);
                 iterationStats.trackCommunicationResult(isCommunicationSuccessful);
