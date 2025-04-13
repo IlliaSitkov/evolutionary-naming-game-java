@@ -64,10 +64,13 @@ public class Agent implements Serializable {
         nInitedCommunications++;
         if (lexicon.isEmpty()) {
             iterationStats.trackNewWordSpeak();
-            lexicon.addWord(Lexicon.generateWord(varConfig.WORD_LENGTH()),
-                    wordAcquisitionStrategy.getInventedWordWeight(this));
+            inventWord();
         }
         return lexicon.getRandomWord();
+    }
+
+    private void inventWord() {
+        lexicon.addWord(Lexicon.generateWord(varConfig.WORD_LENGTH()), wordAcquisitionStrategy.getInventedWordWeight(this));
     }
 
     public boolean knowsWord(String word) {
@@ -107,14 +110,14 @@ public class Agent implements Serializable {
 
         double rWordMutation = random.nextDouble();
         String newWord;
-        if (rWordMutation < mutationProbability || lexicon.isEmpty()) {
-            if (rWordMutation < mutationProbability) {
-                iterationStats.trackNewWordMutation();
-            } else {
-                iterationStats.trackNewWordEmptyLexicon();
-            }
+        if (rWordMutation < mutationProbability) {
+            iterationStats.trackNewWordMutation();
             newWord = Lexicon.generateWord(varConfig.WORD_LENGTH());
         } else {
+            if (lexicon.isEmpty()) {
+                iterationStats.trackNewWordEmptyLexicon();
+                inventWord();
+            }
             newWord = lexicon.getTopWord();
         }
 
@@ -131,14 +134,14 @@ public class Agent implements Serializable {
         double rWordMutation = newLearningAbilityResult[1];
 
         String newWord;
-        if (rWordMutation < mutationProbability && !lexicon.isEmpty()) {
-            newWord = lexicon.getTopWord();
-        } else {
+        if (rWordMutation < mutationProbability) {
             if (lexicon.isEmpty()) {
                 iterationStats.trackNewWordEmptyLexicon();
-            } else {
-                iterationStats.trackNewWordMutation();
+                inventWord();
             }
+            newWord = lexicon.getTopWord();
+        } else {
+            iterationStats.trackNewWordMutation();
             newWord = Lexicon.generateWord(varConfig.WORD_LENGTH());
         }
 
