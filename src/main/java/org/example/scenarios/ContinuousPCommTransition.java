@@ -16,6 +16,7 @@ import org.example.strategies.learningAbilityInheritance.MutatedLAbInheritanceSt
 import org.example.strategies.learningAbilityInheritance.RandomLAbInheritanceStrategy;
 import org.example.strategies.neighborPositions.Neighbor8PositionsStrategy;
 import org.example.strategies.pCommunication.ContinuousIncreasePCommunicationStrategy;
+import org.example.strategies.pCommunication.InterpolatedPCommunicationStrategy;
 import org.example.strategies.pSurvival.AvgKnowledgePSurvivalStrategy;
 import org.example.strategies.wordAcquisition.UnitWordAcquisitionStrategy;
 import org.example.utils.RunUtils;
@@ -33,7 +34,7 @@ public class ContinuousPCommTransition {
                 ConfigKey.N, N
         ));
         StrategyConfig strategyConfig = new StrategyConfig(
-                new ContinuousIncreasePCommunicationStrategy(0.1, finalPComm, varConfig.T()),
+                new InterpolatedPCommunicationStrategy(0.1, finalPComm, varConfig.T()),
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
                 new RandomLAbInheritanceStrategy(),
                 new ConstantLAbAgingStrategy(),

@@ -45,8 +45,11 @@ public class Main {
         // ContinuousPCommTransition.original(40, 1, 0.5,0.05);
         // System.out.println(new Random().nextDouble());
         // System.out.println(Map.of("word1", 0.1).entrySet().stream().min(Map.Entry.comparingByValue()).get().getKey());;
-        // PCommDecrease.runPCommDecreaseSimulations(40);
-        PCommIncrease.original(60, 0.05);
+        // PCommDecrease.runPCommDecreaseSimulations(60);
+        // PCommIncrease.original(60, 0.05);
+        // AbruptTransitionRuns.original(60, 1, 0.05);
+        // System.out.println(new Random().nextDouble(12.0));
+        ContinuousPCommTransition.original(60, 1, 0.5,0.05);
     }
 
     public static void runSimulationsInParallel() {
@@ -64,6 +67,7 @@ public class Main {
         //    () -> AbruptTransitionRuns.original(40, 1, 0.005)
            () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05),
            () -> ContinuousPCommTransition.original(20, 1, 0.5,0.05)
+        //    () -> ContinuousPCommTransition.original(60, 1, 0.5,0.05)
 
         //    () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05),
         //    () -> ContinuousPCommTransition.originalMoloney(40, 1)
