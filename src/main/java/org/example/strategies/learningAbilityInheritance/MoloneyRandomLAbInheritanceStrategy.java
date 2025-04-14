@@ -17,7 +17,7 @@ public class MoloneyRandomLAbInheritanceStrategy implements LAbInheritanceStrate
         Random random = new Random();
         double rLearningAbility = random.nextDouble();
         double newLearningAbility;
-        if (rLearningAbility < mutationProbability) {
+        if (rLearningAbility >= mutationProbability) {
             newLearningAbility = parent.getLearningAbilityAtBirth();
         } else {
             newLearningAbility = random.nextDouble();

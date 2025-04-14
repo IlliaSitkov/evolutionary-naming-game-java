@@ -134,7 +134,7 @@ public class Agent implements Serializable {
         double rWordMutation = newLearningAbilityResult[1];
 
         String newWord;
-        if (rWordMutation < mutationProbability) {
+        if (rWordMutation >= mutationProbability) {
             if (lexicon.isEmpty()) {
                 iterationStats.trackNewWordEmptyLexicon();
                 inventWord();
