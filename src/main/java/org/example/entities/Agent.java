@@ -51,7 +51,7 @@ public class Agent implements Serializable {
         this.lexicon = lexicon;
         this.x = -1;
         this.y = -1;
-        this.age = 0;
+        this.age = varConfig.INIT_AGE();
         this.varConfig = varConfig;
         this.strategyConfig = strategyConfig;
         this.pSurvivalStrategy = strategyConfig.getPSurvivalStrategy();

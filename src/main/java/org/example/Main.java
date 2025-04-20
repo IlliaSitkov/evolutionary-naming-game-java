@@ -34,7 +34,7 @@ import org.example.utils.Timer;
 
 public class Main {
     public static void main(String[] args) {
-        // runSimulationsInParallel();
+        runSimulationsInParallel();
         // AbruptTransitionRuns.original(40, 1, 0.005);
         // AbruptTransitionRuns.originalMoloney(40, 1, 0.05);
         // AbruptTransitionRuns.originalMoloney(20, 1, 0.05);
@@ -49,16 +49,52 @@ public class Main {
         // PCommIncrease.original(60, 0.05);
         // AbruptTransitionRuns.original(60, 1, 0.05);
         // System.out.println(new Random().nextDouble(12.0));
-        ContinuousPCommTransition.original(40, 1, 0.5,0.05, 160000, 200000);
+        // ContinuousPCommTransition.original(60, 1, 0.5,0.05, 60000, 200000);
+        // AbruptTransitionRuns.originalMoloney(20, 1, 0.05);
     }
 
     public static void runSimulationsInParallel() {
-        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        ExecutorService executorService = Executors.newFixedThreadPool(16);
 
         List<Runnable> simulationTasks = List.of(
-            () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05),
-            () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05),
-            () -> AbruptTransitionRuns.originalMoloney(60, 1, 0.05)
+            // () -> AbruptTransitionRuns.original(40, 1, 0.05, 1),
+            // () -> AbruptTransitionRuns.original(40, 1, 0.05, 5),
+            // () -> AbruptTransitionRuns.original(40, 1, 0.05, 10),
+
+            // () -> AbruptTransitionRuns.original(20, 1, 0.05),
+            // () -> AbruptTransitionRuns.original(60, 1, 0.05),
+            // () -> AbruptTransitionRuns.original(70, 1, 0.05)
+
+            // () -> AbruptTransitionRuns.original(40, 1, 0.05),
+            // () -> AbruptTransitionRuns.original(40, 5, 0.05),
+            // () -> AbruptTransitionRuns.original(40, 10, 0.05),
+            // () -> AbruptTransitionRuns.original(40, 100, 0.05),
+            // () -> AbruptTransitionRuns.original(40, 1000, 0.05),
+           
+            // () -> AbruptTransitionRuns.originalMoloney(40, 5, 0.05),
+            // () -> AbruptTransitionRuns.originalMoloney(40, 10, 0.05),
+            // () -> AbruptTransitionRuns.originalMoloney(40, 100, 0.05),
+            // () -> AbruptTransitionRuns.originalMoloney(40, 1000, 0.05)
+
+            () -> AbruptTransitionRuns.original(40, 1, 0.025),
+            () -> AbruptTransitionRuns.original(40, 1, 0.01),
+            () -> AbruptTransitionRuns.original(40, 1, 0.09),
+            () -> AbruptTransitionRuns.original(40, 1, 0.0025),
+           
+            () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.025),
+            () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.01),
+            () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.09),
+            () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.0025)
+            
+            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05, 1),
+            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05, 5),
+            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05, 10)
+
+            // todo: 70
+            // () -> AbruptTransitionRuns.originalMoloney(20, 1, 0.05),
+            // () -> AbruptTransitionRuns.originalMoloney(60, 1, 0.05),
+            // () -> AbruptTransitionRuns.originalMoloney(70, 1, 0.05)
+            
             
         //    () -> AbruptTransitionRuns.original(40, 1, 0.05),
         //    () -> AbruptTransitionRuns.original(40, 1, 0.005),

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class VarConfig implements Serializable {
 
     public enum ConfigKey {
-        N, L, WORD_LENGTH, A, B, C, T, P_MUT, L_ROWS, L_COLS, REPR_LIPOWSKA;
+        N, L, WORD_LENGTH, A, B, C, T, P_MUT, L_ROWS, L_COLS, REPR_LIPOWSKA, INIT_AGE;
     }
 
     private final Map<ConfigKey, Number> config = new HashMap<>(Map.ofEntries(
@@ -25,7 +25,8 @@ public class VarConfig implements Serializable {
         new AbstractMap.SimpleEntry<>(ConfigKey.P_MUT, 0.001),
         new AbstractMap.SimpleEntry<>(ConfigKey.L_ROWS, 0),
         new AbstractMap.SimpleEntry<>(ConfigKey.L_COLS, 0),
-        new AbstractMap.SimpleEntry<>(ConfigKey.REPR_LIPOWSKA, 1)
+        new AbstractMap.SimpleEntry<>(ConfigKey.REPR_LIPOWSKA, 1),
+        new AbstractMap.SimpleEntry<>(ConfigKey.INIT_AGE, 0)
     ));
 
     public VarConfig(Map<ConfigKey, Number> config) {
@@ -34,6 +35,10 @@ public class VarConfig implements Serializable {
 
     public int N() {
         return config.get(ConfigKey.N).intValue();
+    }
+    
+    public int INIT_AGE() {
+        return config.get(ConfigKey.INIT_AGE).intValue();
     }
 
     public int L() {

@@ -50,12 +50,17 @@ public class AbruptTransitionRuns {
   }
 
   public static void original(int L, int N, double A) {
+    original(L, N, A, 0);
+  }
+
+  public static void original(int L, int N, double A, int initAge) {
     String folder = RunUtils.makePath(AbruptTransitionRuns.folder, "/original/L", L, "N", N);
     VarConfig varConfig = new VarConfig(Map.of(
         ConfigKey.L, L,
         ConfigKey.A, A,
         ConfigKey.T, 50000,
-        ConfigKey.N, N));
+        ConfigKey.N, N,
+        ConfigKey.INIT_AGE, initAge));
     StrategyConfig strategyConfig = new StrategyConfig(
         new SingleStepPCommunicationStrategy(0.1, 8000, 0.98),
         new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
@@ -75,13 +80,18 @@ public class AbruptTransitionRuns {
   }
 
   public static void originalMoloney(int L, int N, double A) {
+    originalMoloney(L, N, A, 0);
+  }
+
+  public static void originalMoloney(int L, int N, double A, int initAge) {
     String folder = RunUtils.makePath(AbruptTransitionRuns.folder, "/original_moloney/L", L, "N", N);
     VarConfig varConfig = new VarConfig(Map.of(
         ConfigKey.L, L,
         ConfigKey.A, A,
         ConfigKey.T, 50000,
         ConfigKey.N, N,
-        ConfigKey.REPR_LIPOWSKA, 0
+        ConfigKey.REPR_LIPOWSKA, 0,
+        ConfigKey.INIT_AGE, initAge
         ));
     StrategyConfig strategyConfig = new StrategyConfig(
         new SingleStepPCommunicationStrategy(0.1, 8000, 0.98),
