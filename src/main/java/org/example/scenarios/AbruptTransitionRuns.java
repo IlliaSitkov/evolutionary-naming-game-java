@@ -54,6 +54,10 @@ public class AbruptTransitionRuns {
   }
 
   public static void original(int L, int N, double A, int initAge) {
+    original(L, N, A, initAge, new Neighbor8PositionsStrategy());
+  }
+
+  public static void original(int L, int N, double A, int initAge, NeighborPositionsStrategy neighborPositionsStrategy ) {
     String folder = RunUtils.makePath(AbruptTransitionRuns.folder, "/original/L", L, "N", N);
     VarConfig varConfig = new VarConfig(Map.of(
         ConfigKey.L, L,
@@ -66,7 +70,7 @@ public class AbruptTransitionRuns {
         new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
         new RandomLAbInheritanceStrategy(),
         new ConstantLAbAgingStrategy(),
-        new Neighbor8PositionsStrategy(),
+        neighborPositionsStrategy,
         new UnitWordAcquisitionStrategy(),
         new ProbabilisticEvolutionStrategy());
 
@@ -84,6 +88,10 @@ public class AbruptTransitionRuns {
   }
 
   public static void originalMoloney(int L, int N, double A, int initAge) {
+    originalMoloney(L, N, A, initAge, new Neighbor8PositionsStrategy());
+  }
+
+  public static void originalMoloney(int L, int N, double A, int initAge, NeighborPositionsStrategy neighborPositionsStrategy) {
     String folder = RunUtils.makePath(AbruptTransitionRuns.folder, "/original_moloney/L", L, "N", N);
     VarConfig varConfig = new VarConfig(Map.of(
         ConfigKey.L, L,
@@ -98,7 +106,7 @@ public class AbruptTransitionRuns {
         new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
         new MoloneyRandomLAbInheritanceStrategy(),
         new ConstantLAbAgingStrategy(),
-        new Neighbor8PositionsStrategy(),
+        neighborPositionsStrategy,
         new UnitWordAcquisitionStrategy(),
         new ProbabilisticEvolutionStrategy());
 

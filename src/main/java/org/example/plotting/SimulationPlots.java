@@ -44,14 +44,26 @@ public class SimulationPlots {
     }
 
     public void plotTwoSeriesOverIterations(List<Double> series1, List<Double> series2, String title, String xAxisLabel, String yAxisLabel, int series1Shift, int series2Shift, String series1Name, String series2Name, Double rangeMin, Double rangeMax) {
+        plotTwoSeriesOverIterations(series1, series2, title, xAxisLabel, yAxisLabel, series1Shift, series2Shift, series1Name, series2Name, rangeMin, rangeMax, series1.size());
+    }
+
+    public void plotTwoSeriesOverIterations(List<Double> series1, List<Double> series2, String title, String xAxisLabel, String yAxisLabel, int series1Shift, int series2Shift, String series1Name, String series2Name, Double rangeMin, Double rangeMax, int iterations) {
         XYSeries xySeries1 = new XYSeries(series1Name);
-        for (int i = 0; i < series1.size(); i++) {
-            xySeries1.add(i + series1Shift, series1.get(i));
+        for (int i = 0; i < iterations; i++) {
+            Double elem = null;
+            if (i < series1.size()) {
+                elem = series1.get(i);
+            }
+            xySeries1.add(i + series1Shift, elem);
         }
 
         XYSeries xySeries2 = new XYSeries(series2Name);
-        for (int i = 0; i < series2.size(); i++) {
-            xySeries2.add(i + series2Shift, series2.get(i));
+        for (int i = 0; i < iterations; i++) {
+            Double elem = null;
+            if (i < series2.size()) {
+                elem = series2.get(i);
+            }
+            xySeries2.add(i + series2Shift, elem);
         }
 
         XYSeriesCollection dataset = new XYSeriesCollection();
@@ -198,7 +210,7 @@ public class SimulationPlots {
     public void saveSimulationStats(SimulationStats simulationStats, PCommunicationStrategy strategy, int nIters) {
         plotTwoSeriesOverIterations(simulationStats.getAvgLearningAbilities(),
                 simulationStats.getSuccessRates(), "l_ab_&_s_rate_over_iterations", "Iteration",
-                "Value", 0, 1, "Learning Ability", "Success Rate", 0.0, 1.2);
+                "Value", 0, 1, "Learning Ability", "Success Rate", 0.0, 1.2, nIters);
 
         plotStat(simulationStats.getSuccessRates(), "s_rate_over_iterations", "Success Rate",
                 "Success Rate", 1, 0.0, 1.2);

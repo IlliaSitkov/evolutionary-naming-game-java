@@ -76,16 +76,36 @@ public class Main {
             // () -> AbruptTransitionRuns.originalMoloney(40, 100, 0.05),
             // () -> AbruptTransitionRuns.originalMoloney(40, 1000, 0.05)
 
-            () -> AbruptTransitionRuns.original(40, 1, 0.025),
-            () -> AbruptTransitionRuns.original(40, 1, 0.01),
-            () -> AbruptTransitionRuns.original(40, 1, 0.09),
-            () -> AbruptTransitionRuns.original(40, 1, 0.0025),
+            // () -> AbruptTransitionRuns.original(40, 1, 0.025),
+            // () -> AbruptTransitionRuns.original(40, 1, 0.01),
+            // () -> AbruptTransitionRuns.original(40, 1, 0.09),
+            // () -> AbruptTransitionRuns.original(40, 1, 0.0025),
+            // () -> AbruptTransitionRuns.original(40, 1, 0.1),
+            // () -> AbruptTransitionRuns.original(40, 1, 0.5),
+            // todo: 0.0001
+            // () -> AbruptTransitionRuns.original(40, 1, 0.0001),
+            // () -> AbruptTransitionRuns.original(40, 1, 0.9),
+            // () -> AbruptTransitionRuns.original(40, 1, 0)
+            () -> AbruptTransitionRuns.original(40, 1, 0.025)
            
-            () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.025),
-            () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.01),
-            () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.09),
-            () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.0025)
+            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05)
+            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.025),
+            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.01),
+            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.09),
+            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.0025)
+            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.1),
+            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.5)
+            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.9)
+            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0)
+
+
+            // () -> AbruptTransitionRuns.original(40, 1, 0.05, 0, new Neighbor4PositionsStrategy(true)),
+            // () -> AbruptTransitionRuns.original(40, 1, 0.05, 0, new Neighbor4PositionsStrategy(false)),
+
+            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05, 0, new Neighbor4PositionsStrategy(true)),
+            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05, 0, new Neighbor4PositionsStrategy(false))
             
+
             // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05, 1),
             // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05, 5),
             // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05, 10)
