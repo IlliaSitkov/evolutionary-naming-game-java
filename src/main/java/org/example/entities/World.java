@@ -2,6 +2,7 @@ package org.example.entities;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.example.StrategyConfig;
 import org.example.VarConfig;
@@ -89,8 +90,8 @@ public class World implements Serializable {
     }
 
     public Agent getRandomAgent() {
-        Collection<Agent> agents = agentsGrid.values();
-        return agents.stream().skip(new Random().nextInt(agents.size())).findFirst().get();
+        List<Agent> agentList = new ArrayList<>(agentsGrid.values());
+        return agentList.get(ThreadLocalRandom.current().nextInt(agentList.size()));
     }
 
     public void increaseAgentsAge() {
@@ -125,10 +126,10 @@ public class World implements Serializable {
         for (Agent agent : agentsGrid.values()) {
             totalLearningAbility += agent.getLearningAbility();
             totalLearningAbilityAtBirth += agent.getLearningAbilityAtBirth();
-            
+
             if (!agent.getLexicon().isEmpty()) {
                 languages.add(agent.getLexicon().getTopWord());
-            }            
+            }
             totalAge += agent.getAge();
             totalKnowledge += agent.getKnowledge();
         }

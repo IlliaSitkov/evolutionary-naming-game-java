@@ -9,6 +9,7 @@ import org.example.VarConfig;
 import org.example.VarConfig.ConfigKey;
 import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
+import org.example.strategies.agentInitializer.LimitedLAbAgentInitializer;
 import org.example.strategies.evolution.ProbabilisticEvolutionStrategy;
 import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.MoloneyRandomLAbInheritanceStrategy;
@@ -44,7 +45,8 @@ public class ContinuousPCommTransition {
                                 new ConstantLAbAgingStrategy(),
                                 new Neighbor8PositionsStrategy(),
                                 new UnitWordAcquisitionStrategy(),
-                                new ProbabilisticEvolutionStrategy());
+                                new ProbabilisticEvolutionStrategy(),
+                                new LimitedLAbAgentInitializer(0.1));
 
                 SimulationStats simulationStats = new SimulationStats(
                                 List.of(varConfig.T() - 1),

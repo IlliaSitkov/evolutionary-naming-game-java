@@ -15,11 +15,9 @@ import org.example.strategies.wordAcquisition.WordAcquisitionStrategy;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
-@ToString
 public class StrategyConfig implements Serializable {
 
     @Getter
@@ -42,8 +40,22 @@ public class StrategyConfig implements Serializable {
 
     @Getter
     private final EvolutionStrategy evolutionStrategy;
-    
+
     @Getter
     private AgentInitializer agentInitializer = new RandomAgentInitializer();
-    
+
+    @Override
+    public String toString() {
+        return "StrategyConfig {\n" +
+                "  pCommunicationStrategy=" + pCommunicationStrategy + ",\n" +
+                "  pSurvivalStrategy=" + pSurvivalStrategy + ",\n" +
+                "  learningAbilityInheritanceStrategy=" + learningAbilityInheritanceStrategy + ",\n" +
+                "  learingAbilityAgingStrategy=" + learingAbilityAgingStrategy + ",\n" +
+                "  neighborPositionsStrategy=" + neighborPositionsStrategy + ",\n" +
+                "  wordAcquisitionStrategy=" + wordAcquisitionStrategy + ",\n" +
+                "  evolutionStrategy=" + evolutionStrategy + ",\n" +
+                "  agentInitializer=" + agentInitializer + "\n" +
+                "}";
+    }
+
 }
