@@ -132,7 +132,7 @@ public class Main {
         //    () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05),
         //    () -> ContinuousPCommTransition.originalMoloney(40, 1)
 
-            () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05, 80000, 200000)
+            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05, 80000, 200000)
             // () -> ContinuousPCommTransition.original(20, 1, 0.5,0.05, 80000, 200000)
 
             // () -> ContinuousPCommTransition.original(40, 5, 0.5,0.05, 80000, 200000),
@@ -141,6 +141,15 @@ public class Main {
             // todo:
             // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.005, 80000, 200000),
             // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.1, 80000, 200000)
+
+            () -> ContinuousPCommTransition.original(20, 1, 0.5,0.05, 80000, 200000),
+            () -> ContinuousPCommTransition.original(30, 1, 0.5,0.05, 80000, 200000),
+
+            () -> ContinuousPCommTransition.original(40, 5, 0.5,0.05, 80000, 200000),
+            () -> ContinuousPCommTransition.original(40, 1000, 0.5,0.05, 80000, 200000)
+
+            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0, 80000, 200000),
+            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.005, 80000, 200000)
 
         );
 
