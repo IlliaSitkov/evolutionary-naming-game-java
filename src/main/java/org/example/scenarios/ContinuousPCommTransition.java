@@ -1,6 +1,5 @@
 package org.example.scenarios;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -13,9 +12,9 @@ import org.example.strategies.agentInitializer.LimitedLAbAgentInitializer;
 import org.example.strategies.evolution.ProbabilisticEvolutionStrategy;
 import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.MoloneyRandomLAbInheritanceStrategy;
-import org.example.strategies.learningAbilityInheritance.MutatedLAbInheritanceStrategy;
 import org.example.strategies.learningAbilityInheritance.RandomLAbInheritanceStrategy;
 import org.example.strategies.neighborPositions.Neighbor8PositionsStrategy;
+import org.example.strategies.neighborPositions.NeighborPositionsStrategy;
 import org.example.strategies.pCommunication.ContinuousIncreasePCommunicationStrategy;
 import org.example.strategies.pCommunication.InterpolatedPCommunicationStrategy;
 import org.example.strategies.pSurvival.AvgKnowledgePSurvivalStrategy;
@@ -32,18 +31,31 @@ public class ContinuousPCommTransition {
         }
 
         public static void original(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated) {
+                original(L, N, finalPComm, A, nSteps, nStepsSimulated, new Neighbor8PositionsStrategy(), 0);
+        }
+
+        public static void original(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, NeighborPositionsStrategy neighborPositionsStrateg) {
+                original(L, N, finalPComm, A, nSteps, nStepsSimulated, neighborPositionsStrateg, 0);
+        }
+
+        public static void original(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, int initAge) {
+                original(L, N, finalPComm, A, nSteps, nStepsSimulated, new Neighbor8PositionsStrategy(), initAge);
+        }
+
+        public static void original(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, NeighborPositionsStrategy neighborPositionsStrategy, int initAge) {
                 String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/original/L", L, "N", N);
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
                                 ConfigKey.A, A,
                                 ConfigKey.T, nSteps,
+                                ConfigKey.INIT_AGE, initAge,
                                 ConfigKey.N, N));
                 StrategyConfig strategyConfig = new StrategyConfig(
                                 new InterpolatedPCommunicationStrategy(0.1, finalPComm, nStepsSimulated),
                                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
                                 new RandomLAbInheritanceStrategy(),
                                 new ConstantLAbAgingStrategy(),
-                                new Neighbor8PositionsStrategy(),
+                                neighborPositionsStrategy,
                                 new UnitWordAcquisitionStrategy(),
                                 new ProbabilisticEvolutionStrategy(),
                                 new LimitedLAbAgentInitializer(0.1));
@@ -58,23 +70,24 @@ public class ContinuousPCommTransition {
                 RunUtils.runSimulation(simulation, folder);
         }
 
-        public static void originalMoloney(int L, int N, double finalPComm, double A) {
-                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/original_moloney/L", L, "N", N,
-                                '/', new Date().getTime());
+        public static void originalMoloney(int L, int N, double finalPComm, double A,  int nSteps, int nStepsSimulated) {
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/original_moloney/L", L, "N", N);
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
                                 ConfigKey.A, A,
-                                ConfigKey.T, 80000,
+                                ConfigKey.T, nSteps,
                                 ConfigKey.N, N,
                                 ConfigKey.REPR_LIPOWSKA, 0));
                 StrategyConfig strategyConfig = new StrategyConfig(
-                                new ContinuousIncreasePCommunicationStrategy(0.1, finalPComm, varConfig.T()),
+                                new ContinuousIncreasePCommunicationStrategy(0.1, finalPComm, nStepsSimulated),
                                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
                                 new MoloneyRandomLAbInheritanceStrategy(),
                                 new ConstantLAbAgingStrategy(),
                                 new Neighbor8PositionsStrategy(),
                                 new UnitWordAcquisitionStrategy(),
-                                new ProbabilisticEvolutionStrategy());
+                                new ProbabilisticEvolutionStrategy(),
+                                new LimitedLAbAgentInitializer(0.1)
+                                );
 
                 SimulationStats simulationStats = new SimulationStats(
                                 List.of(varConfig.T() - 1),
