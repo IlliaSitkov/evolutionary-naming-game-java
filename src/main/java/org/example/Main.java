@@ -146,15 +146,24 @@ public class Main {
             // () -> ContinuousPCommTransition.original(30, 1, 0.5,0.05, 80000, 200000),
 
             // () -> ContinuousPCommTransition.original(40, 5, 0.5,0.05, 80000, 200000),
-            // () -> ContinuousPCommTransition.original(40, 1000, 0.5,0.05, 80000, 200000)
+            // () -> ContinuousPCommTransition.original(40, 1000, 0.5,0.05, 80000, 200000),
 
             // () -> ContinuousPCommTransition.original(40, 1, 0.5,0, 80000, 200000),
             // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.005, 80000, 200000)
             // () -> ContinuousPCommTransition.original(60, 1, 0.5,0.05, 60000, 200000)
 
             // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05, 80000, 200000, new Neighbor4PositionsStrategy(true)),
-            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05, 80000, 200000, new Neighbor4PositionsStrategy(false)),
-            () -> ContinuousPCommTransition.originalMoloney(40, 1, 0.5,0.05, 80000, 200000)
+            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05, 80000, 200000, new Neighbor4PositionsStrategy(false))
+            
+            // () -> ContinuousPCommTransition.originalMoloney(40, 1, 0.5,0.05, 80000, 200000)
+
+            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05, 80000, 200000, new Neighbor4PositionsStrategy(false))
+
+            () -> ContinuousPCommTransition.originalMoloney(60, 1, 0.5,0.005, 60000, 200000)
+
+            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05, 80000, 200000, 1),
+            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05, 80000, 200000,5)
+
 
         );
 

@@ -39,7 +39,17 @@ public class RunUtils {
     int nIters = simulation.getVarConfig().T();
     List<Double> pCommOverIterations = SimulationStats.getPCommunicationOverIterations(pCommStrategy, nIters, true);
 
-    IOUtils.exportToCSV(folder + "/run_stats.csv", stats.getLanguagesNumber().size(), List.of(
+    saveStats(folder + "/run_stats.csv", stats, pCommOverIterations);
+
+    simulationPlots.saveSimulationStats(
+        stats,
+        pCommStrategy,
+        nIters);
+    IOUtils.saveSimulationConfig(folder, simulation);
+  }
+
+  public static void saveStats(String fileName, SimulationStats stats, List<Double> pCommOverIterations) {
+    IOUtils.exportToCSV(fileName, stats.getLanguagesNumber().size(), List.of(
         new Object[] { "ScsRate", stats.getSuccessRates() },
         new Object[] { "ScsCommN", stats.getSuccessfulCommunicationsNumber() },
         new Object[] { "CommN", stats.getCommunicationsNumber() },
@@ -69,12 +79,6 @@ public class RunUtils {
         new Object[] { "NewWordsMut", stats.getNNewWordsMutation() },
         new Object[] { "WordsRmvd", stats.getNWordsRemoved() }
         ));
-
-    simulationPlots.saveSimulationStats(
-        stats,
-        pCommStrategy,
-        nIters);
-    IOUtils.saveSimulationConfig(folder, simulation);
   }
 
   public static String makePath(Object... args) {

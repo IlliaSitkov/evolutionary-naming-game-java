@@ -85,8 +85,7 @@ public class ContinuousPCommTransition {
                                 new ConstantLAbAgingStrategy(),
                                 new Neighbor8PositionsStrategy(),
                                 new UnitWordAcquisitionStrategy(),
-                                new ProbabilisticEvolutionStrategy(),
-                                new LimitedLAbAgentInitializer(0.1)
+                                new ProbabilisticEvolutionStrategy()
                                 );
 
                 SimulationStats simulationStats = new SimulationStats(
