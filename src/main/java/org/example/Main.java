@@ -159,12 +159,12 @@ public class Main {
 
             // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05, 80000, 200000, new Neighbor4PositionsStrategy(false))
 
-            () -> ContinuousPCommTransition.originalMoloney(60, 1, 0.5,0.005, 60000, 200000)
+            // () -> ContinuousPCommTransition.originalMoloney(60, 1, 0.5,0.005, 60000, 200000)
 
             // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05, 80000, 200000, 1),
             // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05, 80000, 200000,5)
 
-
+            () -> PCommIncrease.original(60, 0.05)
         );
 
         for (Runnable task : simulationTasks) {

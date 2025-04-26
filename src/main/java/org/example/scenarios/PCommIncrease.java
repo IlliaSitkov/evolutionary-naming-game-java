@@ -40,7 +40,7 @@ public class PCommIncrease {
     public static void runPCommIncreaseSimulations(int L, double A, boolean moloneyImpl) {
 
         VarConfig varConfig = new VarConfig(Map.of(
-                ConfigKey.T, 5000,
+                ConfigKey.T, 6000,
                 ConfigKey.A, A,
                 ConfigKey.L, L,
                 ConfigKey.REPR_LIPOWSKA, moloneyImpl ? 0 : 1));
@@ -53,15 +53,15 @@ public class PCommIncrease {
                 new UnitWordAcquisitionStrategy(),
                 new ProbabilisticEvolutionStrategy());
 
-        int nSkipIterations = 1000;
+        int nSkipIterations = 3000;
 
         String subfolder = moloneyImpl ? "original_moloney" : "original";
-        String folder = RunUtils.makePath(PCommIncrease.folder, "/", subfolder, "/", "L", L, "/", Math.random(), new Date().getTime());
+        String folder = RunUtils.makePath(PCommIncrease.folder, "/", subfolder, "/", "L", L, "/", new Date().getTime());
         SimulationPlots simulationPlots = new SimulationPlots(folder);
 
         // List<Double> pCommunicationValues = List.of(0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2, 0.21,
         //         0.22, 0.23, 0.24, 0.25, 0.26, 0.27);
-        List<Double> pCommunicationValues = List.of(0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19);
+        List<Double> pCommunicationValues = List.of(0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17);
         List<Double> avgSuccessRates = new ArrayList<>();
         List<Double> avgLearningAbilities = new ArrayList<>();
 
@@ -101,7 +101,7 @@ public class PCommIncrease {
             IOUtils.exportToJson(avgSuccessRate, "out/" + folder + "/s_rate_pComm_" + pComm + ".json");
 
             List<Double> pCommOverIterations = SimulationStats.getPCommunicationOverIterations(strategy, varConfig.T(), true);
-            RunUtils.saveStats("out/" + folder + "/pComm_" + pComm + "_run_stats.csv", simulationStats, pCommOverIterations);
+            RunUtils.saveStats(folder + "/pComm_" + pComm + "_run_stats.csv", simulationStats, pCommOverIterations);
         }
 
         simulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgLearningAbilities, "l_ab_over_p_comm",
