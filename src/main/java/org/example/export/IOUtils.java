@@ -25,7 +25,7 @@ import org.example.simulation.Simulation;
 
 public class IOUtils {
 
-    private static final String rootFolder = "out/";
+    public static final String rootFolder = "out/";
 
     public static synchronized void exportToJson(Object object, String fileName) {
         ObjectMapper mapper = new ObjectMapper();

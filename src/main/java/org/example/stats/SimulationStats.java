@@ -1,6 +1,7 @@
 package org.example.stats;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,8 @@ import org.example.entities.World;
 import org.example.strategies.pCommunication.PCommunicationStrategy;
 
 import lombok.Getter;
+import smile.validation.metric.AdjustedRandIndex;
+import smile.validation.metric.RandIndex;
 
 public class SimulationStats {
     @Getter
@@ -64,6 +67,10 @@ public class SimulationStats {
     private final List<Integer> nNewWordsMutation = new ArrayList<>();
     @Getter
     private final List<Integer> nWordsRemoved = new ArrayList<>();
+    @Getter
+    private final List<Double> learningAbilityLanguageARI = new ArrayList<>();
+    @Getter
+    private final List<Double> learningAbilityLanguageRI = new ArrayList<>();
 
     @Getter
     private final Map<String, double[][]> learningAbilityMaps = new HashMap<>();
@@ -155,6 +162,51 @@ public class SimulationStats {
         avgAges.add(stats.getAvgAge());
         avgKnowledge.add(stats.getAvgKnowledge());
         nAgentsAlive.add(world.getAgents().size());
+        calculateLearningAbilityLanguageCorrelation(world);
+    }
+
+    private void calculateLearningAbilityLanguageCorrelation(World world) {
+        List<Agent> agents = world.getAgents();
+        agents.sort(Comparator.comparingInt(Agent::getX).thenComparingInt(Agent::getY));
+
+        Map<Double, Integer> learningAbilityClusterMap = new HashMap<>();
+        Map<String, Integer> languageClusterMap = new HashMap<>();
+
+        List<Integer> learningAbilityLabelsList = new ArrayList<>();
+        List<Integer> spokenLanguageLabelsList = new ArrayList<>();
+
+        int nextLearningAbilityId = 0;
+        int nextLanguageId = 0;
+
+        String emptyLexiconLanguage = "empty_lexicon";
+
+        for (Agent agent : agents) {
+            double ability = agent.getLearningAbilityAtBirth();
+            if (!learningAbilityClusterMap.containsKey(ability)) {
+                learningAbilityClusterMap.put(ability, nextLearningAbilityId++);
+            }
+            int abilityId = learningAbilityClusterMap.get(ability);
+            learningAbilityLabelsList.add(abilityId);
+
+            String language = agent.getLexicon().isEmpty() ? emptyLexiconLanguage : agent.getLexicon().getTopWord();
+            if (!languageClusterMap.containsKey(language)) {
+                languageClusterMap.put(language, nextLanguageId++);
+            }
+            int languageId = languageClusterMap.get(language);
+            spokenLanguageLabelsList.add(languageId);
+        }
+
+        int[] learningAbilityLabels = learningAbilityLabelsList.stream().mapToInt(i -> i).toArray();
+        int[] spokenLanguageLabels = spokenLanguageLabelsList.stream().mapToInt(i -> i).toArray();
+
+        AdjustedRandIndex ari = new AdjustedRandIndex();
+        RandIndex ri = new RandIndex();
+
+        double ariScore = ari.score(learningAbilityLabels, spokenLanguageLabels);
+        double riScore = ri.score(learningAbilityLabels, spokenLanguageLabels);
+
+        learningAbilityLanguageARI.add(ariScore);
+        learningAbilityLanguageRI.add(riScore);
     }
 
     public static List<Double> getPCommunicationOverIterations(PCommunicationStrategy strategy, int nIters) {

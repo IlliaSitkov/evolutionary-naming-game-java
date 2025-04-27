@@ -4,12 +4,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import org.example.export.IOUtils;
 import org.example.plotting.SimulationPlots;
 import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
 import org.example.strategies.pCommunication.PCommunicationStrategy;
+
+import smile.math.MathEx;
 
 public class RunUtils {
   public static void runSimulationsInParallel(List<Runnable> simulationTasks) {
@@ -40,6 +43,12 @@ public class RunUtils {
     List<Double> pCommOverIterations = SimulationStats.getPCommunicationOverIterations(pCommStrategy, nIters, true);
 
     saveStats(folder + "/run_stats.csv", stats, pCommOverIterations);
+
+    writeSeriesStats(
+      stats.getLearningAbilityLanguageARI().stream().filter((val) -> !Double.isNaN(val)).collect(Collectors.toList()),
+      IOUtils.rootFolder + folder + "/LAbLangARI.txt");
+
+    writeSeriesStats(stats.getLearningAbilityLanguageRI(), IOUtils.rootFolder + folder + "/LAbLangRI.txt");
 
     simulationPlots.saveSimulationStats(
         stats,
@@ -77,7 +86,9 @@ public class RunUtils {
         new Object[] { "NewWordsSpeak", stats.getNNewWordsSpeak() },
         new Object[] { "NewWordsEmptL", stats.getNNewWordsEmptyLexicon() },
         new Object[] { "NewWordsMut", stats.getNNewWordsMutation() },
-        new Object[] { "WordsRmvd", stats.getNWordsRemoved() }
+        new Object[] { "WordsRmvd", stats.getNWordsRemoved() },
+        new Object[] { "LAbLangARI", stats.getLearningAbilityLanguageARI() },
+        new Object[] { "LAbLangRI", stats.getLearningAbilityLanguageRI() }
         ));
   }
 
@@ -100,4 +111,19 @@ public class RunUtils {
 
     return path.toString();
   }
+
+  public static void writeSeriesStats(List<Double> data, String fileName) {
+    double[] values = data.stream().mapToDouble(i -> i).toArray();
+    double mean = MathEx.mean(values);
+    double median = MathEx.median(values);
+    double stdDev = MathEx.stdev(values);
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("Mean: ").append(mean).append("\n");
+    sb.append("Median: ").append(median).append("\n");
+    sb.append("StdDev: ").append(stdDev).append("\n");
+
+    IOUtils.writeStringToFile(sb.toString(), fileName);
+  }
+
 }

@@ -103,6 +103,64 @@ public class SimulationPlots {
 
         saveChartAsPNG(chart, title.replaceAll(" ", "") + ".png", 800, 600);
     }
+
+
+    public void plotTwoSeriesOverThird(List<Double> xData, List<Double> series1, List<Double> series2, String title, String xAxisLabel, String yAxisLabel, int series1Shift, int series2Shift, String series1Name, String series2Name, Double rangeMin, Double rangeMax, int iterations) {
+        XYSeries xySeries1 = new XYSeries(series1Name);
+        for (int i = 0; i < iterations; i++) {
+            Double elem = null;
+            if (i < series1.size()) {
+                elem = series1.get(i);
+            }
+            xySeries1.add(xData != null && i < xData.size() ? xData.get(i) : i + series1Shift, elem);
+        }
+    
+        XYSeries xySeries2 = new XYSeries(series2Name);
+        for (int i = 0; i < iterations; i++) {
+            Double elem = null;
+            if (i < series2.size()) {
+                elem = series2.get(i);
+            }
+            xySeries2.add(xData != null && i < xData.size() ? xData.get(i) : i + series2Shift, elem);
+        }
+    
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        dataset.addSeries(xySeries1);
+        dataset.addSeries(xySeries2);
+    
+        JFreeChart chart = ChartFactory.createXYLineChart(
+                title,
+                xAxisLabel,
+                yAxisLabel,
+                dataset,
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false
+        );
+    
+        XYPlot plot = chart.getXYPlot();
+        if (rangeMin != null && rangeMax != null) {
+            plot.getRangeAxis().setRange(rangeMin, rangeMax);
+        }
+    
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        renderer.setSeriesPaint(0, Color.GREEN);
+        renderer.setSeriesPaint(1, Color.BLUE);
+        renderer.setSeriesShapesVisible(0, false);
+        renderer.setSeriesShapesVisible(1, false);
+    
+        plot.setRenderer(renderer);
+    
+        // Set background color to white
+        plot.setBackgroundPaint(Color.WHITE);
+    
+        // Set grid lines color to grey
+        plot.setDomainGridlinePaint(Color.GRAY);
+        plot.setRangeGridlinePaint(Color.GRAY);
+    
+        saveChartAsPNG(chart, title.replaceAll(" ", "") + ".png", 800, 600);
+    }
     
     public <T extends Number> void plotStat(List<T> data, String title, String seriesName, String yAxisLabel, int startIteration) {
         plotStat(data, title, seriesName, yAxisLabel, startIteration, null, null);
@@ -208,8 +266,15 @@ public class SimulationPlots {
     }
 
     public void saveSimulationStats(SimulationStats simulationStats, PCommunicationStrategy strategy, int nIters) {
+
+        List<Double> pCommunicationOverIterations = SimulationStats.getPCommunicationOverIterations(strategy, nIters);
+
         plotTwoSeriesOverIterations(simulationStats.getAvgLearningAbilities(),
                 simulationStats.getSuccessRates(), "l_ab_&_s_rate_over_iterations", "Iteration",
+                "Value", 0, 1, "Learning Ability", "Success Rate", 0.0, 1.2, nIters);
+
+        plotTwoSeriesOverThird(pCommunicationOverIterations, simulationStats.getAvgLearningAbilities(),
+                simulationStats.getSuccessRates(), "l_ab_&_s_rate_over_p_comm", "P_Communication",
                 "Value", 0, 1, "Learning Ability", "Success Rate", 0.0, 1.2, nIters);
 
         plotStat(simulationStats.getSuccessRates(), "s_rate_over_iterations", "Success Rate",
@@ -236,9 +301,54 @@ public class SimulationPlots {
                 "Number Of Born Agents", "Number Of Born Agents", 1);
         plotStat(simulationStats.getNAgentsAlive(), "alive_agents", "Number Of Alive Agents",
                 "Number Of Alive Agents", 0);
+                
+        plotStat(simulationStats.getLearningAbilityLanguageARI(), "l_ab_lang_ari", "Learning Ability - Language ARI",
+                "Learning Ability - Language ARI", 0, -1.05, 1.05);
+
+        plotStat(simulationStats.getLearningAbilityLanguageRI(), "l_ab_lang_ri", "Learning Ability - Language RI",
+                "Learning Ability - Language RI", 0, 0.0, 1.05);
+
+        plotTwoSeriesOverThird(
+            pCommunicationOverIterations,
+            simulationStats.getLearningAbilityLanguageARI(),
+            simulationStats.getLearningAbilityLanguageRI(),
+            "l_ab_lang_ari_&_ri_over_p_comm",
+            "P_Communication",
+            "Value",
+            0, 0, "Learning Ability - Language ARI", "Learning Ability - Language RI",
+            -1.05, 1.05, pCommunicationOverIterations.size()
+        );
+
+        plotTwoSeriesOverIterations(
+            simulationStats.getLearningAbilityLanguageARI(),
+            simulationStats.getLearningAbilityLanguageRI(),
+            "l_ab_lang_ari_&_ri_over_iterations",
+            "Iteration",
+            "Value",
+            0, 0, "Learning Ability - Language ARI", "Learning Ability - Language RI",
+            -1.05, 1.05, pCommunicationOverIterations.size()
+        );
 
         plotSeriesAsDependentOnAnother(
-                SimulationStats.getPCommunicationOverIterations(strategy, nIters),
+                pCommunicationOverIterations,
+                simulationStats.getLearningAbilityLanguageARI(),
+                "l_ab_lang_ari_over_p_comm",
+                "P_Communication",
+                "Learning Ability - Language ARI",
+                "Learning Ability - Language ARI",
+                -1.05, 1.05);
+
+        plotSeriesAsDependentOnAnother(
+                pCommunicationOverIterations,
+                simulationStats.getLearningAbilityLanguageRI(),
+                "l_ab_lang_ri_over_p_comm",
+                "P_Communication",
+                "Learning Ability - Language RI",
+                "Learning Ability - Language RI",
+                0.0, 1.05);
+        
+        plotSeriesAsDependentOnAnother(
+                pCommunicationOverIterations,
                 simulationStats.getSuccessRates(),
                 "s_rate_over_p_comm",
                 "P_Communication",
@@ -247,7 +357,7 @@ public class SimulationPlots {
                 0.0, 1.2);
 
         plotSeriesAsDependentOnAnother(
-                SimulationStats.getPCommunicationOverIterations(strategy, nIters),
+                pCommunicationOverIterations,
                 simulationStats.getAvgLearningAbilities(),
                 "l_ab_over_p_comm",
                 "P_Communication",
