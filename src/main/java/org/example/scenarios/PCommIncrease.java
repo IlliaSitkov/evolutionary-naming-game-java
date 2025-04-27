@@ -38,7 +38,7 @@ public class PCommIncrease {
     }
 
     public static void runPCommIncreaseSimulations(int L, double A, int N, boolean moloneyImpl, int iterationsPerStep, int nSkipIterations, double maxPComm) {
-
+        maxPComm += 0.0001;
         VarConfig varConfig = new VarConfig(Map.of(
                 ConfigKey.T, iterationsPerStep,
                 ConfigKey.N, N,
@@ -72,7 +72,7 @@ public class PCommIncrease {
         double minPComm = 0.11;
         List<Double> pCommunicationValues = new ArrayList<>();
         for (double i = minPComm; i <= maxPComm; i += 0.01) {
-            pCommunicationValues.add(i);
+            pCommunicationValues.add(Math.round(i * 100.0) / 100.0);
         }
 
         List<Double> avgSuccessRates = new ArrayList<>();
