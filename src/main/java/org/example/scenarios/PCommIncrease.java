@@ -1,6 +1,5 @@
 package org.example.scenarios;
 
-import java.io.ObjectInputFilter.Config;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,18 +28,19 @@ public class PCommIncrease {
 
     public static final String folder = "p_comm_increase";
 
-    public static void original(int L, double A) {
-        runPCommIncreaseSimulations(L, A, false);
+    public static void original(int L, double A, int N, int iterationsPerStep, int nSkipIterations, double maxPComm) {
+        runPCommIncreaseSimulations(L, A, N, false, iterationsPerStep, nSkipIterations, maxPComm);
     }
     
-    public static void originalMoloney(int L, double A) {
-        runPCommIncreaseSimulations(L, A, true);
+    public static void originalMoloney(int L, double A, int N, int iterationsPerStep, int nSkipIterations, double maxPComm) {
+        runPCommIncreaseSimulations(L, A, N, true, iterationsPerStep, nSkipIterations, maxPComm);
     }
 
-    public static void runPCommIncreaseSimulations(int L, double A, boolean moloneyImpl) {
+    public static void runPCommIncreaseSimulations(int L, double A, int N, boolean moloneyImpl, int iterationsPerStep, int nSkipIterations, double maxPComm) {
 
         VarConfig varConfig = new VarConfig(Map.of(
-                ConfigKey.T, 5000,
+                ConfigKey.T, iterationsPerStep,
+                ConfigKey.N, N,
                 ConfigKey.A, A,
                 ConfigKey.L, L,
                 ConfigKey.REPR_LIPOWSKA, moloneyImpl ? 0 : 1));
@@ -53,7 +53,6 @@ public class PCommIncrease {
                 new UnitWordAcquisitionStrategy(),
                 new ProbabilisticEvolutionStrategy());
 
-        int nSkipIterations = 1000;
 
         String subfolder = moloneyImpl ? "original_moloney" : "original";
         String folder = RunUtils.makePath(PCommIncrease.folder, "/", subfolder, "/", "L", L, "/", Math.random(), new Date().getTime());
@@ -61,7 +60,14 @@ public class PCommIncrease {
 
         // List<Double> pCommunicationValues = List.of(0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2, 0.21,
         //         0.22, 0.23, 0.24, 0.25, 0.26, 0.27);
-        List<Double> pCommunicationValues = List.of(0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19);
+        // List<Double> pCommunicationValues = List.of(0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19);
+
+        double minPComm = 0.11;
+        List<Double> pCommunicationValues = new ArrayList<>();
+        for (double i = minPComm; i <= maxPComm; i += 0.01) {
+            pCommunicationValues.add(i);
+        }
+
         List<Double> avgSuccessRates = new ArrayList<>();
         List<Double> avgLearningAbilities = new ArrayList<>();
 
@@ -101,7 +107,7 @@ public class PCommIncrease {
             IOUtils.exportToJson(avgSuccessRate, "out/" + folder + "/s_rate_pComm_" + pComm + ".json");
 
             List<Double> pCommOverIterations = SimulationStats.getPCommunicationOverIterations(strategy, varConfig.T(), true);
-            RunUtils.saveStats("out/" + folder + "/pComm_" + pComm + "_run_stats.csv", simulationStats, pCommOverIterations);
+            RunUtils.saveStats(folder + "/pComm_" + pComm + "_run_stats.csv", simulationStats, pCommOverIterations);
         }
 
         simulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgLearningAbilities, "l_ab_over_p_comm",
