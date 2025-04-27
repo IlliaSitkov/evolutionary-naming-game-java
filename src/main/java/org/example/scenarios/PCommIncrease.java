@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.example.StrategyConfig;
 import org.example.VarConfig;
@@ -43,6 +44,7 @@ public class PCommIncrease {
                 ConfigKey.N, N,
                 ConfigKey.A, A,
                 ConfigKey.L, L,
+                ConfigKey.SKIP_ITERATIONS, nSkipIterations,
                 ConfigKey.REPR_LIPOWSKA, moloneyImpl ? 0 : 1));
         StrategyConfig strategyConfig = new StrategyConfig(
                 null,
@@ -55,7 +57,12 @@ public class PCommIncrease {
 
 
         String subfolder = moloneyImpl ? "original_moloney" : "original";
-        String folder = RunUtils.makePath(PCommIncrease.folder, "/", subfolder, "/", "L", L, "/", Math.random(), new Date().getTime());
+        try {
+            Thread.sleep(new Random().nextInt(2000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        String folder = RunUtils.makePath(PCommIncrease.folder, "/", subfolder, "/", "L", L, "/", new Date().getTime());
         SimulationPlots simulationPlots = new SimulationPlots(folder);
 
         // List<Double> pCommunicationValues = List.of(0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2, 0.21,
@@ -73,8 +80,6 @@ public class PCommIncrease {
 
         Simulation simulation = new Simulation(null, varConfig, strategyConfig);
 
-        IOUtils.saveSimulationConfig(folder, simulation);
-
         Timer timer = new Timer();
         timer.start();
 
@@ -85,7 +90,7 @@ public class PCommIncrease {
             simulationTimer.start();
 
             PCommunicationStrategy strategy = new ConstantPCommunicationStrategy(pComm);
-            SimulationStats simulationStats = new SimulationStats(nSkipIterations);
+            SimulationStats simulationStats = new SimulationStats(varConfig.SKIP_ITERATIONS());
 
             simulation.setPCommunicationStrategy(strategy);
             simulation.setSimulationStats(simulationStats);
@@ -109,6 +114,8 @@ public class PCommIncrease {
             List<Double> pCommOverIterations = SimulationStats.getPCommunicationOverIterations(strategy, varConfig.T(), true);
             RunUtils.saveStats(folder + "/pComm_" + pComm + "_run_stats.csv", simulationStats, pCommOverIterations);
         }
+
+        IOUtils.saveSimulationConfig(folder, simulation);
 
         simulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgLearningAbilities, "l_ab_over_p_comm",
                 "P_Communication", "Learning Ability", "Learning Ability", null, null, true);
