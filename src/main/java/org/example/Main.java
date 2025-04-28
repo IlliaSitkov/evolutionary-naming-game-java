@@ -32,136 +32,17 @@ import org.example.utils.Timer;
 
 public class Main {
     public static void main(String[] args) {
-        runSimulationsInParallel();
-        // AbruptTransitionRuns.original(40, 1, 0.005);
-        // AbruptTransitionRuns.originalMoloney(40, 1, 0.05);
-        // AbruptTransitionRuns.originalMoloney(20, 1, 0.05);
-        // ContinuousPCommTransition.originalMoloney(20, 1, 0.5, 0.005);
-        // AbruptTransitionRuns.test(10, 1);
-        // AbruptTransitionRuns.original(20, 1, 0.05);
-        // System.out.println((Math.exp(-0.05 * 6) * (1 - Math.exp(-5 * 1.5 / 1))));
-        // ContinuousPCommTransition.original(40, 1, 0.5,0.05);
-        // System.out.println(new Random().nextDouble());
-        // System.out.println(Map.of("word1", 0.1).entrySet().stream().min(Map.Entry.comparingByValue()).get().getKey());;
-        // PCommDecrease.runPCommDecreaseSimulations(60);
-        // PCommIncrease.original(60, 0.05);
-        // AbruptTransitionRuns.original(60, 1, 0.05);
-        // System.out.println(new Random().nextDouble(12.0));
-        // ContinuousPCommTransition.original(60, 1, 0.5,0.05, 60000, 200000);
-        // AbruptTransitionRuns.originalMoloney(20, 1, 0.05);
+        // runSimulationsInParallel();
+
+        PCommIncrease.original(60, 0.05, 1, 7000, 3000, 0.195);
     }
 
     public static void runSimulationsInParallel() {
         ExecutorService executorService = Executors.newFixedThreadPool(16);
 
         List<Runnable> simulationTasks = List.of(
-            // () -> AbruptTransitionRuns.original(40, 1, 0.05, 1),
-            // () -> AbruptTransitionRuns.original(40, 1, 0.05, 5),
-            // () -> AbruptTransitionRuns.original(40, 1, 0.05, 10),
-
-            // () -> AbruptTransitionRuns.original(20, 1, 0.05),
-            // () -> AbruptTransitionRuns.original(60, 1, 0.05),
-            // () -> AbruptTransitionRuns.original(70, 1, 0.05)
-
-            // () -> AbruptTransitionRuns.original(40, 1, 0.05),
-            // () -> AbruptTransitionRuns.original(40, 5, 0.05),
-            // () -> AbruptTransitionRuns.original(40, 10, 0.05),
-            // () -> AbruptTransitionRuns.original(40, 100, 0.05),
-            // () -> AbruptTransitionRuns.original(40, 1000, 0.05),
-           
-            // () -> AbruptTransitionRuns.originalMoloney(40, 5, 0.05),
-            // () -> AbruptTransitionRuns.originalMoloney(40, 10, 0.05),
-            // () -> AbruptTransitionRuns.originalMoloney(40, 100, 0.05),
-            // () -> AbruptTransitionRuns.originalMoloney(40, 1000, 0.05)
-
-            // () -> AbruptTransitionRuns.original(40, 1, 0.025),
-            // () -> AbruptTransitionRuns.original(40, 1, 0.01),
-            // () -> AbruptTransitionRuns.original(40, 1, 0.09),
-            // () -> AbruptTransitionRuns.original(40, 1, 0.0025),
-            // () -> AbruptTransitionRuns.original(40, 1, 0.1),
-            // () -> AbruptTransitionRuns.original(40, 1, 0.5),
-            // todo: 0.0001
-            // () -> AbruptTransitionRuns.original(40, 1, 0.0001),
-            // () -> AbruptTransitionRuns.original(40, 1, 0.9),
-            // () -> AbruptTransitionRuns.original(40, 1, 0)
-            // () -> AbruptTransitionRuns.original(40, 1, 0.05)
-           
-            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05)
-            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.025),
-            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.01),
-            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.09),
-            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.0025)
-            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.1),
-            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.5)
-            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.9)
-            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0)
-
-
-            // () -> AbruptTransitionRuns.original(40, 1, 0.05, 0, new Neighbor4PositionsStrategy(true)),
-            // () -> AbruptTransitionRuns.original(40, 1, 0.05, 0, new Neighbor4PositionsStrategy(false)),
-
-            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05, 0, new Neighbor4PositionsStrategy(true)),
-            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05, 0, new Neighbor4PositionsStrategy(false))
+            () -> PCommIncrease.original(60, 0.05, 1, 7000, 3000, 0.195)
             
-
-            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05, 1),
-            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05, 5),
-            // () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05, 10)
-
-            // todo: 70
-            // () -> AbruptTransitionRuns.originalMoloney(20, 1, 0.05),
-            // () -> AbruptTransitionRuns.originalMoloney(60, 1, 0.05),
-            // () -> AbruptTransitionRuns.originalMoloney(70, 1, 0.05)
-            
-            
-        //    () -> AbruptTransitionRuns.original(40, 1, 0.05),
-        //    () -> AbruptTransitionRuns.original(40, 1, 0.005),
-        //    () -> ContinuousPCommTransition.original(40, 1, 0.98,0.05),
-        //    () -> ContinuousPCommTransition.original(40, 1, 0.5,0.005),
-        //    () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05)
-        
-        //    () -> ContinuousPCommTransition.originalMoloney(40, 1, 0.5, 0.05),
-        //    () -> AbruptTransitionRuns.original(40, 1, 0.05),
-        //    () -> AbruptTransitionRuns.original(40, 1, 0.005)
-        //    () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05),
-        //    () -> ContinuousPCommTransition.original(20, 1, 0.5,0.05)
-        //    () -> ContinuousPCommTransition.original(60, 1, 0.5,0.05)
-
-        //    () -> AbruptTransitionRuns.originalMoloney(40, 1, 0.05),
-        //    () -> ContinuousPCommTransition.originalMoloney(40, 1)
-
-            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05, 80000, 200000)
-            // () -> ContinuousPCommTransition.original(20, 1, 0.5,0.05, 80000, 200000)
-
-            // () -> ContinuousPCommTransition.original(40, 5, 0.5,0.05, 80000, 200000),
-            // () -> ContinuousPCommTransition.original(40, 1000, 0.5,0.05, 80000, 200000)
-
-            // todo:
-            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.005, 80000, 200000),
-            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.1, 80000, 200000)
-
-            // () -> ContinuousPCommTransition.original(20, 1, 0.5,0.05, 80000, 200000),
-            // () -> ContinuousPCommTransition.original(30, 1, 0.5,0.05, 80000, 200000),
-
-            // () -> ContinuousPCommTransition.original(40, 5, 0.5,0.05, 80000, 200000),
-            // () -> ContinuousPCommTransition.original(40, 1000, 0.5,0.05, 80000, 200000),
-
-            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0, 80000, 200000),
-            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.005, 80000, 200000)
-            // () -> ContinuousPCommTransition.original(60, 1, 0.5,0.05, 60000, 200000)
-
-            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05, 80000, 200000, new Neighbor4PositionsStrategy(true)),
-            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05, 80000, 200000, new Neighbor4PositionsStrategy(false))
-            
-            // () -> ContinuousPCommTransition.originalMoloney(40, 1, 0.5,0.05, 80000, 200000)
-
-            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05, 80000, 200000, new Neighbor4PositionsStrategy(false))
-
-            // () -> ContinuousPCommTransition.originalMoloney(60, 1, 0.5,0.005, 60000, 200000)
-            // () -> ContinuousPCommTransition.originalMoloney(60, 1, 0.5,0.005, 60000, 200000)
-
-            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05, 80000, 200000, 1),
-            // () -> ContinuousPCommTransition.original(40, 1, 0.5,0.05, 80000, 200000,5)
             );
 
         for (Runnable task : simulationTasks) {
