@@ -148,11 +148,29 @@ public class SimulationStats {
     }
 
     private boolean shouldSaveMaps(int iteration, double pCommunication) {
-        return iterationsToSaveMaps.contains(iteration) ||
-        pCommunicationsToSaveMaps
-        .stream()
-        .anyMatch((pComm) -> pCommunication >= pComm);
+        boolean isScheduledSave = iterationsToSaveMaps.contains(iteration) ||
+            pCommunicationsToSaveMaps.stream().anyMatch((pComm) -> pCommunication >= pComm);
+    
+        boolean isExtremeDrop = false;
+        if (!learningAbilityLanguageRI.isEmpty()) {
+            double currentRiScore = learningAbilityLanguageRI.get(learningAbilityLanguageRI.size() - 1);
+            double previousRiScore = learningAbilityLanguageRI.size() > 1
+                ? learningAbilityLanguageRI.get(learningAbilityLanguageRI.size() - 2)
+                : currentRiScore;
+    
+            double dropPercentage = ((previousRiScore - currentRiScore) / previousRiScore) * 100;
+            isExtremeDrop = dropPercentage > 20;
+        }
+    
+        return isScheduledSave || isExtremeDrop;
     }
+
+    // private boolean shouldSaveMaps(int iteration, double pCommunication) {
+    //     return iterationsToSaveMaps.contains(iteration) ||
+    //     pCommunicationsToSaveMaps
+    //     .stream()
+    //     .anyMatch((pComm) -> pCommunication >= pComm);
+    // }
 
     private void recordCommonWorldStats(World world) {
         World.Stats stats = world.getStats();
