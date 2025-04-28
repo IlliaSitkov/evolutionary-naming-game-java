@@ -291,7 +291,7 @@ public class SimulationStats {
     }
 
     public double getAvgSuccessRate() {
-        return successRates.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+        return successRates.stream().filter((d) -> d != null).mapToDouble(Double::doubleValue).average().orElse(0);
     }
 
     

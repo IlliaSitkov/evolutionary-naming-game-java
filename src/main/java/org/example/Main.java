@@ -34,7 +34,7 @@ public class Main {
     public static void main(String[] args) {
         // runSimulationsInParallel();
 
-        PCommIncrease.original(60, 0.05, 1, 7000, 3000, 0.195);
+        PCommIncrease.original(40, 0.005, 1, 10000, 5000, 0.0, 0.1);
     }
 
     public static void runSimulationsInParallel() {
