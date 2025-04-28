@@ -29,15 +29,19 @@ public class PCommIncrease {
 
     public static final String folder = "p_comm_increase";
 
+    public static void original(int L, double A, int N, int iterationsPerStep, int nSkipIterations, double minPComm, double maxPComm) {
+        runPCommIncreaseSimulations(L, A, N, false, iterationsPerStep, nSkipIterations, maxPComm, minPComm);
+    }
+
     public static void original(int L, double A, int N, int iterationsPerStep, int nSkipIterations, double maxPComm) {
-        runPCommIncreaseSimulations(L, A, N, false, iterationsPerStep, nSkipIterations, maxPComm);
+        runPCommIncreaseSimulations(L, A, N, false, iterationsPerStep, nSkipIterations, maxPComm, 0.11);
     }
     
     public static void originalMoloney(int L, double A, int N, int iterationsPerStep, int nSkipIterations, double maxPComm) {
-        runPCommIncreaseSimulations(L, A, N, true, iterationsPerStep, nSkipIterations, maxPComm);
+        runPCommIncreaseSimulations(L, A, N, true, iterationsPerStep, nSkipIterations, maxPComm, 0.11);
     }
 
-    public static void runPCommIncreaseSimulations(int L, double A, int N, boolean moloneyImpl, int iterationsPerStep, int nSkipIterations, double maxPComm) {
+    public static void runPCommIncreaseSimulations(int L, double A, int N, boolean moloneyImpl, int iterationsPerStep, int nSkipIterations, double maxPComm, double minPComm) {
         maxPComm += 0.0001;
         VarConfig varConfig = new VarConfig(Map.of(
                 ConfigKey.T, iterationsPerStep,
@@ -69,7 +73,6 @@ public class PCommIncrease {
         //         0.22, 0.23, 0.24, 0.25, 0.26, 0.27);
         // List<Double> pCommunicationValues = List.of(0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19);
 
-        double minPComm = 0.11;
         List<Double> pCommunicationValues = new ArrayList<>();
         for (double i = minPComm; i <= maxPComm; i += 0.01) {
             pCommunicationValues.add(Math.round(i * 100.0) / 100.0);
