@@ -28,12 +28,15 @@ public class PCommDecrease {
 
   public static final String folder = "p_comm_decrease";
 
-  public static void controlledWorld(int L) {
-    String folder = PCommDecrease.folder + "/controlled_world/L=" + L + "/" + new Date().getTime();
-    int nSkipIterations = 1000;
+  public static void controlledWorld(int L, int N, int nSkipIterations, int nIterationsPerStep, double minPComm, double maxPComm) {
+    String folder = RunUtils.makePath("p_comm_decrease", "/", "controlled_world", "/", "L", L, "/", new Date().getTime());
     
     VarConfig varConfig = new VarConfig(Map.of(
-        ConfigKey.T, 3000, ConfigKey.L, L));
+        ConfigKey.T, nIterationsPerStep,
+        ConfigKey.N, N,
+        ConfigKey.L, L,
+        ConfigKey.SKIP_ITERATIONS, nSkipIterations
+        ));
 
     StrategyConfig strategyConfig = new StrategyConfig(
         null,
@@ -50,10 +53,13 @@ public class PCommDecrease {
 
     Simulation simulation = new Simulation(null, varConfig, strategyConfig);
 
-    IOUtils.saveSimulationConfig(folder, simulation);
+    maxPComm += 0.0001;
+    List<Double> pCommunicationValues = new ArrayList<>();
+    for (double i = minPComm; i <= maxPComm; i += 0.01) {
+        pCommunicationValues.add(Math.round(i * 100.0) / 100.0);
+    }
+    pCommunicationValues = pCommunicationValues.reversed();
 
-    List<Double> pCommunicationValues = List.of(0.27, 0.26, 0.25, 0.24, 0.23, 0.22, 0.21, 0.2, 0.19, 0.18, 0.17, 0.16,
-        0.15, 0.14, 0.13, 0.12, 0.11);
     List<Double> avgSuccessRates = new ArrayList<>();
     List<Double> avgLearningAbilities = new ArrayList<>();
 
@@ -84,6 +90,8 @@ public class PCommDecrease {
       IOUtils.exportToJson(avgSuccessRate, "out/" + folder + "/s_rate_pComm_" + pComm + ".json");
     }
 
+    IOUtils.saveSimulationConfig(folder, simulation);
+
     simulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgLearningAbilities, "l_ab_over_p_comm_avg",
         "P_Communication", "Learning Ability", "Learning Ability", 0.0, 1.2, true);
     simulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgSuccessRates, "s_rate_over_p_comm_avg",
@@ -97,14 +105,17 @@ public class PCommDecrease {
 
   public static void original(int L, int N, int nSkipIterations, int nIterationsPerStep, double minPComm, double maxPComm) {
 
+    int preSimulationStepsNumber = 10000;
+    double preSimulationPComm = 0.65;
+
     VarConfig varConfig = new VarConfig(Map.of(
-        ConfigKey.T, 10000,
+        ConfigKey.T, preSimulationStepsNumber,
         ConfigKey.L, L,
         ConfigKey.N, N
         ));
 
     StrategyConfig strategyConfig = new StrategyConfig(
-        new ConstantPCommunicationStrategy(0.6),
+        new ConstantPCommunicationStrategy(preSimulationPComm),
         new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
         new RandomLAbInheritanceStrategy(),
         new ConstantLAbAgingStrategy(),
@@ -126,9 +137,6 @@ public class PCommDecrease {
     preSimulationPlots.saveSimulationStats(simulation.getSimulationStats(), strategyConfig.getPCommunicationStrategy(),
         varConfig.T());
     varConfig.setT(nIterationsPerStep);
-
-    // List<Double> pCommunicationValues = List.of(0.27, 0.26, 0.25, 0.24, 0.23, 0.22, 0.21, 0.2, 0.19, 0.18, 0.17, 0.16,
-    //     0.15, 0.14, 0.13, 0.12, 0.11);
 
     maxPComm += 0.0001;
     List<Double> pCommunicationValues = new ArrayList<>();

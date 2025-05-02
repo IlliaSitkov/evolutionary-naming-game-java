@@ -39,8 +39,9 @@ public class Main {
         ExecutorService executorService = Executors.newFixedThreadPool(16);
 
         List<Runnable> simulationTasks = List.of(
-            () -> PCommIncrease.original(30, 0.05, 1, 8000, 3000, 0.07, 0.2),
-            () -> PCommDecrease.original(40, 1, 2000, 5000, 0.05, 0.2)
+            () -> PCommDecrease.original(30, 1, 3000, 8000, 0.01, 0.15),
+            () -> PCommDecrease.original(40, 1, 3000, 8000, 0.01, 0.15),
+            () -> PCommDecrease.controlledWorld(40, 1, 3000, 8000, 0.01, 0.15)
         );
 
         for (Runnable task : simulationTasks) {
