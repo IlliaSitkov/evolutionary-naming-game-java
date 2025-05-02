@@ -71,6 +71,10 @@ public class SimulationStats {
     private final List<Double> learningAbilityLanguageARI = new ArrayList<>();
     @Getter
     private final List<Double> learningAbilityLanguageRI = new ArrayList<>();
+    @Getter
+    private final List<Integer> nLangClusters = new ArrayList<>();
+    @Getter
+    private final List<Integer> nLAbClusters = new ArrayList<>();
 
     @Getter
     private final Map<String, double[][]> learningAbilityMaps = new HashMap<>();
@@ -162,7 +166,7 @@ public class SimulationStats {
             isExtremeDrop = dropPercentage > 20;
         }
     
-        return isScheduledSave || isExtremeDrop;
+        return isScheduledSave || isExtremeDrop; // || iteration % 50 == 0;
     }
 
     // private boolean shouldSaveMaps(int iteration, double pCommunication) {
@@ -225,6 +229,9 @@ public class SimulationStats {
 
         learningAbilityLanguageARI.add(ariScore);
         learningAbilityLanguageRI.add(riScore);
+
+        nLAbClusters.add(nextLearningAbilityId);
+        nLangClusters.add(nextLanguageId);
     }
 
     public static List<Double> getPCommunicationOverIterations(PCommunicationStrategy strategy, int nIters) {

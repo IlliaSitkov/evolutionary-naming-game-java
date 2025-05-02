@@ -32,18 +32,16 @@ import org.example.utils.Timer;
 
 public class Main {
     public static void main(String[] args) {
-        // runSimulationsInParallel();
-
-        PCommIncrease.original(40, 0.005, 1, 10000, 5000, 0.0, 0.1);
+        runSimulationsInParallel();
     }
 
     public static void runSimulationsInParallel() {
         ExecutorService executorService = Executors.newFixedThreadPool(16);
 
         List<Runnable> simulationTasks = List.of(
-            () -> PCommIncrease.original(60, 0.05, 1, 7000, 3000, 0.195)
-            
-            );
+            () -> PCommIncrease.original(30, 0.05, 1, 8000, 3000, 0.07, 0.2),
+            () -> PCommDecrease.original(40, 1, 2000, 5000, 0.05, 0.2)
+        );
 
         for (Runnable task : simulationTasks) {
             executorService.submit(task);

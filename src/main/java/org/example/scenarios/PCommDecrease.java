@@ -98,13 +98,13 @@ public class PCommDecrease {
   public static void original(int L, int N, int nSkipIterations, int nIterationsPerStep, double minPComm, double maxPComm) {
 
     VarConfig varConfig = new VarConfig(Map.of(
-        ConfigKey.T, 30000,
+        ConfigKey.T, 10000,
         ConfigKey.L, L,
         ConfigKey.N, N
         ));
 
     StrategyConfig strategyConfig = new StrategyConfig(
-        new ConstantPCommunicationStrategy(0.5),
+        new ConstantPCommunicationStrategy(0.6),
         new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
         new RandomLAbInheritanceStrategy(),
         new ConstantLAbAgingStrategy(),
@@ -120,8 +120,8 @@ public class PCommDecrease {
     Simulation simulation = new Simulation(new SimulationStats(List.of(4000, 4500, 4999, 10000, 13000, 20000, 29000, 29999), List.of()), varConfig,
         strategyConfig);
 
-    IOUtils.saveSimulationConfig(preSimulationStatsFolder, simulation);
     simulation.start();
+    IOUtils.saveSimulationConfig(preSimulationStatsFolder, simulation);
 
     preSimulationPlots.saveSimulationStats(simulation.getSimulationStats(), strategyConfig.getPCommunicationStrategy(),
         varConfig.T());
@@ -130,6 +130,7 @@ public class PCommDecrease {
     // List<Double> pCommunicationValues = List.of(0.27, 0.26, 0.25, 0.24, 0.23, 0.22, 0.21, 0.2, 0.19, 0.18, 0.17, 0.16,
     //     0.15, 0.14, 0.13, 0.12, 0.11);
 
+    maxPComm += 0.0001;
     List<Double> pCommunicationValues = new ArrayList<>();
     for (double i = minPComm; i <= maxPComm; i += 0.01) {
         pCommunicationValues.add(Math.round(i * 100.0) / 100.0);

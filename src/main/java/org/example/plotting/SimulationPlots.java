@@ -308,6 +308,12 @@ public class SimulationPlots {
         plotStat(simulationStats.getLearningAbilityLanguageRI(), "l_ab_lang_ri", "Learning Ability - Language RI",
                 "Learning Ability - Language RI", 0, 0.0, 1.05);
 
+        plotStat(simulationStats.getNLangClusters(), "n_lang_clusters", "Language Clusters Number",
+                "Language Clusters Number", 0);
+        
+        plotStat(simulationStats.getNLAbClusters(), "n_l_ab_clusters", "Learning Ability Clusters Number",
+                "Learning Ability Clusters Number", 0);
+
         plotTwoSeriesOverThird(
             pCommunicationOverIterations,
             simulationStats.getLearningAbilityLanguageARI(),

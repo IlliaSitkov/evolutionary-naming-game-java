@@ -88,7 +88,9 @@ public class RunUtils {
         new Object[] { "NewWordsMut", stats.getNNewWordsMutation() },
         new Object[] { "WordsRmvd", stats.getNWordsRemoved() },
         new Object[] { "LAbLangARI", stats.getLearningAbilityLanguageARI() },
-        new Object[] { "LAbLangRI", stats.getLearningAbilityLanguageRI() }
+        new Object[] { "LAbLangRI", stats.getLearningAbilityLanguageRI() },
+        new Object[] { "NLAbClusters", stats.getNLAbClusters() },
+        new Object[] { "NLangClusters", stats.getNLangClusters() }
         ));
   }
 
