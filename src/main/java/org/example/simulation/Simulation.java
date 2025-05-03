@@ -18,6 +18,7 @@ public class Simulation {
     @Getter
     private final World world;
     @Setter
+    @Getter
     private PCommunicationStrategy pCommunicationStrategy;
     @Setter
     @Getter

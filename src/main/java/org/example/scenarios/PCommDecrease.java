@@ -95,6 +95,9 @@ public class PCommDecrease {
 
       IOUtils.exportToJson(avgLearningAbility, "out/" + folder + "/l_ab_pComm_" + pComm + ".json");
       IOUtils.exportToJson(avgSuccessRate, "out/" + folder + "/s_rate_pComm_" + pComm + ".json");
+      
+      List<Double> pCommOverIterations = SimulationStats.getPCommunicationOverIterations(strategy, varConfig.T(), true);
+      RunUtils.saveStats(folder + "/pComm_" + pComm + "_run_stats.csv", simulationStats, pCommOverIterations);
     }
 
     IOUtils.saveSimulationConfig(folder, simulation);
@@ -148,6 +151,9 @@ public class PCommDecrease {
     simulation.start();
     IOUtils.saveSimulationConfig(preSimulationStatsFolder, simulation);
 
+    List<Double> pCommOverIterations = SimulationStats.getPCommunicationOverIterations(simulation.getPCommunicationStrategy(), varConfig.T(), true);
+    RunUtils.saveStats(preSimulationStatsFolder + "/run_stats.csv", simulation.getSimulationStats(), pCommOverIterations);
+
     preSimulationPlots.saveSimulationStats(simulation.getSimulationStats(), strategyConfig.getPCommunicationStrategy(),
         varConfig.T());
     varConfig.setT(nIterationsPerStep);
@@ -192,7 +198,12 @@ public class PCommDecrease {
 
       IOUtils.exportToJson(avgLearningAbility, "out/" + folder + "/l_ab_pComm_" + pComm + ".json");
       IOUtils.exportToJson(avgSuccessRate, "out/" + folder + "/s_rate_pComm_" + pComm + ".json");
+
+      List<Double> pCommOverIterationsSingleStep = SimulationStats.getPCommunicationOverIterations(strategy, varConfig.T(), true);
+      RunUtils.saveStats(folder + "/pComm_" + pComm + "_run_stats.csv", simulationStats, pCommOverIterationsSingleStep);
     }
+
+    IOUtils.saveSimulationConfig(folder, simulation);
 
     simulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgLearningAbilities, "l_ab_over_p_comm_avg",
         "P_Communication", "Learning Ability", "Learning Ability", null, null, true);
