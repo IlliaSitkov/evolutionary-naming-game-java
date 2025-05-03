@@ -32,7 +32,9 @@ import org.example.utils.Timer;
 
 public class Main {
     public static void main(String[] args) {
-        runSimulationsInParallel();
+        // runSimulationsInParallel();
+
+        PCommDecrease.original(60, 1, 0.05, 3000, 7000, 0.01, 0.15);
     }
 
     public static void runSimulationsInParallel() {
@@ -45,8 +47,8 @@ public class Main {
             // () -> PCommDecrease.controlledWorld(40, 1, 3000, 8000, 0.01, 0.15)
 
 
-            () -> PCommDecrease.original(40, 5, 3000, 8000, 0.01, 0.15),
-            () -> PCommDecrease.original(40, 1000, 3000, 8000, 0.01, 0.15)
+            () -> PCommDecrease.original(40, 5, 0.05, 3000, 8000, 0.01, 0.15),
+            () -> PCommDecrease.original(40, 1000, 0.05, 3000, 8000, 0.01, 0.15)
             // () -> PCommDecrease.controlledWorld(40, 5, 3000, 8000, 0.01, 0.15)
 
         );

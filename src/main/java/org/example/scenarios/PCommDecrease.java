@@ -29,7 +29,7 @@ public class PCommDecrease {
 
   public static final String folder = "p_comm_decrease";
 
-  public static void controlledWorld(int L, int N, int nSkipIterations, int nIterationsPerStep, double minPComm, double maxPComm) {
+  public static void controlledWorld(int L, int N, double A, int nSkipIterations, int nIterationsPerStep, double minPComm, double maxPComm) {
     try {
         Thread.sleep(new Random().nextInt(2000));
     } catch (InterruptedException e) {
@@ -41,7 +41,8 @@ public class PCommDecrease {
         ConfigKey.T, nIterationsPerStep,
         ConfigKey.N, N,
         ConfigKey.L, L,
-        ConfigKey.SKIP_ITERATIONS, nSkipIterations
+        ConfigKey.SKIP_ITERATIONS, nSkipIterations,
+        ConfigKey.A, A
         ));
 
     StrategyConfig strategyConfig = new StrategyConfig(
@@ -109,7 +110,7 @@ public class PCommDecrease {
     timer.stop("All simulations done");
   }
 
-  public static void original(int L, int N, int nSkipIterations, int nIterationsPerStep, double minPComm, double maxPComm) {
+  public static void original(int L, int N, double A, int nSkipIterations, int nIterationsPerStep, double minPComm, double maxPComm) {
 
     int preSimulationStepsNumber = 10000;
     double preSimulationPComm = 0.65;
@@ -118,7 +119,8 @@ public class PCommDecrease {
         ConfigKey.T, preSimulationStepsNumber,
         ConfigKey.L, L,
         ConfigKey.N, N,
-        ConfigKey.SKIP_ITERATIONS, nSkipIterations
+        ConfigKey.SKIP_ITERATIONS, nSkipIterations,
+        ConfigKey.A, A
         ));
 
     StrategyConfig strategyConfig = new StrategyConfig(
