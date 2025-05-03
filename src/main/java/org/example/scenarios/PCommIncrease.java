@@ -30,18 +30,18 @@ public class PCommIncrease {
     public static final String folder = "p_comm_increase";
 
     public static void original(int L, double A, int N, int iterationsPerStep, int nSkipIterations, double minPComm, double maxPComm) {
-        runPCommIncreaseSimulations(L, A, N, false, iterationsPerStep, nSkipIterations, maxPComm, minPComm);
+        original(L, A, N, false, iterationsPerStep, nSkipIterations, maxPComm, minPComm);
     }
 
     public static void original(int L, double A, int N, int iterationsPerStep, int nSkipIterations, double maxPComm) {
-        runPCommIncreaseSimulations(L, A, N, false, iterationsPerStep, nSkipIterations, maxPComm, 0.11);
+        original(L, A, N, false, iterationsPerStep, nSkipIterations, maxPComm, 0.11);
     }
     
     public static void originalMoloney(int L, double A, int N, int iterationsPerStep, int nSkipIterations, double maxPComm) {
-        runPCommIncreaseSimulations(L, A, N, true, iterationsPerStep, nSkipIterations, maxPComm, 0.11);
+        original(L, A, N, true, iterationsPerStep, nSkipIterations, maxPComm, 0.11);
     }
 
-    public static void runPCommIncreaseSimulations(int L, double A, int N, boolean moloneyImpl, int iterationsPerStep, int nSkipIterations, double maxPComm, double minPComm) {
+    public static void original(int L, double A, int N, boolean moloneyImpl, int iterationsPerStep, int nSkipIterations, double maxPComm, double minPComm) {
         maxPComm += 0.0001;
         VarConfig varConfig = new VarConfig(Map.of(
                 ConfigKey.T, iterationsPerStep,
