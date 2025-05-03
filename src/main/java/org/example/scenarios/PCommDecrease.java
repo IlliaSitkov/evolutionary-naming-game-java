@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.example.StrategyConfig;
 import org.example.VarConfig;
@@ -29,6 +30,11 @@ public class PCommDecrease {
   public static final String folder = "p_comm_decrease";
 
   public static void controlledWorld(int L, int N, int nSkipIterations, int nIterationsPerStep, double minPComm, double maxPComm) {
+    try {
+        Thread.sleep(new Random().nextInt(2000));
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
     String folder = RunUtils.makePath("p_comm_decrease", "/", "controlled_world", "/", "L", L, "/", new Date().getTime());
     
     VarConfig varConfig = new VarConfig(Map.of(
@@ -111,7 +117,8 @@ public class PCommDecrease {
     VarConfig varConfig = new VarConfig(Map.of(
         ConfigKey.T, preSimulationStepsNumber,
         ConfigKey.L, L,
-        ConfigKey.N, N
+        ConfigKey.N, N,
+        ConfigKey.SKIP_ITERATIONS, nSkipIterations
         ));
 
     StrategyConfig strategyConfig = new StrategyConfig(
@@ -123,6 +130,11 @@ public class PCommDecrease {
         new UnitWordAcquisitionStrategy(),
         new ProbabilisticEvolutionStrategy());
 
+    try {
+        Thread.sleep(new Random().nextInt(2000));
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
     String folder = RunUtils.makePath("p_comm_decrease", "/", "natural_world", "/", "L", L, "/", new Date().getTime());
     String preSimulationStatsFolder = folder + "/pre-simulation";
     SimulationPlots preSimulationPlots = new SimulationPlots(preSimulationStatsFolder);
