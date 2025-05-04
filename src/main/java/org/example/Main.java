@@ -34,23 +34,13 @@ public class Main {
     public static void main(String[] args) {
         // runSimulationsInParallel();
 
-        PCommDecrease.original(60, 1, 0.05, 3000, 7000, 0.01, 0.15);
+        PCommDecrease.original(60, 1, 0.05, true, 3000, 7000, 0.03, 0.12);
     }
 
     public static void runSimulationsInParallel() {
         ExecutorService executorService = Executors.newFixedThreadPool(16);
 
         List<Runnable> simulationTasks = List.of(
-            // () -> PCommDecrease.original(20, 1, 3000, 8000, 0.01, 0.15),
-            // () -> PCommDecrease.original(30, 1, 3000, 8000, 0.01, 0.15),
-            // () -> PCommDecrease.original(40, 1, 3000, 8000, 0.01, 0.15),
-            // () -> PCommDecrease.controlledWorld(40, 1, 3000, 8000, 0.01, 0.15)
-
-
-            () -> PCommDecrease.original(40, 5, 0.05, 3000, 8000, 0.01, 0.15),
-            () -> PCommDecrease.original(40, 1000, 0.05, 3000, 8000, 0.01, 0.15)
-            // () -> PCommDecrease.controlledWorld(40, 5, 3000, 8000, 0.01, 0.15)
-
         );
 
         for (Runnable task : simulationTasks) {
