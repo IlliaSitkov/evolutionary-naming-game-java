@@ -16,6 +16,7 @@ import org.example.stats.SimulationStats;
 import org.example.strategies.agentInitializer.ControlledAgentInitializer;
 import org.example.strategies.evolution.ProbabilisticEvolutionStrategy;
 import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
+import org.example.strategies.learningAbilityInheritance.MoloneyRandomLAbInheritanceStrategy;
 import org.example.strategies.learningAbilityInheritance.RandomLAbInheritanceStrategy;
 import org.example.strategies.neighborPositions.Neighbor8PositionsStrategy;
 import org.example.strategies.pCommunication.ConstantPCommunicationStrategy;
@@ -113,7 +114,7 @@ public class PCommDecrease {
     timer.stop("All simulations done");
   }
 
-  public static void original(int L, int N, double A, int nSkipIterations, int nIterationsPerStep, double minPComm, double maxPComm) {
+  public static void original(int L, int N, double A, boolean moloneyImpl, int nSkipIterations, int nIterationsPerStep, double minPComm, double maxPComm) {
 
     int preSimulationStepsNumber = 10000;
     double preSimulationPComm = 0.65;
@@ -123,13 +124,14 @@ public class PCommDecrease {
         ConfigKey.L, L,
         ConfigKey.N, N,
         ConfigKey.SKIP_ITERATIONS, nSkipIterations,
-        ConfigKey.A, A
+        ConfigKey.A, A,
+        ConfigKey.REPR_LIPOWSKA, moloneyImpl ? 0 : 1
         ));
 
     StrategyConfig strategyConfig = new StrategyConfig(
         new ConstantPCommunicationStrategy(preSimulationPComm),
         new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-        new RandomLAbInheritanceStrategy(),
+        moloneyImpl ? new MoloneyRandomLAbInheritanceStrategy() : new RandomLAbInheritanceStrategy(),
         new ConstantLAbAgingStrategy(),
         new Neighbor8PositionsStrategy(),
         new UnitWordAcquisitionStrategy(),
@@ -140,7 +142,8 @@ public class PCommDecrease {
     } catch (InterruptedException e) {
         e.printStackTrace();
     }
-    String folder = RunUtils.makePath("p_comm_decrease", "/", "natural_world", "/", "L", L, "/", new Date().getTime());
+    String subfolder = moloneyImpl ? "original_moloney" : "original";
+    String folder = RunUtils.makePath("p_comm_decrease", "/", "natural_world","/", subfolder, "/", "L", L, "/", new Date().getTime());
     String preSimulationStatsFolder = folder + "/pre-simulation";
     SimulationPlots preSimulationPlots = new SimulationPlots(preSimulationStatsFolder);
     SimulationPlots simulationPlots = new SimulationPlots(folder);
