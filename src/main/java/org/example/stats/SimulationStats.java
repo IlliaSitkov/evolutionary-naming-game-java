@@ -263,13 +263,6 @@ public class SimulationStats {
         return sum / list.size();
     }
 
-    // public static Double getDoubleListAvg(List<? extends Number> list) {
-    //     if (list.isEmpty()) {
-    //         return null;
-    //     }
-    //     return list.stream().mapToDouble(Number::doubleValue).sum() / list.size();
-    // }
-
     private void recordWorldLearningAbilities(World world, int iteration, double pCommunication) {
         double[][] learningAbilities = new double[world.getRows()][world.getCols()];
 
