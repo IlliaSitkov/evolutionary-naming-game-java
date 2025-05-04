@@ -49,11 +49,26 @@ public class Lexicon implements Serializable {
     }
 
     public String getTopWord() {
-        return words.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey();
+        shouldNotBeEmpty();
+        String topWord = null;
+        double maxWeight = Double.NEGATIVE_INFINITY;
+    
+        for (Map.Entry<String, Double> entry : words.entrySet()) {
+            if (entry.getValue() > maxWeight) {
+                maxWeight = entry.getValue();
+                topWord = entry.getKey();
+            }
+        }
+    
+        return topWord;
     }
 
     public double getWeightsSum() {
-        return words.values().stream().reduce(0.0, Double::sum);
+        double res = 0.0;
+        for (double d: words.values()) {
+            res += d;
+        }
+        return res;
     }
 
     public boolean isEmpty() {
@@ -88,8 +103,20 @@ public class Lexicon implements Serializable {
 
     private void removeLeastWeightedWord() {
         shouldNotBeEmpty();
-        String leastWeightedWord = words.entrySet().stream().min(Map.Entry.comparingByValue()).get().getKey();
-        words.remove(leastWeightedWord);
+    
+        String leastWeightedWord = null;
+        double minWeight = Double.POSITIVE_INFINITY;
+    
+        for (Map.Entry<String, Double> entry : words.entrySet()) {
+            if (entry.getValue() < minWeight) {
+                minWeight = entry.getValue();
+                leastWeightedWord = entry.getKey();
+            }
+        }
+    
+        if (leastWeightedWord != null) {
+            words.remove(leastWeightedWord);
+        }
     }
 
     public static String generateWord(int size) {

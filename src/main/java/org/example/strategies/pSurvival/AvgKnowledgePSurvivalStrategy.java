@@ -34,7 +34,7 @@ public class AvgKnowledgePSurvivalStrategy implements PSurvivalStrategy, Seriali
     @Override
     public double[] survives(Agent agent, World world) {
         double pSurvival = getSurvivalProbability(
-            world.getWeighedAvgKnowledge(otherAgentsKnowledgeCoefficient, agent.getX(), agent.getY()),
+            world.getWeightedAvgKnowledge(otherAgentsKnowledgeCoefficient, agent.getX(), agent.getY()),
             agent.getAge(),
             agent.getKnowledge());
         double r = new Random().nextDouble();

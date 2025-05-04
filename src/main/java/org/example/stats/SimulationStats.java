@@ -184,7 +184,7 @@ public class SimulationStats {
         avgAges.add(stats.getAvgAge());
         avgKnowledge.add(stats.getAvgKnowledge());
         nAgentsAlive.add(world.getAgents().size());
-        calculateLearningAbilityLanguageCorrelation(world);
+        // calculateLearningAbilityLanguageCorrelation(world);
     }
 
     private void calculateLearningAbilityLanguageCorrelation(World world) {
@@ -254,8 +254,21 @@ public class SimulationStats {
         if (list.isEmpty()) {
             return null;
         }
-        return list.stream().mapToDouble(Number::doubleValue).sum() / list.size();
+    
+        double sum = 0;
+        for (Number number : list) {
+            sum += number.doubleValue();
+        }
+    
+        return sum / list.size();
     }
+
+    // public static Double getDoubleListAvg(List<? extends Number> list) {
+    //     if (list.isEmpty()) {
+    //         return null;
+    //     }
+    //     return list.stream().mapToDouble(Number::doubleValue).sum() / list.size();
+    // }
 
     private void recordWorldLearningAbilities(World world, int iteration, double pCommunication) {
         double[][] learningAbilities = new double[world.getRows()][world.getCols()];

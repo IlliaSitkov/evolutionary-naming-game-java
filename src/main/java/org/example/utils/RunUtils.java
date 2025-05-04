@@ -116,6 +116,10 @@ public class RunUtils {
 
   public static void writeSeriesStats(List<Double> data, String fileName) {
     double[] values = data.stream().mapToDouble(i -> i).toArray();
+    if (values.length == 0) {
+      return;
+    }
+    
     double mean = MathEx.mean(values);
     double median = MathEx.median(values);
     double stdDev = MathEx.stdev(values);
