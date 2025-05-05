@@ -12,6 +12,7 @@ import org.example.strategies.agentInitializer.LimitedLAbAgentInitializer;
 import org.example.strategies.evolution.ProbabilisticEvolutionStrategy;
 import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.MoloneyRandomLAbInheritanceStrategy;
+import org.example.strategies.learningAbilityInheritance.MutatedLAbInheritanceStrategy;
 import org.example.strategies.learningAbilityInheritance.RandomLAbInheritanceStrategy;
 import org.example.strategies.neighborPositions.Neighbor8PositionsStrategy;
 import org.example.strategies.neighborPositions.NeighborPositionsStrategy;
@@ -91,6 +92,36 @@ public class ContinuousPCommTransition {
                 SimulationStats simulationStats = new SimulationStats(
                                 List.of(varConfig.T() - 1),
                                 List.of(0.1, 0.12, 0.13, 0.15, 0.18, 0.22, 0.25, 0.28, 0.4, 0.49, 0.5));
+
+                Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
+
+                RunUtils.runSimulation(simulation, folder);
+        }
+
+
+        public static void mutatedLAb(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, double stdDev) {
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/mutated_l_ab/L", L, "N", N);
+                VarConfig varConfig = new VarConfig(Map.of(
+                                ConfigKey.L, L,
+                                ConfigKey.A, A,
+                                ConfigKey.T, nSteps,
+                                ConfigKey.N, N));
+                StrategyConfig strategyConfig = new StrategyConfig(
+                                new InterpolatedPCommunicationStrategy(0.1, finalPComm, nStepsSimulated),
+                                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
+                                new MutatedLAbInheritanceStrategy(stdDev),
+                                new ConstantLAbAgingStrategy(),
+                                new Neighbor8PositionsStrategy(),
+                                new UnitWordAcquisitionStrategy(),
+                                new ProbabilisticEvolutionStrategy(),
+                                new LimitedLAbAgentInitializer(0.1));
+
+                SimulationStats simulationStats = new SimulationStats(
+                                List.of(varConfig.T() - 1),
+                                List.of(0.1, 0.11, 0.12, 0.13, 0.15, 0.16, 0.17, 0.18,
+                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
+                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
+                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5));
 
                 Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 
