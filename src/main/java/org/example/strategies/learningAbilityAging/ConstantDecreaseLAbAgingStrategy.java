@@ -21,7 +21,7 @@ public class ConstantDecreaseLAbAgingStrategy  implements LAbAgingStrategy, Seri
         if (agent.getAge() + 1 < startAge) {
             return agent.getLearningAbility();
         }
-        return agent.getLearningAbility() - 0.01 * agent.getLearningAbilityAtBirth();
+        return Math.max(0, agent.getLearningAbility() - 0.05 * agent.getLearningAbilityAtBirth());
     }
     
 }
