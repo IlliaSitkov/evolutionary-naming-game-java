@@ -53,15 +53,15 @@ public class Main {
             // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.05, 100000, 100000, 0.025)
 
 
-            // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.05, 100000, 100000, 1),
-            // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.05, 100000, 100000, 2),
-            // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.05, 100000, 100000, 3),
-            // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.05, 100000, 100000, 4),
-            // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.05, 100000, 100000, 5),
+            () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 1),
+            () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 2)
+            // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 3),
+            // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 4),
+            // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 5)
 
-            () -> PCommIncrease.mutatedLAb(40, 0.05, 1, 10000, 3000,  0.14, 0.01, 0.05),
-            () -> PCommIncrease.mutatedLAb(40, 0.05, 1, 10000, 3000,  0.14, 0.01, 5),
-            () -> PCommIncrease.mutatedLAb(40, 0.05, 1, 10000, 3000,  0.18, 0.08, 0.01)
+            // () -> PCommIncrease.mutatedLAb(40, 0.05, 1, 10000, 3000,  0.14, 0.01, 0.05),
+            // () -> PCommIncrease.mutatedLAb(40, 0.05, 1, 10000, 3000,  0.14, 0.01, 5),
+            // () -> PCommIncrease.mutatedLAb(40, 0.05, 1, 10000, 3000,  0.18, 0.08, 0.01)
         );
 
         for (Runnable task : simulationTasks) {
