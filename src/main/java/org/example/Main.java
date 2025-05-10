@@ -53,8 +53,8 @@ public class Main {
             // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.05, 100000, 100000, 0.025)
 
 
-            () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 1),
-            () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 2)
+            // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 1),
+            // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 2)
             // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 3),
             // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 4),
             // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 5)
@@ -62,7 +62,27 @@ public class Main {
             // () -> PCommIncrease.mutatedLAb(40, 0.05, 1, 10000, 3000,  0.14, 0.01, 0.05),
             // () -> PCommIncrease.mutatedLAb(40, 0.05, 1, 10000, 3000,  0.14, 0.01, 5),
             // () -> PCommIncrease.mutatedLAb(40, 0.05, 1, 10000, 3000,  0.18, 0.08, 0.01)
+
+            // () -> ContinuousPCommTransition.moloneyPSurv411(40, 1,0.5,0.005,100000,100000),
+            // () -> ContinuousPCommTransition.moloneyPSurv411(40, 1,0.5,0.005,100000,100000),
+            // () -> ContinuousPCommTransition.moloneyPSurv411(40, 1,0.5,0.005,100000,100000),
+            // () -> ContinuousPCommTransition.moloneyPSurv411(40, 1,0.5,0.005,100000,100000),
+
+            // () -> ContinuousPCommTransition.newPSurv(40, 1,0.5,0.005,100000,100000, 0.9),
+            // () -> ContinuousPCommTransition.newPSurv(40, 1,0.5,0.005,100000,100000, 1.0)
+            // () -> ContinuousPCommTransition.newPSurv(40, 1,0.5,0.005,100000,100000, 0.75),
+            // () -> ContinuousPCommTransition.newPSurv(40, 1,0.5,0.005,200000,200000, 0.25),
+            // () -> ContinuousPCommTransition.newPSurv(40, 1,0.5,0.005,100000,100000, 0),
+
+            // () -> ContinuousPCommTransition.newPSurv(40, 1,0.5,0.05,100000,100000, 0.5),
+            // () -> ContinuousPCommTransition.newPSurv(40, 1,0.5,0.05,100000,100000, 0.75),
+            // () -> ContinuousPCommTransition.newPSurv(40, 1,0.5,0.005,100000,100000, 0.25),
+            // () -> ContinuousPCommTransition.newPSurv(40, 1,0.5,0.005,100000,100000, 0.1),
+            // () -> ContinuousPCommTransition.newPSurv(40, 1,0.5,0.005,100000,100000, 0.01)
+            // () -> ContinuousPCommTransition.newPSurv(40, 1,0.5,0.05,100000,100000, 0)
         );
+
+
 
         for (Runnable task : simulationTasks) {
             executorService.submit(task);

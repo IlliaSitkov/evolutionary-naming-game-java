@@ -164,7 +164,7 @@ public class Agent implements Serializable {
     }
 
     public double getSuccessRate() {
-        return nInitedCommunications == 0 ? 0 : (double) nSuccessfulCommunications / nInitedCommunications;
+        return nInitedCommunications == 0 ? 1 : (double) nSuccessfulCommunications / nInitedCommunications;
     }
 
     public void setPosition(int x, int y) {
