@@ -60,7 +60,7 @@ public class Runs {
     );
 
     private final List<WordAcquisitionStrategy> wordAcquisitionStrategies = List.of(
-        new LAbWordAquisitionStrategy(),
+        // new LAbWordAquisitionStrategy(),
         new UnitWordAcquisitionStrategy()
     );
 

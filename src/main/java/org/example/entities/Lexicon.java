@@ -1,7 +1,9 @@
 package org.example.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -37,6 +39,10 @@ public class Lexicon implements Serializable {
     public String getRandomWord() {
         shouldNotBeEmpty();
         double totalWeight = getWeightsSum();
+        if (totalWeight == 0) {
+            List<String> keys = new ArrayList<>(words.keySet());
+            return keys.get(new Random().nextInt(keys.size()));
+        }
         double randVal = new Random().nextDouble(totalWeight);
         double cumulativeWeight = 0;
         for (Map.Entry<String, Double> entry : words.entrySet()) {
@@ -52,20 +58,20 @@ public class Lexicon implements Serializable {
         shouldNotBeEmpty();
         String topWord = null;
         double maxWeight = Double.NEGATIVE_INFINITY;
-    
+
         for (Map.Entry<String, Double> entry : words.entrySet()) {
             if (entry.getValue() > maxWeight) {
                 maxWeight = entry.getValue();
                 topWord = entry.getKey();
             }
         }
-    
+
         return topWord;
     }
 
     public double getWeightsSum() {
         double res = 0.0;
-        for (double d: words.values()) {
+        for (double d : words.values()) {
             res += d;
         }
         return res;
@@ -103,17 +109,17 @@ public class Lexicon implements Serializable {
 
     private void removeLeastWeightedWord() {
         shouldNotBeEmpty();
-    
+
         String leastWeightedWord = null;
         double minWeight = Double.POSITIVE_INFINITY;
-    
+
         for (Map.Entry<String, Double> entry : words.entrySet()) {
             if (entry.getValue() < minWeight) {
                 minWeight = entry.getValue();
                 leastWeightedWord = entry.getKey();
             }
         }
-    
+
         if (leastWeightedWord != null) {
             words.remove(leastWeightedWord);
         }

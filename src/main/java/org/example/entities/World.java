@@ -49,6 +49,10 @@ public class World implements Serializable {
 
     public void addAgent(int x, int y, Agent agent) {
         shouldBeEmpty(x, y);
+        setAgent(x, y, agent);
+    }
+
+    public void setAgent(int x, int y, Agent agent) {
         agent.setPosition(x, y);
         agentsGrid.put(new Position(x, y), agent);
     }
@@ -92,6 +96,12 @@ public class World implements Serializable {
     public Agent getRandomAgent() {
         List<Agent> agentList = new ArrayList<>(agentsGrid.values());
         return agentList.get(ThreadLocalRandom.current().nextInt(agentList.size()));
+    }
+
+    public List<Agent> getRandomNAgents(int n) {
+        List<Agent> list = new ArrayList<>(agentsGrid.values());
+        Collections.shuffle(list);
+        return list.subList(0, Math.min(n, list.size()));
     }
 
     public void increaseAgentsAge() {
@@ -163,6 +173,17 @@ public class World implements Serializable {
         return rows * cols;
     }
 
+    public void clearWorld() {
+        agentsGrid.clear();
+    }
+
+    public void takeAgentsFrom(World world, int nAgents) {
+        List<Agent> agents = world.getRandomNAgents(nAgents);
+        for (Agent agent: agents) {
+            setAgent(agent.getX(), agent.getY(), agent);
+        }
+    }
+
     private void shouldBeEmpty(int x, int y) {
         if (agentsGrid.containsKey(new Position(x, y))) {
             throw new IllegalArgumentException("Position (" + x + ", " + y + ") is already occupied");
@@ -191,6 +212,7 @@ public class World implements Serializable {
 
     public static World mergeWorlds(World world1, World world2, VarConfig varConfig, StrategyConfig strategyConfig) {
         World mergedWorld = new World(varConfig, strategyConfig);
+        mergedWorld.clearWorld();
         for (Agent agent : world1.getAgents()) {
             mergedWorld.addAgent(agent.getX(), agent.getY(), agent);
         }

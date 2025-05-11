@@ -26,6 +26,10 @@ public class RunUtils {
   }
 
   public static void runSimulation(Simulation simulation, String folder) {
+    runSimulation(simulation, folder, false);
+  }
+
+  public static void runSimulation(Simulation simulation, String folder, boolean saveToFolder) {
     Timer timer = new Timer();
     timer.start();
 
@@ -34,7 +38,7 @@ public class RunUtils {
     
     timer.stop("Simulation ended");
 
-    folder = makePath(folder, "/", new Date().getTime());
+    folder = saveToFolder ? folder : makePath(folder, "/", new Date().getTime());
     
     SimulationPlots simulationPlots = new SimulationPlots(folder);
     SimulationStats stats = simulation.getSimulationStats();

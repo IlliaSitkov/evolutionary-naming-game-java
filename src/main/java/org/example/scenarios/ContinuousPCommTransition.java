@@ -9,6 +9,7 @@ import org.example.VarConfig.ConfigKey;
 import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
 import org.example.strategies.agentInitializer.LimitedLAbAgentInitializer;
+import org.example.strategies.agentInitializer.RandomAgentInitializer;
 import org.example.strategies.evolution.ProbabilisticEvolutionStrategy;
 import org.example.strategies.learningAbilityAging.ConstantDecreaseLAbAgingStrategy;
 import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
@@ -21,6 +22,7 @@ import org.example.strategies.pCommunication.ContinuousIncreasePCommunicationStr
 import org.example.strategies.pCommunication.InterpolatedPCommunicationStrategy;
 import org.example.strategies.pSurvival.AvgKnowledgePSurvivalStrategy;
 import org.example.strategies.pSurvival.SuccessRatePSurvivalStrategy;
+import org.example.strategies.wordAcquisition.LAbWordAquisitionStrategy;
 import org.example.strategies.wordAcquisition.UnitWordAcquisitionStrategy;
 import org.example.utils.RunUtils;
 
@@ -205,6 +207,129 @@ public class ContinuousPCommTransition {
                                 new ConstantLAbAgingStrategy(),
                                 new Neighbor8PositionsStrategy(),
                                 new UnitWordAcquisitionStrategy(),
+                                new ProbabilisticEvolutionStrategy(),
+                                new LimitedLAbAgentInitializer(0.1));
+
+                SimulationStats simulationStats = new SimulationStats(
+                                List.of(varConfig.T() - 1),
+                                List.of(0.1, 0.11, 0.12, 0.13, 0.15, 0.16, 0.17, 0.18,
+                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
+                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
+                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5));
+
+                Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
+
+                RunUtils.runSimulation(simulation, folder);
+        }
+
+        public static void wordAcquisition(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, boolean isMoloney, double stdDev) {
+                String folderPrefix = isMoloney ? "moloney_" : "";
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/", folderPrefix + "word_acquisition", "/", "L", L, "N", N);
+                VarConfig varConfig = new VarConfig(Map.of(
+                                ConfigKey.L, L,
+                                ConfigKey.A, A,
+                                ConfigKey.T, nSteps,
+                                ConfigKey.REPR_LIPOWSKA, isMoloney ? 0 : 1,
+                                ConfigKey.N, N));
+                StrategyConfig strategyConfig = new StrategyConfig(
+                                new InterpolatedPCommunicationStrategy(0.1, finalPComm, nStepsSimulated),
+                                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
+                                isMoloney ? new MoloneyRandomLAbInheritanceStrategy() : new MutatedLAbInheritanceStrategy(stdDev),
+                                new ConstantLAbAgingStrategy(),
+                                new Neighbor8PositionsStrategy(),
+                                new LAbWordAquisitionStrategy(inventedLAb, learntLAb, inheritedLAb),
+                                new ProbabilisticEvolutionStrategy(),
+                                isMoloney ? new RandomAgentInitializer() : new LimitedLAbAgentInitializer(0.1)
+                                );
+
+                SimulationStats simulationStats = new SimulationStats(
+                                List.of(varConfig.T() - 1),
+                                List.of(0.1, 0.11, 0.12, 0.13, 0.15, 0.16, 0.17, 0.18,
+                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
+                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
+                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5));
+
+                Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
+
+                RunUtils.runSimulation(simulation, folder);
+        }
+
+
+        public static void wordAcquisitionAgedLAb(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double stdDev, int startAge) {
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/", "word_acquisition_aged_l_ab_4a", "/", "L", L, "N", N);
+                VarConfig varConfig = new VarConfig(Map.of(
+                                ConfigKey.L, L,
+                                ConfigKey.A, A,
+                                ConfigKey.T, nSteps,
+                                ConfigKey.N, N));
+                StrategyConfig strategyConfig = new StrategyConfig(
+                                new InterpolatedPCommunicationStrategy(0.1, finalPComm, nStepsSimulated),
+                                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
+                                new MutatedLAbInheritanceStrategy(stdDev),
+                                new ConstantDecreaseLAbAgingStrategy(startAge),
+                                new Neighbor8PositionsStrategy(),
+                                new LAbWordAquisitionStrategy(inventedLAb, learntLAb, inheritedLAb),
+                                new ProbabilisticEvolutionStrategy(),
+                                new LimitedLAbAgentInitializer(0.1)
+                                );
+
+                SimulationStats simulationStats = new SimulationStats(
+                                List.of(varConfig.T() - 1),
+                                List.of(0.1, 0.11, 0.12, 0.13, 0.15, 0.16, 0.17, 0.18,
+                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
+                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
+                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5));
+
+                Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
+
+                RunUtils.runSimulation(simulation, folder);
+        }
+
+
+        public static void wordAcquisitionNewPSurv(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double otherKnwldgCoef) {
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/word_acquisition_new_p_surv_4b/L", L, "N", N);
+                VarConfig varConfig = new VarConfig(Map.of(
+                                ConfigKey.L, L,
+                                ConfigKey.A, A,
+                                ConfigKey.T, nSteps,
+                                ConfigKey.N, N));
+                StrategyConfig strategyConfig = new StrategyConfig(
+                                new InterpolatedPCommunicationStrategy(0.1, finalPComm, nStepsSimulated),
+                                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B(), otherKnwldgCoef),
+                                new RandomLAbInheritanceStrategy(),
+                                new ConstantLAbAgingStrategy(),
+                                new Neighbor8PositionsStrategy(),
+                                new LAbWordAquisitionStrategy(inventedLAb, learntLAb, inheritedLAb),
+                                new ProbabilisticEvolutionStrategy(),
+                                new LimitedLAbAgentInitializer(0.1));
+
+                SimulationStats simulationStats = new SimulationStats(
+                                List.of(varConfig.T() - 1),
+                                List.of(0.1, 0.11, 0.12, 0.13, 0.15, 0.16, 0.17, 0.18,
+                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
+                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
+                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5));
+
+                Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
+
+                RunUtils.runSimulation(simulation, folder);
+        }
+
+
+        public static void wordAcquisitionNewPSurvAgedLAb(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double otherKnwldgCoef, int startAge) {
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/word_acquisition_new_p_surv_aged_l_ab_4c/L", L, "N", N);
+                VarConfig varConfig = new VarConfig(Map.of(
+                                ConfigKey.L, L,
+                                ConfigKey.A, A,
+                                ConfigKey.T, nSteps,
+                                ConfigKey.N, N));
+                StrategyConfig strategyConfig = new StrategyConfig(
+                                new InterpolatedPCommunicationStrategy(0.1, finalPComm, nStepsSimulated),
+                                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B(), otherKnwldgCoef),
+                                new RandomLAbInheritanceStrategy(),
+                                new ConstantDecreaseLAbAgingStrategy(startAge),
+                                new Neighbor8PositionsStrategy(),
+                                new LAbWordAquisitionStrategy(inventedLAb, learntLAb, inheritedLAb),
                                 new ProbabilisticEvolutionStrategy(),
                                 new LimitedLAbAgentInitializer(0.1));
 

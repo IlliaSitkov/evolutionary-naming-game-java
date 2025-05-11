@@ -3,6 +3,7 @@ package org.example;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -11,6 +12,7 @@ import org.example.export.IOUtils;
 import org.example.plotting.SimulationPlots;
 import org.example.scenarios.AbruptTransitionRuns;
 import org.example.scenarios.ContinuousPCommTransition;
+import org.example.scenarios.MultiWorld;
 import org.example.scenarios.PCommDecrease;
 import org.example.scenarios.PCommIncrease;
 import org.example.simulation.Simulation;
@@ -33,6 +35,8 @@ import org.example.utils.Timer;
 public class Main {
     public static void main(String[] args) {
         runSimulationsInParallel();
+
+        // MultiWorld.joinTerritory(40, 1, 0.005);
     }
 
     public static void runSimulationsInParallel() {
@@ -40,17 +44,17 @@ public class Main {
 
         List<Runnable> simulationTasks = List.of(
             // () -> ContinuousPCommTransition.original(40, 1, 0.5, 0.05, 100000, 100000),
-            // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.05, 100000, 100000, 0.01),
-            // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.05, 100000, 100000, 0.05),
-            // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.05, 100000, 100000, 0.075),
-            // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.05, 100000, 100000, 0.1),
+            // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.005, 100000, 100000, 0.01),
+            // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.005, 100000, 100000, 0.05),
+            // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.005, 100000, 100000, 5),
+            // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.005, 100000, 100000, 0.0)
             // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.05, 100000, 100000, 5),
             // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.05, 200000, 200000, 0.05),
             // () -> ContinuousPCommTransition.original(40, 1, 0.98, 0.05, 200000, 200000)
 
             // () -> ContinuousPCommTransition.mutatedLAb(60, 1, 0.5, 0.05, 100000, 100000, 0.1),
             // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.05, 200000, 200000, 0.05),
-            // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.05, 100000, 100000, 0.025)
+            // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.05, 100000, 100000, 5)
 
 
             // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 1),
@@ -59,7 +63,7 @@ public class Main {
             // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 4),
             // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 5)
 
-            // () -> PCommIncrease.mutatedLAb(40, 0.05, 1, 10000, 3000,  0.14, 0.01, 0.05),
+            // () -> PCommIncrease.mutatedLAb(40, 0.05, 1, 10000, 3000,  0.14, 0.01, 0.0),
             // () -> PCommIncrease.mutatedLAb(40, 0.05, 1, 10000, 3000,  0.14, 0.01, 5),
             // () -> PCommIncrease.mutatedLAb(40, 0.05, 1, 10000, 3000,  0.18, 0.08, 0.01)
 
@@ -80,6 +84,43 @@ public class Main {
             // () -> ContinuousPCommTransition.newPSurv(40, 1,0.5,0.005,100000,100000, 0.1),
             // () -> ContinuousPCommTransition.newPSurv(40, 1,0.5,0.005,100000,100000, 0.01)
             // () -> ContinuousPCommTransition.newPSurv(40, 1,0.5,0.05,100000,100000, 0)
+
+
+            // () -> ContinuousPCommTransition.wordAcquisition(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, true, 0.0)
+            // () -> ContinuousPCommTransition.wordAcquisition(40, 1, 0.5, 0.005, 50000, 50000, 1.0, null, null, true, 0.0),
+            // () -> ContinuousPCommTransition.wordAcquisition(40, 1, 0.5, 0.005, 50000, 50000, 1.0, null, 1.0, true, 0.0)
+
+            // () -> ContinuousPCommTransition.wordAcquisition(40, 1, 0.5, 0.005, 100000, 100000, 1.0, 1.0, null, true, 0.0),
+            // () -> ContinuousPCommTransition.wordAcquisition(40, 1, 0.5, 0.005, 100000, 100000, 1.0, null, 1.0, true, 0.0),
+            // () -> ContinuousPCommTransition.wordAcquisition(40, 1, 0.5, 0.005, 100000, 100000, null, 1.0, 1.0, true, 0.0)
+
+            // () -> ContinuousPCommTransition.wordAcquisition(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, false, 0.0),
+            // () -> ContinuousPCommTransition.wordAcquisition(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, false, 0.0)
+            // () -> ContinuousPCommTransition.wordAcquisition(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, false, 0.0),
+            // () -> ContinuousPCommTransition.wordAcquisition(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, false, 0.0)
+            // () -> ContinuousPCommTransition.wordAcquisition(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, false, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisition(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, false, 0.05),
+            // () -> ContinuousPCommTransition.wordAcquisition(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, false, 0.5),
+            // () -> ContinuousPCommTransition.wordAcquisition(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, false, 0.75),
+            // () -> ContinuousPCommTransition.wordAcquisition(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, false, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisition(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, false, 1),
+            // () -> ContinuousPCommTransition.wordAcquisition(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, false, 5)
+
+            () -> ContinuousPCommTransition.wordAcquisitionAgedLAb(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.1, 8),
+            () -> ContinuousPCommTransition.wordAcquisitionAgedLAb(30, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.1, 8),
+
+            () -> ContinuousPCommTransition.wordAcquisitionAgedLAb(40, 10, 0.5, 0.005, 100000, 100000, null, null, null, 0.1, 8),
+            () -> ContinuousPCommTransition.wordAcquisitionAgedLAb(40, 1, 0.5, 0.05, 100000, 100000, null, null, null, 0.1, 8),
+            () -> ContinuousPCommTransition.wordAcquisitionAgedLAb(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.5, 8),
+            () -> ContinuousPCommTransition.wordAcquisitionAgedLAb(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.1, 3),
+
+            () -> ContinuousPCommTransition.wordAcquisitionAgedLAb(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.5, 3),
+            () -> ContinuousPCommTransition.wordAcquisitionAgedLAb(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 5, 0),
+            
+            () -> ContinuousPCommTransition.wordAcquisitionAgedLAb(40, 1, 0.5, 0.05, 100000, 100000, null, null, null, 0.5, 3),
+            () -> ContinuousPCommTransition.wordAcquisitionAgedLAb(40, 10, 0.5, 0.05, 100000, 100000, null, null, null, 0.5, 3)
+
+
         );
 
 
