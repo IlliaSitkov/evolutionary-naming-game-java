@@ -36,6 +36,7 @@ public class Main {
     public static void main(String[] args) {
         runSimulationsInParallel();
         // MultiWorld.joinTerritory(20, 1, 0.005);
+        // MultiWorld.relocate(20, 1, 0.005, 180);
     }
 
     public static void runSimulationsInParallel() {
@@ -132,30 +133,30 @@ public class Main {
             // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb(40, 1, 0.5, 0.1, 100000, 100000, null, null, null, 0.1, 8)
 
             //////////// Word Acquisition New P_Surv ////////////
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("base", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("base", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.1),
 
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("stddev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.2),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("stddev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.5),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("stddev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.8),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("stddev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.2),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("stddev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.5),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("stddev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.8),
 
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("N_big", 40, 10, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.1),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("N_big", 40, 1000, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("N_big", 40, 10, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("N_big", 40, 1000, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.1),
             
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("N_sm", 40, 10, 0.5, 0.005, 100000, 100000, null, null, null, 0.25, 0.1),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("N_sm", 40, 1000, 0.5, 0.005, 100000, 100000, null, null, null, 0.25, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("N_sm", 40, 10, 0.5, 0.005, 100000, 100000, null, null, null, 0.25, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("N_sm", 40, 1000, 0.5, 0.005, 100000, 100000, null, null, null, 0.25, 0.1),
 
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv(null, 20, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.1),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv(null, 30, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv(null, 20, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv(null, 30, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.1),
 
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_lg", 40, 1, 0.5, 0.05, 100000, 100000, null, null, null, 0.9, 0.1),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_lg", 40, 1, 0.5, 0.5, 100000, 100000, null, null, null, 0.9, 0.1),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_lg", 40, 1, 0.5, 1, 100000, 100000, null, null, null, 0.9, 0.1),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_lg", 40, 1, 0.5, 2, 100000, 100000, null, null, null, 0.9, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_lg", 40, 1, 0.5, 0.05, 100000, 100000, null, null, null, 0.9, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_lg", 40, 1, 0.5, 0.5, 100000, 100000, null, null, null, 0.9, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_lg", 40, 1, 0.5, 1, 100000, 100000, null, null, null, 0.9, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_lg", 40, 1, 0.5, 2, 100000, 100000, null, null, null, 0.9, 0.1),
 
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_sm", 40, 1, 0.5, 0.05, 100000, 100000, null, null, null, 0.25, 0.1),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_sm", 40, 1, 0.5, 0.5, 100000, 100000, null, null, null, 0.25, 0.1),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_sm", 40, 1, 0.5, 1, 100000, 100000, null, null, null, 0.25, 0.1),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_sm", 40, 1, 0.5, 2, 100000, 100000, null, null, null, 0.25, 0.1)
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_sm", 40, 1, 0.5, 0.05, 100000, 100000, null, null, null, 0.25, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_sm", 40, 1, 0.5, 0.5, 100000, 100000, null, null, null, 0.25, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_sm", 40, 1, 0.5, 1, 100000, 100000, null, null, null, 0.25, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_sm", 40, 1, 0.5, 2, 100000, 100000, null, null, null, 0.25, 0.1)
 
             // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("alpha", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.0, 0.1),
             // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("alpha", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.05, 0.1),
@@ -164,12 +165,7 @@ public class Main {
             // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("alpha", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.5, 0.1),
             // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("alpha", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.75, 0.1)
 
-
-
-
-
-
-
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("base", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.05)
 
 
 

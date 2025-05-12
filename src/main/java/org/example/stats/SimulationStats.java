@@ -83,14 +83,24 @@ public class SimulationStats {
     @Getter
     private final List<Integer> nAgentsAlive = new ArrayList<>();
 
+    @Getter
+    private LanguageStats languageStats = null;
+
     private final List<Integer> iterationsToSaveMaps;
     private final List<Double> pCommunicationsToSaveMaps;
     private final int nSkipIterations;
 
     public SimulationStats(List<Integer> iterationsToSaveMaps, List<Double> pCommunicationsToSaveMaps) {
+        this(iterationsToSaveMaps, pCommunicationsToSaveMaps, false, 0);
+    }
+
+    public SimulationStats(List<Integer> iterationsToSaveMaps, List<Double> pCommunicationsToSaveMaps, boolean trackLanguageStats, double languageThreshold) {
         this.iterationsToSaveMaps = new ArrayList<>(iterationsToSaveMaps);
         this.pCommunicationsToSaveMaps = new ArrayList<>(pCommunicationsToSaveMaps);
         this.nSkipIterations = 0;
+        if (trackLanguageStats) {
+            this.languageStats = new LanguageStats(languageThreshold);
+        }
     }
 
     public SimulationStats(int nSkipIterations) {
@@ -153,6 +163,9 @@ public class SimulationStats {
             recordWorldLearningAbilities(world, iteration, pCommunication);
             recordWorldLanguages(world, iteration, pCommunication);
             pCommunicationsToSaveMaps.removeIf((pComm) -> pCommunication >= pComm);
+        }
+        if (languageStats != null) {
+            languageStats.trackIteration(iteration, world);
         }
     }
 

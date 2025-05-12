@@ -78,45 +78,50 @@ public class MultiWorld {
 
     ExecutorService executor = Executors.newFixedThreadPool(2);
 
-    CompletableFuture<World> future1 = CompletableFuture.supplyAsync(() -> evolveWorld(L/2, L, N, A, folder, "world1"), executor);
-    CompletableFuture<World> future2 = CompletableFuture.supplyAsync(() -> evolveWorld(L/2, L, N, A, folder, "world2"), executor);
+    try {
+      CompletableFuture<World> future1 = CompletableFuture.supplyAsync(() -> evolveWorld(L/2, L, N, A, folder, "world1"), executor);
+      CompletableFuture<World> future2 = CompletableFuture.supplyAsync(() -> evolveWorld(L/2, L, N, A, folder, "world2"), executor);
 
-    CompletableFuture<Void> allDone = CompletableFuture.allOf(future1, future2);
+      CompletableFuture<Void> allDone = CompletableFuture.allOf(future1, future2);
 
-    allDone.join();
+      allDone.join();
 
-    world1 = future1.join();
-    world2 = future2.join();
+      world1 = future1.join();
+      world2 = future2.join();
 
-    double pComm = 0.65;
-    int nIterations = 100000;
+      double pComm = 0.65;
+      int nIterations = 100000;
+      double languageThreshold = 0.99;
 
-    VarConfig varConfig = new VarConfig(Map.of(
-        ConfigKey.T, nIterations,
-        ConfigKey.N, N,
-        ConfigKey.A, A,
-        ConfigKey.L, L
-        ));
+      VarConfig varConfig = new VarConfig(Map.of(
+          ConfigKey.T, nIterations,
+          ConfigKey.N, N,
+          ConfigKey.A, A,
+          ConfigKey.L, L
+          ));
 
-    StrategyConfig strategyConfig = new StrategyConfig(
-        new ConstantPCommunicationStrategy(pComm),
-        new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-        new RandomLAbInheritanceStrategy(),
-        new ConstantLAbAgingStrategy(),
-        new Neighbor8PositionsStrategy(),
-        new UnitWordAcquisitionStrategy(),
-        new ProbabilisticEvolutionStrategy());
+      StrategyConfig strategyConfig = new StrategyConfig(
+          new ConstantPCommunicationStrategy(pComm),
+          new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
+          new RandomLAbInheritanceStrategy(),
+          new ConstantLAbAgingStrategy(),
+          new Neighbor8PositionsStrategy(),
+          new UnitWordAcquisitionStrategy(),
+          new ProbabilisticEvolutionStrategy());
 
-    World world3 = World.mergeWorlds(world1, world2, varConfig, strategyConfig);
+      World world3 = World.mergeWorlds(world1, world2, varConfig, strategyConfig);
 
-    SimulationStats stats = new SimulationStats(
-      List.of(0, 1000, 2000, 5000, 20000, 50000, 60000, 90000, varConfig.T() - 1),
-      List.of()
-      );
+      SimulationStats stats = new SimulationStats(
+        List.of(0, 1000, 2000, 5000, 20000, 50000, 60000, 90000, varConfig.T() - 1),
+        List.of(), true, languageThreshold
+        );
 
-    Simulation simulation = new Simulation(world3, stats, varConfig, strategyConfig);
+      Simulation simulation = new Simulation(world3, stats, varConfig, strategyConfig);
 
-    RunUtils.runSimulation(simulation, folder, true);
+      RunUtils.runSimulation(simulation, folder, true);
+    } finally {
+      executor.shutdown();
+    }
   }
 
   public static void relocate(int L, int N, double A, int relocatedN) {
@@ -132,45 +137,50 @@ public class MultiWorld {
 
     ExecutorService executor = Executors.newFixedThreadPool(2);
 
-    CompletableFuture<World> future1 = CompletableFuture.supplyAsync(() -> evolveWorld(L, L, N, A, folder, "world1"), executor);
-    CompletableFuture<World> future2 = CompletableFuture.supplyAsync(() -> evolveWorld(L, L, N, A, folder, "world2"), executor);
+    try {
+      CompletableFuture<World> future1 = CompletableFuture.supplyAsync(() -> evolveWorld(L, L, N, A, folder, "world1"), executor);
+      CompletableFuture<World> future2 = CompletableFuture.supplyAsync(() -> evolveWorld(L, L, N, A, folder, "world2"), executor);
 
-    CompletableFuture<Void> allDone = CompletableFuture.allOf(future1, future2);
+      CompletableFuture<Void> allDone = CompletableFuture.allOf(future1, future2);
 
-    allDone.join();
+      allDone.join();
 
-    world1 = future1.join();
-    world2 = future2.join();
+      world1 = future1.join();
+      world2 = future2.join();
 
-    double pComm = 0.65;
-    int nIterations = 100000;
+      double pComm = 0.65;
+      int nIterations = 100000;
+      double languageThreshold = 0.99;
 
-    VarConfig varConfig = new VarConfig(Map.of(
-        ConfigKey.T, nIterations,
-        ConfigKey.N, N,
-        ConfigKey.A, A,
-        ConfigKey.L, L
-        ));
+      VarConfig varConfig = new VarConfig(Map.of(
+          ConfigKey.T, nIterations,
+          ConfigKey.N, N,
+          ConfigKey.A, A,
+          ConfigKey.L, L
+          ));
 
-    StrategyConfig strategyConfig = new StrategyConfig(
-        new ConstantPCommunicationStrategy(pComm),
-        new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-        new RandomLAbInheritanceStrategy(),
-        new ConstantLAbAgingStrategy(),
-        new Neighbor8PositionsStrategy(),
-        new UnitWordAcquisitionStrategy(),
-        new ProbabilisticEvolutionStrategy());
+      StrategyConfig strategyConfig = new StrategyConfig(
+          new ConstantPCommunicationStrategy(pComm),
+          new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
+          new RandomLAbInheritanceStrategy(),
+          new ConstantLAbAgingStrategy(),
+          new Neighbor8PositionsStrategy(),
+          new UnitWordAcquisitionStrategy(),
+          new ProbabilisticEvolutionStrategy());
 
-    world1.takeAgentsFrom(world2, relocatedN);
+      world1.takeAgentsFrom(world2, relocatedN);
 
-    SimulationStats stats = new SimulationStats(
-      List.of(0, 1000, 2000, 5000, 20000, 50000, 60000, 90000, varConfig.T() - 1),
-      List.of()
-      );
+      SimulationStats stats = new SimulationStats(
+        List.of(0, 1000, 2000, 5000, 20000, 50000, 60000, 90000, varConfig.T() - 1),
+        List.of(), true, languageThreshold
+        );
 
-    Simulation simulation = new Simulation(world1, stats, varConfig, strategyConfig);
+      Simulation simulation = new Simulation(world1, stats, varConfig, strategyConfig);
 
-    RunUtils.runSimulation(simulation, folder, true);
+      RunUtils.runSimulation(simulation, folder, true);
+    } finally {
+      executor.shutdown();
+    }
   }
 
 

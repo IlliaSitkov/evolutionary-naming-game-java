@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.example.export.IOUtils;
 import org.example.plotting.SimulationPlots;
 import org.example.simulation.Simulation;
+import org.example.stats.LanguageStats;
 import org.example.stats.SimulationStats;
 import org.example.strategies.pCommunication.PCommunicationStrategy;
 
@@ -59,9 +60,16 @@ public class RunUtils {
         pCommStrategy,
         nIters);
     IOUtils.saveSimulationConfig(folder, simulation);
+
+    LanguageStats languageStats = stats.getLanguageStats();
+    if (languageStats != null) {
+      IOUtils.exportToJson(languageStats.getLanguages(), "out/" + folder + "/language_stats.json");
+      IOUtils.exportToJson(languageStats.getAvgDisplacedTime(), "out/" + folder + "/language_stats_avg_displ_time.json");
+      IOUtils.exportToJson(languageStats.getLanguagesSnapshot(), "out/" + folder + "/language_initial_snapshot.json");
+    }
   }
 
-  public static void saveStats(String fileName, SimulationStats stats, List<Double> pCommOverIterations) {
+  public static synchronized void saveStats(String fileName, SimulationStats stats, List<Double> pCommOverIterations) {
     IOUtils.exportToCSV(fileName, stats.getLanguagesNumber().size(), List.of(
         new Object[] { "ScsRate", stats.getSuccessRates() },
         new Object[] { "ScsCommN", stats.getSuccessfulCommunicationsNumber() },
@@ -118,7 +126,7 @@ public class RunUtils {
     return path.toString();
   }
 
-  public static void writeSeriesStats(List<Double> data, String fileName) {
+  public static synchronized void writeSeriesStats(List<Double> data, String fileName) {
     double[] values = data.stream().mapToDouble(i -> i).toArray();
     if (values.length == 0) {
       return;
