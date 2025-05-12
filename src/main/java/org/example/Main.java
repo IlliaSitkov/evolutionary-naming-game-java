@@ -34,9 +34,10 @@ import org.example.utils.Timer;
 
 public class Main {
     public static void main(String[] args) {
-        runSimulationsInParallel();
+        // runSimulationsInParallel();
         // MultiWorld.joinTerritory(20, 1, 0.005);
         // MultiWorld.relocate(20, 1, 0.005, 180);
+        ContinuousPCommTransition.moloneyFullWorldEvolution(40, 1, 0.005, 100000);
     }
 
     public static void runSimulationsInParallel() {
@@ -51,6 +52,9 @@ public class Main {
             // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.05, 100000, 100000, 5),
             // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.05, 200000, 200000, 0.05),
             // () -> ContinuousPCommTransition.original(40, 1, 0.98, 0.05, 200000, 200000)
+
+            // якщо використовувати маленьку stddev, то цікаво, як довго буде досягатись висока здатність до навчання
+            // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.005, 100000, 100000, 0.001)
 
             // () -> ContinuousPCommTransition.mutatedLAb(60, 1, 0.5, 0.05, 100000, 100000, 0.1),
             // () -> ContinuousPCommTransition.mutatedLAb(40, 1, 0.5, 0.05, 200000, 200000, 0.05),
@@ -130,11 +134,24 @@ public class Main {
             // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb(40, 1000, 0.5, 0.005, 100000, 100000, null, null, null, 0.1, 8),
             // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb(20, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.1, 8),
 
-            // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb(40, 1, 0.5, 0.1, 100000, 100000, null, null, null, 0.1, 8)
+            // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb("A_lg", 40, 1, 0.5, 1, 100000, 100000, null, null, null, 0.1, 8),
+            // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb("A_lg", 40, 1, 0.5, 2, 100000, 100000, null, null, null, 0.1, 8),
+
+            // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb("A_lg_dev", 40, 1, 0.5, 1, 100000, 100000, null, null, null, 0.5, 8),
+            // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb("A_lg_dev", 40, 1, 0.5, 2, 100000, 100000, null, null, null, 0.5, 8),
+            // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb("A_lg_dev", 40, 1, 0.5, 0.05, 100000, 100000, null, null, null, 0.5, 8)
+
+            // 5.a.iii influence of stddev
+            // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb("stddev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.8, 8),
+            // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb("stddev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.1, 11),
+            // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb("stddev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.8, 11)
+
 
             //////////// Word Acquisition New P_Surv ////////////
             // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("base", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.1),
 
+            // see A vs sm and lg stddev
+        
             // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("stddev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.2),
             // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("stddev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.5),
             // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("stddev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.8),
@@ -165,8 +182,22 @@ public class Main {
             // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("alpha", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.5, 0.1),
             // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("alpha", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.75, 0.1)
 
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("base", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.05)
 
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("alpha_sm_dev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.0, 0.05),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("alpha_sm_dev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.1, 0.05),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("alpha_sm_dev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.25, 0.05),
+
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("alpha_lg_dev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.0, 0.5),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("alpha_lg_dev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.1, 0.5),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("alpha_lg_dev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.25, 0.5)
+
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("base", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 0.05)
+
+            // A_lg - small stddev + A_lg_stddev - large stddev
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_lg_stddev", 40, 1, 0.5, 0.05, 100000, 100000, null, null, null, 0.9, 0.5),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_lg_stddev", 40, 1, 0.5, 0.5, 100000, 100000, null, null, null, 0.9, 0.5),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_lg_stddev", 40, 1, 0.5, 1, 100000, 100000, null, null, null, 0.9, 0.5),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("A_lg_stddev", 40, 1, 0.5, 2, 100000, 100000, null, null, null, 0.9, 0.5)
 
 
             ////////////////////////////////
@@ -242,7 +273,58 @@ public class Main {
             // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb(40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 5, 0.1)
 
 
+            /// ALL COMBINED //////////////////////////////////////////////////////
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("base", 40, 1, 0.005, 0.99, 15, 0.01),
+
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_lg_age", 40, 1, 0.005, 0.95, 15, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_lg_age", 40, 1, 0.005, 0.5, 15, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_lg_age", 40, 1, 0.005, 0.25, 15, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_lg_age", 40, 1, 0.005, 0.1, 15, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_lg_age", 40, 1, 0.005, 0.0, 15, 0.01),
+            
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.99, 8, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.95, 8, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.5, 8, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.25, 8, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.1, 8, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.0, 8, 0.01),
+
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_lg_age", 40, 1, 0.005, 0.99, 15, 0.1),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_lg_age", 40, 1, 0.005, 0.99, 15, 0.5),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_lg_age", 40, 1, 0.005, 0.99, 15, 0.8),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_lg_age", 40, 1, 0.005, 0.99, 15, 5),
+            
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_alpha", 40, 1, 0.005, 0.25, 15, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_alpha", 40, 1, 0.005, 0.25, 15, 0.1),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_alpha", 40, 1, 0.005, 0.25, 15, 0.5),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_alpha", 40, 1, 0.005, 0.25, 15, 0.8),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_alpha", 40, 1, 0.005, 0.25, 15, 5),
+            
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_age", 40, 1, 0.005, 0.99, 8, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_age", 40, 1, 0.005, 0.99, 8, 0.1),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_age", 40, 1, 0.005, 0.99, 8, 0.5),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_age", 40, 1, 0.005, 0.99, 8, 0.8),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_age", 40, 1, 0.005, 0.99, 8, 5),
+
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("age", 40, 1, 0.005, 0.99, 8, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("age", 40, 1, 0.005, 0.99, 5, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("age", 40, 1, 0.005, 0.99, 1, 0.01),
+
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_lg_age", 40, 1, 0.05, 0.99, 15, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_lg_age", 40, 1, 0.5, 0.99, 15, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_lg_age", 40, 1, 2, 0.99, 15, 0.01),
+            
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_alpha", 40, 1, 0.005, 0.25, 15, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_alpha", 40, 1, 0.05, 0.25, 15, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_alpha", 40, 1, 0.5, 0.25, 15, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_alpha", 40, 1, 2, 0.25, 15, 0.01),
+
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_age", 40, 1, 0.005, 0.99, 3, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_age", 40, 1, 0.05, 0.99, 3, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_age", 40, 1, 0.5, 0.99, 3, 0.01),
+            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_age", 40, 1, 2, 0.99, 3, 0.01)
         );
+
 
 
 

@@ -10,6 +10,7 @@ import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
 import org.example.strategies.agentInitializer.LimitedLAbAgentInitializer;
 import org.example.strategies.agentInitializer.RandomAgentInitializer;
+import org.example.strategies.evolution.FullEvolutionStrategy;
 import org.example.strategies.evolution.ProbabilisticEvolutionStrategy;
 import org.example.strategies.learningAbilityAging.ConstantDecreaseLAbAgingStrategy;
 import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
@@ -254,9 +255,14 @@ public class ContinuousPCommTransition {
                 RunUtils.runSimulation(simulation, folder);
         }
 
-
         public static void wordAcquisitionAgedLAb(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double stdDev, int startAge) {
+                wordAcquisitionAgedLAb(null, L, N, finalPComm, A, nSteps, nStepsSimulated, inventedLAb, learntLAb, inheritedLAb, stdDev, startAge);
+        }
+
+        public static void wordAcquisitionAgedLAb(String tag, int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double stdDev, int startAge) {
                 String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/", "word_acquisition_aged_l_ab_4a", "/", "L", L, "N", N);
+                folder +=  tag == null ? "" : "/" + tag;
+
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
                                 ConfigKey.A, A,
@@ -317,9 +323,17 @@ public class ContinuousPCommTransition {
                 RunUtils.runSimulation(simulation, folder);
         }
 
+        public static void wordAcquisitionNewPSurvAgedLAb(int L, int N, double A, double otherKnwldgCoef, int startAge, double stdDev) {
+                wordAcquisitionNewPSurvAgedLAb(null, L, N, 0.5, A, 100000, 100000, null, null, null, otherKnwldgCoef, startAge,stdDev);
+        }
+        public static void wordAcquisitionNewPSurvAgedLAb(String tag, int L, int N, double A, double otherKnwldgCoef, int startAge, double stdDev) {
+                wordAcquisitionNewPSurvAgedLAb(tag, L, N, 0.5, A, 100000, 100000, null, null, null, otherKnwldgCoef, startAge,stdDev);
+        }
 
-        public static void wordAcquisitionNewPSurvAgedLAb(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double otherKnwldgCoef, int startAge, double stdDev) {
-                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/word_acquisition_new_p_surv_aged_l_ab_4c/L", L, "N", N);
+        public static void wordAcquisitionNewPSurvAgedLAb(String tag, int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double otherKnwldgCoef, int startAge, double stdDev) {
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/word_acquisition_new_p_surv_aged_l_ab_4c_tagged/L", L, "N", N);
+                folder +=  tag == null ? "" : "/" + tag;
+
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
                                 ConfigKey.A, A,
@@ -346,5 +360,35 @@ public class ContinuousPCommTransition {
 
                 RunUtils.runSimulation(simulation, folder);
         }
+
+        public static void moloneyFullWorldEvolution(int L, int N, double A, int nSteps) {
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/moloney_full_evol_414/L", L, "N", N);
+                VarConfig varConfig = new VarConfig(Map.of(
+                                ConfigKey.L, L,
+                                ConfigKey.A, A,
+                                ConfigKey.T, nSteps,
+                                ConfigKey.REPR_LIPOWSKA, 0,
+                                ConfigKey.N, N));
+                StrategyConfig strategyConfig = new StrategyConfig(
+                                new InterpolatedPCommunicationStrategy(0.1, 0.5, nSteps),
+                                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
+                                new MoloneyRandomLAbInheritanceStrategy(),
+                                new ConstantLAbAgingStrategy(),
+                                new Neighbor8PositionsStrategy(),
+                                new UnitWordAcquisitionStrategy(),
+                                new FullEvolutionStrategy()
+                                );
+
+                SimulationStats simulationStats = new SimulationStats(
+                                List.of(varConfig.T() - 1),
+                                List.of(0.1, 0.11, 0.12, 0.13, 0.15, 0.16, 0.17, 0.18,
+                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
+                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
+                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5));
+
+                Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
+
+                RunUtils.runSimulation(simulation, folder);
+        } 
 
 }
