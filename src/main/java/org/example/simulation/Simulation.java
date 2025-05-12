@@ -47,7 +47,7 @@ public class Simulation {
 
     public void start() {
         simulationStats.recordBeforeEvolution(world, pCommunicationStrategy.getPCommunication(0));
-        for (int iteration = 0; iteration < varConfig.T() && world.hasAgents(); iteration++) {
+        for (int iteration = 0; strategyConfig.getContinueSimulationStrategy().shouldContinueSimulation(iteration, varConfig.T(), world); iteration++) {
             iterationStats = new IterationStats(iteration);
 
             Timer timer = new Timer();
@@ -62,6 +62,7 @@ public class Simulation {
             simulationStats.recordIteration(iterationStats);
             simulationStats.recordAfterIteration(world, iteration, pCommunicationStrategy.getPCommunication(iteration));
         }
+        simulationStats.recordAfterEvolution(world);
     }
 
     private void evolveWorld(int iteration) {

@@ -286,8 +286,10 @@ public class ContinuousPCommTransition {
         }
 
 
-        public static void wordAcquisitionNewPSurv(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double otherKnwldgCoef) {
-                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/word_acquisition_new_p_surv_4b/L", L, "N", N);
+        public static void wordAcquisitionNewPSurv(String tag, int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double otherKnwldgCoef, double stdDev) {
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/", "word_acquisition_new_p_surv_4b", "/", "L", L, "N", N);
+                folder +=  tag == null ? "" : "/" + tag;
+
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
                                 ConfigKey.A, A,
@@ -296,7 +298,7 @@ public class ContinuousPCommTransition {
                 StrategyConfig strategyConfig = new StrategyConfig(
                                 new InterpolatedPCommunicationStrategy(0.1, finalPComm, nStepsSimulated),
                                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B(), otherKnwldgCoef),
-                                new RandomLAbInheritanceStrategy(),
+                                new MutatedLAbInheritanceStrategy(stdDev),
                                 new ConstantLAbAgingStrategy(),
                                 new Neighbor8PositionsStrategy(),
                                 new LAbWordAquisitionStrategy(inventedLAb, learntLAb, inheritedLAb),
@@ -316,7 +318,7 @@ public class ContinuousPCommTransition {
         }
 
 
-        public static void wordAcquisitionNewPSurvAgedLAb(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double otherKnwldgCoef, int startAge) {
+        public static void wordAcquisitionNewPSurvAgedLAb(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double otherKnwldgCoef, int startAge, double stdDev) {
                 String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/word_acquisition_new_p_surv_aged_l_ab_4c/L", L, "N", N);
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
@@ -326,7 +328,7 @@ public class ContinuousPCommTransition {
                 StrategyConfig strategyConfig = new StrategyConfig(
                                 new InterpolatedPCommunicationStrategy(0.1, finalPComm, nStepsSimulated),
                                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B(), otherKnwldgCoef),
-                                new RandomLAbInheritanceStrategy(),
+                                new MutatedLAbInheritanceStrategy(stdDev),
                                 new ConstantDecreaseLAbAgingStrategy(startAge),
                                 new Neighbor8PositionsStrategy(),
                                 new LAbWordAquisitionStrategy(inventedLAb, learntLAb, inheritedLAb),

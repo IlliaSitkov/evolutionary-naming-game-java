@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import org.example.strategies.agentInitializer.AgentInitializer;
 import org.example.strategies.agentInitializer.RandomAgentInitializer;
+import org.example.strategies.continueSimulation.BaseContinueSimulationStrategy;
+import org.example.strategies.continueSimulation.ContinueSimulationStrategy;
 import org.example.strategies.evolution.EvolutionStrategy;
 import org.example.strategies.learningAbilityAging.LAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.LAbInheritanceStrategy;
@@ -12,13 +14,49 @@ import org.example.strategies.pCommunication.PCommunicationStrategy;
 import org.example.strategies.pSurvival.PSurvivalStrategy;
 import org.example.strategies.wordAcquisition.WordAcquisitionStrategy;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@AllArgsConstructor
 public class StrategyConfig implements Serializable {
+
+    public StrategyConfig(
+            PCommunicationStrategy pCommunicationStrategy,
+            PSurvivalStrategy pSurvivalStrategy,
+            LAbInheritanceStrategy learningAbilityInheritanceStrategy,
+            LAbAgingStrategy learingAbilityAgingStrategy,
+            NeighborPositionsStrategy neighborPositionsStrategy,
+            WordAcquisitionStrategy wordAcquisitionStrategy,
+            EvolutionStrategy evolutionStrategy,
+            AgentInitializer agentInitializer) {
+        this.pCommunicationStrategy = pCommunicationStrategy;
+        this.pSurvivalStrategy = pSurvivalStrategy;
+        this.learningAbilityInheritanceStrategy = learningAbilityInheritanceStrategy;
+        this.learingAbilityAgingStrategy = learingAbilityAgingStrategy;
+        this.neighborPositionsStrategy = neighborPositionsStrategy;
+        this.wordAcquisitionStrategy = wordAcquisitionStrategy;
+        this.evolutionStrategy = evolutionStrategy;
+        this.agentInitializer = agentInitializer;
+    }
+
+    public StrategyConfig(
+            PCommunicationStrategy pCommunicationStrategy,
+            PSurvivalStrategy pSurvivalStrategy,
+            LAbInheritanceStrategy learningAbilityInheritanceStrategy,
+            LAbAgingStrategy learingAbilityAgingStrategy,
+            NeighborPositionsStrategy neighborPositionsStrategy,
+            WordAcquisitionStrategy wordAcquisitionStrategy,
+            EvolutionStrategy evolutionStrategy,
+            ContinueSimulationStrategy continueSimulationStrategy) {
+        this.pCommunicationStrategy = pCommunicationStrategy;
+        this.pSurvivalStrategy = pSurvivalStrategy;
+        this.learningAbilityInheritanceStrategy = learningAbilityInheritanceStrategy;
+        this.learingAbilityAgingStrategy = learingAbilityAgingStrategy;
+        this.neighborPositionsStrategy = neighborPositionsStrategy;
+        this.wordAcquisitionStrategy = wordAcquisitionStrategy;
+        this.evolutionStrategy = evolutionStrategy;
+        this.continueSimulationStrategy = continueSimulationStrategy;
+    }
 
     @Getter
     private final PCommunicationStrategy pCommunicationStrategy;
@@ -44,6 +82,9 @@ public class StrategyConfig implements Serializable {
     @Getter
     private AgentInitializer agentInitializer = new RandomAgentInitializer();
 
+    @Getter
+    private ContinueSimulationStrategy continueSimulationStrategy = new BaseContinueSimulationStrategy();
+
     @Override
     public String toString() {
         return "StrategyConfig {\n" +
@@ -55,6 +96,7 @@ public class StrategyConfig implements Serializable {
                 "  wordAcquisitionStrategy=" + wordAcquisitionStrategy + ",\n" +
                 "  evolutionStrategy=" + evolutionStrategy + ",\n" +
                 "  agentInitializer=" + agentInitializer + "\n" +
+                "  continueSimulationStrategy=" + continueSimulationStrategy + "\n" +
                 "}";
     }
 

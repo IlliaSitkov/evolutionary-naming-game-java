@@ -112,6 +112,11 @@ public class SimulationStats {
         recordWorldLanguages(world, -1, pCommunication);
     }
 
+    public void recordAfterEvolution(World world) {
+        recordWorldLearningAbilities(world, -11, -11);
+        recordWorldLanguages(world, -11, -11);
+    }
+
     public void recordIteration(IterationStats iterationStats) {
         if (iterationStats.getIteration() < nSkipIterations) {
             return;
