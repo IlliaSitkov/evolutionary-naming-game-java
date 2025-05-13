@@ -136,7 +136,7 @@ public class ContinuousPCommTransition {
 
 
         public static void agedLAb(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, int startAge) {
-                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/aged_l_ab/L", L, "N", N);
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/aged_l_ab_fixed/L", L, "N", N);
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
                                 ConfigKey.A, A,
@@ -260,7 +260,7 @@ public class ContinuousPCommTransition {
         }
 
         public static void wordAcquisitionAgedLAb(String tag, int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double stdDev, int startAge) {
-                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/", "word_acquisition_aged_l_ab_4a", "/", "L", L, "N", N);
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/", "word_acquisition_aged_l_ab_4a_fixed", "/", "L", L, "N", N);
                 folder +=  tag == null ? "" : "/" + tag;
 
                 VarConfig varConfig = new VarConfig(Map.of(
@@ -331,7 +331,7 @@ public class ContinuousPCommTransition {
         }
 
         public static void wordAcquisitionNewPSurvAgedLAb(String tag, int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double otherKnwldgCoef, int startAge, double stdDev) {
-                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/word_acquisition_new_p_surv_aged_l_ab_4c_tagged/L", L, "N", N);
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/word_acquisition_new_p_surv_aged_l_ab_4c_tagged_fixed/L", L, "N", N);
                 folder +=  tag == null ? "" : "/" + tag;
 
                 VarConfig varConfig = new VarConfig(Map.of(

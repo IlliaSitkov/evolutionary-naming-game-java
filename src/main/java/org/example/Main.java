@@ -34,10 +34,10 @@ import org.example.utils.Timer;
 
 public class Main {
     public static void main(String[] args) {
-        // runSimulationsInParallel();
+        runSimulationsInParallel();
         // MultiWorld.joinTerritory(20, 1, 0.005);
         // MultiWorld.relocate(20, 1, 0.005, 180);
-        ContinuousPCommTransition.moloneyFullWorldEvolution(40, 1, 0.005, 100000);
+        // ContinuousPCommTransition.moloneyFullWorldEvolution(40, 1, 0.005, 100000);
     }
 
     public static void runSimulationsInParallel() {
@@ -323,6 +323,25 @@ public class Main {
             () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_age", 40, 1, 0.05, 0.99, 3, 0.01),
             () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_age", 40, 1, 0.5, 0.99, 3, 0.01),
             () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_age", 40, 1, 2, 0.99, 3, 0.01)
+
+
+
+            /////////////// AGED LAB FIXED /////////////////////////////////
+            // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, Integer.MAX_VALUE),
+            // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 8),
+            // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 3),
+            // () -> ContinuousPCommTransition.agedLAb(40, 1, 0.5, 0.005, 100000, 100000, 0)
+
+            /////////////// 5 a fixed ////////////////////////////
+            // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb("base", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.1, 8),
+            // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb("L", 20, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.1, 8),
+            // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb("age", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.1, 3),
+            // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb("stddev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.8, 8),
+            // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb(null, 40, 1000, 0.5, 0.005, 100000, 100000, null, null, null, 0.1, 8),
+            // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb("A", 40, 1, 0.5, 0.05, 100000, 100000, null, null, null, 0.1, 8)
+
+
+            
         );
 
 
