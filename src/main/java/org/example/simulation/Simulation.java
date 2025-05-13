@@ -78,10 +78,12 @@ public class Simulation {
                 .determineEvolutionSteps(pCommunicationStrategy.getPCommunication(iteration));
         boolean shouldCommunicate = steps[0];
         boolean shouldUpdatePopulation = steps[1];
+        boolean populationUpdateOccurred = false;
         if (shouldCommunicate) {
             Agent listener = world.getRandomNeighbour(speaker.getX(), speaker.getY());
             if (listener == null) {
                 if (varConfig.REPR_LIPOWSKA() == 0) {
+                    populationUpdateOccurred = true;
                     populationUpdate(speaker);
                 }
             } else {
@@ -89,7 +91,7 @@ public class Simulation {
                 iterationStats.trackCommunicationResult(isCommunicationSuccessful);
             }
         }
-        if (shouldUpdatePopulation) {
+        if (shouldUpdatePopulation && !populationUpdateOccurred) {
             populationUpdate(speaker);
         }
     }
