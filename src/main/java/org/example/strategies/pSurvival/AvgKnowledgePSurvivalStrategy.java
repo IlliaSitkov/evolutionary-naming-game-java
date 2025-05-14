@@ -42,6 +42,6 @@ public class AvgKnowledgePSurvivalStrategy implements PSurvivalStrategy, Seriali
     }
 
     private double getSurvivalProbability(double avgKnowledge, int age, double agentKnowledge) {
-        return (Math.exp(-A * age) * (1 - Math.exp(-B * agentKnowledge / avgKnowledge)));
+        return (Math.exp(-A * age) * (1 - Math.exp(-B * (avgKnowledge == 0 ? 0 : agentKnowledge / avgKnowledge))));
     }
 }

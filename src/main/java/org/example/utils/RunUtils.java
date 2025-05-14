@@ -65,7 +65,8 @@ public class RunUtils {
     if (languageStats != null) {
       IOUtils.exportToJson(languageStats.getLanguages(), "out/" + folder + "/language_stats.json");
       IOUtils.exportToJson(languageStats.getAvgDisplacedTime(), "out/" + folder + "/language_stats_avg_displ_time.json");
-      IOUtils.exportToJson(languageStats.getLanguagesSnapshot(), "out/" + folder + "/language_initial_snapshot.json");
+      IOUtils.exportToJson(languageStats.getInitialSnapshot(), "out/" + folder + "/language_initial_snapshot.json");
+      IOUtils.exportToJson(languageStats.getFinalSnapshot(), "out/" + folder + "/language_final_snapshot.json");
     }
   }
 

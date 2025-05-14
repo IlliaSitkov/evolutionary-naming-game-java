@@ -22,6 +22,8 @@ public class World implements Serializable {
     private final int cols;
 
     private final Map<Position, Agent> agentsGrid = new HashMap<>();
+
+    @Getter
     private final VarConfig varConfig;
     private final StrategyConfig strategyConfig;
 

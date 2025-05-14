@@ -84,7 +84,7 @@ public class SimulationStats {
     private final List<Integer> nAgentsAlive = new ArrayList<>();
 
     @Getter
-    private LanguageStats languageStats = null;
+    private LanguageStats languageStats;
 
     private final List<Integer> iterationsToSaveMaps;
     private final List<Double> pCommunicationsToSaveMaps;
@@ -120,11 +120,17 @@ public class SimulationStats {
         recordCommonWorldStats(world);
         recordWorldLearningAbilities(world, -1, pCommunication);
         recordWorldLanguages(world, -1, pCommunication);
+        if (languageStats != null) {
+            languageStats.trackInitialIteration(world);
+        }
     }
 
     public void recordAfterEvolution(World world) {
         recordWorldLearningAbilities(world, -11, -11);
         recordWorldLanguages(world, -11, -11);
+         if (languageStats != null) {
+            languageStats.trackFinalIteration(world);
+        }
     }
 
     public void recordIteration(IterationStats iterationStats) {

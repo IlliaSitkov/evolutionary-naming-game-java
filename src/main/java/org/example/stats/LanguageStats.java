@@ -20,15 +20,21 @@ public class LanguageStats {
     List<UniformLanguage> languages = new ArrayList<>();
 
     @Getter
-    private List<UniformLanguage> languagesSnapshot;
+    private List<UniformLanguage> initialSnapshot;
+    @Getter
+    private List<UniformLanguage> finalSnapshot;
 
     UniformLanguage currentUniformLanguage = null;
 
-    public void trackIteration(int iteration, World world) {
-        if (iteration == 0) {
-            languagesSnapshot = takeLanguagesSnapshot(world);
-        }
+    public void trackInitialIteration(World world) {
+        initialSnapshot = takeLanguagesSnapshot(world);
+    }
 
+    public void trackFinalIteration(World world) {
+        finalSnapshot = takeLanguagesSnapshot(world);
+    }
+
+    public void trackIteration(int iteration, World world) {
         UniformLanguage language = getUniformLanguage(languageThreshold, world);
 
         if (language == null || currentUniformLanguage != null && currentUniformLanguage.getLanguage() == language.getLanguage()) {
