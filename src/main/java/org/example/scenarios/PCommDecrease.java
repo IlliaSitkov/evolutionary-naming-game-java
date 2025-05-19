@@ -16,7 +16,6 @@ import org.example.stats.SimulationStats;
 import org.example.strategies.agentInitializer.ControlledAgentInitializer;
 import org.example.strategies.evolution.ProbabilisticEvolutionStrategy;
 import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
-import org.example.strategies.learningAbilityInheritance.MoloneyRandomLAbInheritanceStrategy;
 import org.example.strategies.learningAbilityInheritance.RandomLAbInheritanceStrategy;
 import org.example.strategies.neighborPositions.Neighbor8PositionsStrategy;
 import org.example.strategies.pCommunication.ConstantPCommunicationStrategy;
@@ -131,7 +130,7 @@ public class PCommDecrease {
     StrategyConfig strategyConfig = new StrategyConfig(
         new ConstantPCommunicationStrategy(preSimulationPComm),
         new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-        moloneyImpl ? new MoloneyRandomLAbInheritanceStrategy() : new RandomLAbInheritanceStrategy(),
+        new RandomLAbInheritanceStrategy(),
         new ConstantLAbAgingStrategy(),
         new Neighbor8PositionsStrategy(),
         new UnitWordAcquisitionStrategy(),

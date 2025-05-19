@@ -15,7 +15,6 @@ import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
 import org.example.strategies.evolution.ProbabilisticEvolutionStrategy;
 import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
-import org.example.strategies.learningAbilityInheritance.MoloneyRandomLAbInheritanceStrategy;
 import org.example.strategies.learningAbilityInheritance.MutatedLAbInheritanceStrategy;
 import org.example.strategies.learningAbilityInheritance.RandomLAbInheritanceStrategy;
 import org.example.strategies.neighborPositions.Neighbor8PositionsStrategy;
@@ -54,7 +53,7 @@ public class PCommIncrease {
         StrategyConfig strategyConfig = new StrategyConfig(
                 null,
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-                moloneyImpl ? new MoloneyRandomLAbInheritanceStrategy() : new RandomLAbInheritanceStrategy(),
+                new RandomLAbInheritanceStrategy(),
                 new ConstantLAbAgingStrategy(),
                 new Neighbor8PositionsStrategy(),
                 new UnitWordAcquisitionStrategy(),

@@ -33,11 +33,9 @@ public class MultiWorld {
   public static final String folder = "multi_world_50k_1";
 
 
-  public static World evolveWorld(int L_COLS, int L_ROWS, int N, double A, String folder, String subfolder) {
-    int preSimulationStepsNumber = 100000;
+  public static World evolveWorld(int L_COLS, int L_ROWS, int N, double A, String folder, String subfolder, int preSimulationStepsNumber, double uniformLAbThreshold) {
     double preSimulationPComm = 0.65;
     double uniformLangThreshold = 0.99;
-    double uniformLAbThreshold = 0.95;
 
     VarConfig varConfig = new VarConfig(Map.of(
         ConfigKey.T, preSimulationStepsNumber,
@@ -68,15 +66,15 @@ public class MultiWorld {
     return simulation.getWorld();
   }
 
-  public static void joinTerritory(String tag, int L, int N, double A, double pComm) {
-    joinTerritory(tag, L, N, A, pComm, null);
+  public static void joinTerritory(String tag, int L, int N, double A, double pComm, int nIterations, int nPreIterations, double preLAb, double preLAb2) {
+    joinTerritory(tag, L, N, A, pComm, null, nIterations, nPreIterations, preLAb, preLAb2);
   }
 
-  public static void joinTerritory(String tag, int L, int N, double A, double pComm, Double pCommFinal) {
-    joinTerritory(tag, L, N, A, pComm, pCommFinal, new Neighbor8PositionsStrategy());
+  public static void joinTerritory(String tag, int L, int N, double A, double pComm, Double pCommFinal, int nIterations, int nPreIterations, double preLAb1, double preLAb2) {
+    joinTerritory(tag, L, N, A, pComm, pCommFinal, new Neighbor8PositionsStrategy(), nIterations, nPreIterations, preLAb1, preLAb2);
   }
 
-  public static void joinTerritory(String tag, int L, int N, double A, double pComm, Double pCommFinal, NeighborPositionsStrategy neighborPositionsStrategy) {
+  public static void joinTerritory(String tag, int L, int N, double A, double pComm, Double pCommFinal, NeighborPositionsStrategy neighborPositionsStrategy, int nIterations, int nPreNIterations, double preLAb1, double preLAb2) {
     try {
       Thread.sleep(new Random().nextInt(2000) + new Random().nextInt(2000));
     } catch (InterruptedException e) {
@@ -91,8 +89,8 @@ public class MultiWorld {
     ExecutorService executor = Executors.newFixedThreadPool(2);
 
     try {
-      CompletableFuture<World> future1 = CompletableFuture.supplyAsync(() -> evolveWorld(L/2, L, N, A, folder, "world1"), executor);
-      CompletableFuture<World> future2 = CompletableFuture.supplyAsync(() -> evolveWorld(L/2, L, N, A, folder, "world2"), executor);
+      CompletableFuture<World> future1 = CompletableFuture.supplyAsync(() -> evolveWorld(L/2, L, N, A, folder, "world1", nPreNIterations, preLAb1), executor);
+      CompletableFuture<World> future2 = CompletableFuture.supplyAsync(() -> evolveWorld(L/2, L, N, A, folder, "world2",  nPreNIterations, preLAb2), executor);
 
       CompletableFuture<Void> allDone = CompletableFuture.allOf(future1, future2);
 
@@ -101,7 +99,6 @@ public class MultiWorld {
       world1 = future1.join();
       world2 = future2.join();
 
-      int nIterations = 50000;
       double languageThreshold = 0.99;
 
       VarConfig varConfig = new VarConfig(Map.of(
@@ -118,12 +115,14 @@ public class MultiWorld {
           new ConstantLAbAgingStrategy(),
           neighborPositionsStrategy,
           new UnitWordAcquisitionStrategy(),
-          new ProbabilisticEvolutionStrategy());
+          new ProbabilisticEvolutionStrategy(),
+          new LAbLangContinueSimulationStrategy(languageThreshold, 0)
+          );
 
       World world3 = World.mergeWorlds(world1, world2, varConfig, strategyConfig);
 
       List<Integer> iterations = new ArrayList<>();
-      for (int i = 0; i < nIterations; i += 1000) {
+      for (int i = 0; i < nIterations; i += 500) {
         iterations.add(i);
       }
 
@@ -144,15 +143,15 @@ public class MultiWorld {
 
 
 
-  public static void relocate(String tag, int L, int N, double A, double relocatedN, double pComm) {
-    relocate(tag, L, N, A, relocatedN, pComm, null, new Neighbor8PositionsStrategy());
+  public static void relocate(String tag, int L, int N, double A, double relocatedN, double pComm, int nIterations, int nPreNIterations, double preLAb1, double preLAb2) {
+    relocate(tag, L, N, A, relocatedN, pComm, null, new Neighbor8PositionsStrategy(), nIterations, nPreNIterations, preLAb1, preLAb2);
   }
 
-  public static void relocate(String tag, int L, int N, double A, double relocatedN, double pComm, Double pCommFinal) {
-    relocate(tag, L, N, A, relocatedN, pComm, pCommFinal, new Neighbor8PositionsStrategy());
+  public static void relocate(String tag, int L, int N, double A, double relocatedN, double pComm, Double pCommFinal, int nIterations, int nPreNIterations, double preLAb1, double preLAb2) {
+    relocate(tag, L, N, A, relocatedN, pComm, pCommFinal, new Neighbor8PositionsStrategy(), nIterations, nPreNIterations, preLAb1, preLAb2);
   }
 
-  public static void relocate(String tag, int L, int N, double A, double relocatedPortion, double pComm, Double pCommFinal, NeighborPositionsStrategy neighborPositionsStrategy) {
+  public static void relocate(String tag, int L, int N, double A, double relocatedPortion, double pComm, Double pCommFinal, NeighborPositionsStrategy neighborPositionsStrategy, int nIterations, int nPreNIterations, double preLAb1, double preLAb2) {
     try {
       Thread.sleep(new Random().nextInt(2000) + new Random().nextInt(2000));
     } catch (InterruptedException e) {
@@ -167,8 +166,8 @@ public class MultiWorld {
     ExecutorService executor = Executors.newFixedThreadPool(2);
 
     try {
-      CompletableFuture<World> future1 = CompletableFuture.supplyAsync(() -> evolveWorld(L, L, N, A, folder, "world1"), executor);
-      CompletableFuture<World> future2 = CompletableFuture.supplyAsync(() -> evolveWorld(L, L, N, A, folder, "world2"), executor);
+      CompletableFuture<World> future1 = CompletableFuture.supplyAsync(() -> evolveWorld(L, L, N, A, folder, "world1", nPreNIterations, preLAb1), executor);
+      CompletableFuture<World> future2 = CompletableFuture.supplyAsync(() -> evolveWorld(L, L, N, A, folder, "world2", nPreNIterations, preLAb2), executor);
 
       CompletableFuture<Void> allDone = CompletableFuture.allOf(future1, future2);
 
@@ -177,7 +176,6 @@ public class MultiWorld {
       world1 = future1.join();
       world2 = future2.join();
 
-      int nIterations = 50000;
       double languageThreshold = 0.99;
 
       VarConfig varConfig = new VarConfig(Map.of(
@@ -195,13 +193,15 @@ public class MultiWorld {
           new ConstantLAbAgingStrategy(),
           neighborPositionsStrategy,
           new UnitWordAcquisitionStrategy(),
-          new ProbabilisticEvolutionStrategy());
+          new ProbabilisticEvolutionStrategy(),
+          new LAbLangContinueSimulationStrategy(languageThreshold, 0)
+          );
 
       int relocatedN  = varConfig.RELOCATED_Q() < 1 ? (int) (varConfig.RELOCATED_Q() * L*L) : (int) varConfig.RELOCATED_Q();
       world1.takeAgentsFrom(world2, relocatedN);
 
       List<Integer> iterations = new ArrayList<>();
-      for (int i = 0; i < nIterations; i += 1000) {
+      for (int i = 0; i < nIterations; i += 500) {
         iterations.add(i);
       }
 

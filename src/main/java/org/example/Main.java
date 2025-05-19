@@ -35,9 +35,9 @@ import org.example.utils.Timer;
 public class Main {
     public static void main(String[] args) {
         runSimulationsInParallel();
-        // MultiWorld.joinTerritory(20, 1, 0.005);
-        // MultiWorld.relocate(20, 1, 0.005, 180);
-        // ContinuousPCommTransition.moloneyFullWorldEvolution(40, 1, 0.005, 100000);
+        // AbruptTransitionRuns.original("default", 40, 1,0.05);
+        // MultiWorld.relocate("test", 20, 1, 0.005, 0.5, 0.5, 20000,100000, 0.95, 0.95);
+        // AbruptTransitionRuns.original("formula_0.98_a0.5", 40, 1, 0.5);
     }
 
     public static void runSimulationsInParallel() {
@@ -274,55 +274,55 @@ public class Main {
 
 
             /// ALL COMBINED //////////////////////////////////////////////////////
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("base", 40, 1, 0.005, 0.99, 15, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("base", 40, 1, 0.005, 0.99, 15, 0.01),
 
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_lg_age", 40, 1, 0.005, 0.95, 15, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_lg_age", 40, 1, 0.005, 0.5, 15, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_lg_age", 40, 1, 0.005, 0.25, 15, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_lg_age", 40, 1, 0.005, 0.1, 15, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_lg_age", 40, 1, 0.005, 0.0, 15, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_lg_age", 40, 1, 0.005, 0.95, 15, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_lg_age", 40, 1, 0.005, 0.5, 15, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_lg_age", 40, 1, 0.005, 0.25, 15, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_lg_age", 40, 1, 0.005, 0.1, 15, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_lg_age", 40, 1, 0.005, 0.0, 15, 0.01),
             
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.99, 8, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.95, 8, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.5, 8, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.25, 8, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.1, 8, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.0, 8, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.99, 8, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.95, 8, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.5, 8, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.25, 8, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.1, 8, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("alpha_sm_age", 40, 1, 0.005, 0.0, 8, 0.01),
 
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_lg_age", 40, 1, 0.005, 0.99, 15, 0.1),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_lg_age", 40, 1, 0.005, 0.99, 15, 0.5),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_lg_age", 40, 1, 0.005, 0.99, 15, 0.8),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_lg_age", 40, 1, 0.005, 0.99, 15, 5),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_lg_age", 40, 1, 0.005, 0.99, 15, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_lg_age", 40, 1, 0.005, 0.99, 15, 0.5),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_lg_age", 40, 1, 0.005, 0.99, 15, 0.8),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_lg_age", 40, 1, 0.005, 0.99, 15, 5),
             
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_alpha", 40, 1, 0.005, 0.25, 15, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_alpha", 40, 1, 0.005, 0.25, 15, 0.1),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_alpha", 40, 1, 0.005, 0.25, 15, 0.5),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_alpha", 40, 1, 0.005, 0.25, 15, 0.8),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_alpha", 40, 1, 0.005, 0.25, 15, 5),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_alpha", 40, 1, 0.005, 0.25, 15, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_alpha", 40, 1, 0.005, 0.25, 15, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_alpha", 40, 1, 0.005, 0.25, 15, 0.5),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_alpha", 40, 1, 0.005, 0.25, 15, 0.8),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_alpha", 40, 1, 0.005, 0.25, 15, 5),
             
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_age", 40, 1, 0.005, 0.99, 8, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_age", 40, 1, 0.005, 0.99, 8, 0.1),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_age", 40, 1, 0.005, 0.99, 8, 0.5),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_age", 40, 1, 0.005, 0.99, 8, 0.8),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_age", 40, 1, 0.005, 0.99, 8, 5),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_age", 40, 1, 0.005, 0.99, 8, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_age", 40, 1, 0.005, 0.99, 8, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_age", 40, 1, 0.005, 0.99, 8, 0.5),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_age", 40, 1, 0.005, 0.99, 8, 0.8),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("stddev_sm_age", 40, 1, 0.005, 0.99, 8, 5),
 
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("age", 40, 1, 0.005, 0.99, 8, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("age", 40, 1, 0.005, 0.99, 5, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("age", 40, 1, 0.005, 0.99, 1, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("age", 40, 1, 0.005, 0.99, 8, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("age", 40, 1, 0.005, 0.99, 5, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("age", 40, 1, 0.005, 0.99, 1, 0.01),
 
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_lg_age", 40, 1, 0.05, 0.99, 15, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_lg_age", 40, 1, 0.5, 0.99, 15, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_lg_age", 40, 1, 2, 0.99, 15, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_lg_age", 40, 1, 0.05, 0.99, 15, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_lg_age", 40, 1, 0.5, 0.99, 15, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_lg_age", 40, 1, 2, 0.99, 15, 0.01),
             
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_alpha", 40, 1, 0.005, 0.25, 15, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_alpha", 40, 1, 0.05, 0.25, 15, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_alpha", 40, 1, 0.5, 0.25, 15, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_alpha", 40, 1, 2, 0.25, 15, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_alpha", 40, 1, 0.005, 0.25, 15, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_alpha", 40, 1, 0.05, 0.25, 15, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_alpha", 40, 1, 0.5, 0.25, 15, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_alpha", 40, 1, 2, 0.25, 15, 0.01),
 
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_age", 40, 1, 0.005, 0.99, 3, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_age", 40, 1, 0.05, 0.99, 3, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_age", 40, 1, 0.5, 0.99, 3, 0.01),
-            () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_age", 40, 1, 2, 0.99, 3, 0.01)
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_age", 40, 1, 0.005, 0.99, 3, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_age", 40, 1, 0.05, 0.99, 3, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_age", 40, 1, 0.5, 0.99, 3, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_age", 40, 1, 2, 0.99, 3, 0.01)
 
 
 
@@ -340,8 +340,229 @@ public class Main {
             // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb(null, 40, 1000, 0.5, 0.005, 100000, 100000, null, null, null, 0.1, 8),
             // () -> ContinuousPCommTransition.wordAcquisitionAgedLAb("A", 40, 1, 0.5, 0.05, 100000, 100000, null, null, null, 0.1, 8)
 
+            ////////////////// JOINT TERRITORY ///////////////////////
+            // () -> MultiWorld.joinTerritory("base1", 40, 1, 0.005, 0.5, 50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("base1", 40, 1, 0.005, 0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("base1", 40, 1, 0.005, 0.5,  50000,100000, 0.95, 0.95),
+            
+            // () -> MultiWorld.joinTerritory("base_diff_lab", 40, 1, 0.005, 0.5, 50000,100000, 0.95, 0.0),
+            // () -> MultiWorld.joinTerritory("base_diff_lab", 40, 1, 0.005, 0.5,  50000,100000, 0.95, 0.0),
+            // () -> MultiWorld.joinTerritory("base_diff_lab", 40, 1, 0.005, 0.5,  50000,100000, 0.95, 0.0),
+
+            // () -> MultiWorld.joinTerritory(null,30, 1, 0.005, 0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory(null,30, 1, 0.005, 0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory(null, 20, 1, 0.005, 0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory(null, 20, 1, 0.005, 0.5,  50000,100000, 0.95, 0.95),
+
+            // () -> MultiWorld.joinTerritory("p_comm1", 40, 1, 0.005, 0.01,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("p_comm1", 40, 1, 0.005, 0.001,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("p_comm1", 40, 1, 0.005, 0.1,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("p_comm1", 40, 1, 0.005, 0.25,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("p_comm1", 40, 1, 0.005, 0.75,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("p_comm1", 40, 1, 0.005, 1,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("p_comm1", 40, 1, 0.005, 0,  50000,100000, 0.95, 0.95),
+
+            // () -> MultiWorld.joinTerritory("p_comm_cont", 40, 1, 0.005, 0.1, 0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("p_comm_cont", 40, 1, 0.005, 0, 0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("p_comm_cont", 40, 1, 0.005, 0.1, 0.98,  50000,100000, 0.95, 0.95)
+
+            // () -> MultiWorld.joinTerritory("neighb_hor", 40, 1, 0.005, 0.5, null, new Neighbor4PositionsStrategy(false),  50000,100000, 0.95),
+            // () -> MultiWorld.joinTerritory("neighb_hor", 40, 1, 0.005, 0.5, null, new Neighbor4PositionsStrategy(false),  50000,100000, 0.95),
+
+            // () -> MultiWorld.joinTerritory("neighb_diag", 40, 1, 0.005, 0.5, null, new Neighbor4PositionsStrategy(true),  50000,100000, 0.95),
+            // () -> MultiWorld.joinTerritory("neighb_diag", 40, 1, 0.005, 0.5, null, new Neighbor4PositionsStrategy(true),  50000,100000, 0.95),
+
+            // todo
+            // () -> MultiWorld.joinTerritory("high_p_comm_N2", 40, 2, 0.005, 1,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("high_p_comm_N2", 40, 2, 0.005, 1,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("high_p_comm_N5", 40, 5, 0.005, 1,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("high_p_comm_N5", 40, 5, 0.005, 1,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("high_p_comm_N10", 40, 10, 0.005, 1,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("high_p_comm_N10", 40, 10, 0.005, 1,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("high_p_comm_N1000", 40, 1000, 0.005, 1,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("high_p_comm_N1000", 40, 1000, 0.005, 1,  50000,100000, 0.95, 0.95),
+
+            // () -> MultiWorld.joinTerritory("high_p_comm_N2_sm_pcomm", 40, 2, 0.005, 0.001,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("high_p_comm_N2_sm_pcomm", 40, 2, 0.005, 0.001,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("high_p_comm_N5_sm_pcomm", 40, 5, 0.005, 0.001,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("high_p_comm_N5_sm_pcomm", 40, 5, 0.005, 0.001,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("high_p_comm_N10_sm_pcomm", 40, 10, 0.005, 0.001,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("high_p_comm_N10_sm_pcomm", 40, 10, 0.005, 0.001,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("high_p_comm_N1000_sm_pcomm", 40, 1000, 0.005, 0.001,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("high_p_comm_N1000_sm_pcomm", 40, 1000, 0.005, 0.001,  50000,100000, 0.95, 0.95),
+
+            // () -> MultiWorld.joinTerritory("base_diff_lab_1", 40, 1, 0.005, 0.5, 50000,100000, 0.95, 0.0),
+            // () -> MultiWorld.joinTerritory("base_diff_lab_1", 40, 1, 0.005, 0.5,  50000,100000, 0.95, 0.0),
+            // () -> MultiWorld.joinTerritory("base_diff_lab_1", 40, 1, 0.005, 0.5,  50000,100000, 0.95, 0.0),
+
+            // () -> MultiWorld.joinTerritory("base_diff_lab_w2", 40, 1, 0.005, 0.5, 50000,100000, 0.0, 0.95),
+            // () -> MultiWorld.joinTerritory("base_diff_lab_w2", 40, 1, 0.005, 0.5,  50000,100000, 0.0, 0.95),
+            // () -> MultiWorld.joinTerritory("base_diff_lab_w2", 40, 1, 0.005, 0.5,  50000,100000, 0.0, 0.95),
+            // () -> MultiWorld.joinTerritory("base_diff_lab_w2", 40, 1, 0.005, 0.5, 50000,100000, 0.0, 0.95),
+            // () -> MultiWorld.joinTerritory("base_diff_lab_w2", 40, 1, 0.005, 0.5,  50000,100000, 0.0, 0.95),
+            // () -> MultiWorld.joinTerritory("base_diff_lab_w2", 40, 1, 0.005, 0.5,  50000,100000, 0.0, 0.95),
+
+
+            // () -> MultiWorld.joinTerritory("N", 40, 2, 0.005,  0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("N", 40, 5, 0.005,  0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("N", 40, 10, 0.005,  0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.joinTerritory("N", 40, 1000, 0.005, 0.5,  50000,100000, 0.95, 0.95)
+
+
+
 
             
+            ////////////////// RELOCATED ///////////////////////
+            // () -> MultiWorld.relocate("base", 40, 1, 0.005, 0.5,  0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("base", 40, 1, 0.005, 0.5, 0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("base", 40, 1, 0.005, 0.5, 0.5,  50000,100000, 0.95, 0.95),
+
+            // () -> MultiWorld.relocate("base_p0.5", 40, 1, 0.005, 0.5,  0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("base_p0.5", 40, 1, 0.005, 0.5, 0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("base_p0.5", 40, 1, 0.005, 0.5, 0.5,  50000,100000, 0.95, 0.95),
+
+            // () -> MultiWorld.relocate("N", 40, 2, 0.005, 0.5,  0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("N", 40, 5, 0.005, 0.5,  0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("N", 40, 10, 0.005, 0.5,  0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("N", 40, 1000, 0.005, 0.5,  0.5,  50000,100000, 0.95, 0.95),
+
+            // () -> MultiWorld.relocate("N_sm_pcomm", 40, 2, 0.005, 0.5,  0.001,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("N_sm_pcomm", 40, 5, 0.005, 0.5,  0.001,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("N_sm_pcomm", 40, 10, 0.005, 0.5,  0.001,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("N_sm_pcomm", 40, 1000, 0.005, 0.5,  0.001,  50000,100000, 0.95, 0.95),
+
+            // () -> MultiWorld.relocate("portion", 40, 1, 0.005, 0.1,  0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("portion", 40, 1, 0.005, 0.3,  0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("portion", 40, 1, 0.005, 0.5,  0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("portion", 40, 1, 0.005, 0.25,  0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("portion", 40, 1, 0.005, 0.75,  0.5,  50000,100000, 0.95, 0.95),
+
+            // () -> MultiWorld.relocate(null,30, 1, 0.005, 0.5, 0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate(null, 20, 1, 0.005, 0.5, 0.5,  50000,100000, 0.95, 0.95),
+
+            // () -> MultiWorld.relocate("p_comm", 40, 1, 0.005, 0.5, 0.01,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("p_comm", 40, 1, 0.005, 0.5, 0.001,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("p_comm", 40, 1, 0.005,0.5, 0.1,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("p_comm", 40, 1, 0.005, 0.5, 0.25,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("p_comm", 40, 1, 0.005, 0.5, 0.75,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("p_comm", 40, 1, 0.005, 0.5, 1,  50000,100000, 0.95, 0.95),
+
+            // () -> MultiWorld.relocate("p_comm_cont", 40, 1, 0.005, 0.5, 0.1, 0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("p_comm_cont", 40, 1, 0.005, 0.5, 0, 0.5,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("p_comm_cont", 40, 1, 0.005, 0.5, 0.1, 0.98,  50000,100000, 0.95, 0.95),
+
+            // () -> MultiWorld.relocate("compare_terr", 40, 1, 0.005, 0.5, 1,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("compare_terr", 40, 1, 0.005, 0.5, 1, 50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("compare_terr", 40, 1, 0.005, 0.5, 0,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("compare_terr", 40, 1, 0.005, 0.5, 0,  50000,100000, 0.95, 0.95),
+
+            // () -> MultiWorld.relocate("who_wins_w1", 40, 1, 0.005, 0.5, 0.5, 50000,100000, 0.95, 0),
+            // () -> MultiWorld.relocate("who_wins_w1", 40, 1, 0.005, 0.5, 0.5, 50000,100000, 0.95, 0),
+            // () -> MultiWorld.relocate("who_wins_w1", 40, 1, 0.005, 0.5, 0.5, 50000,100000, 0.95, 0),
+            
+            // () -> MultiWorld.relocate("who_wins_w2", 40, 1, 0.005, 0.5, 0.5, 50000,100000, 0, 0.95),
+            // () -> MultiWorld.relocate("who_wins_w2", 40, 1, 0.005, 0.5, 0.5, 50000,100000, 0, 0.95),
+            // () -> MultiWorld.relocate("who_wins_w2", 40, 1, 0.005, 0.5, 0.5, 50000,100000, 0, 0.95),
+
+            // () -> MultiWorld.relocate("who_wins_0.3", 40, 1, 0.005, 0.3, 0.5, 50000,100000, 0, 0.95),
+            // () -> MultiWorld.relocate("who_wins_0.3", 40, 1, 0.005, 0.3, 0.5, 50000,100000, 0, 0.95),
+            // () -> MultiWorld.relocate("who_wins_0.3", 40, 1, 0.005, 0.3, 0.5, 50000,100000, 0, 0.95),
+
+
+            // () -> MultiWorld.relocate("high_p_comm_N2", 40, 2, 0.005, 0.5, 1,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("high_p_comm_N5", 40, 5, 0.005, 0.5, 1,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("high_p_comm_N10", 40, 10, 0.005, 0.5, 1,  50000,100000, 0.95, 0.95),
+            // () -> MultiWorld.relocate("high_p_comm_N1000", 40, 1000, 0.005, 0.5, 1,  50000,100000, 0.95, 0.95)
+
+
+
+            // () -> MultiWorld.relocate("neighb_hor", 40, 1, 0.005, 0.3, 0.5, null, new Neighbor4PositionsStrategy(false),  50000,100000, 0.95),
+            // () -> MultiWorld.relocate("neighb_hor", 40, 1, 0.005, 0.3,  0.5, null, new Neighbor4PositionsStrategy(false),  50000,100000, 0.95),
+            
+            // () -> MultiWorld.relocate("neighb_diag", 40, 1, 0.005, 0.3, 0.5, null, new Neighbor4PositionsStrategy(true),  50000,100000, 0.95),
+            // () -> MultiWorld.relocate("neighb_diag", 20, 1, 0.005, 0.3, 0.5, null, new Neighbor4PositionsStrategy(true),  50000,100000, 0.95)
+
+            //// TEST ALPHA 0 ////////
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("test_a_0", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.0, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("test_a_0", 40, 1, 0.5, 0.05, 40000, 100000, null, null, null, 0.0, 0.1)
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurv("test_a_0", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.0, 0.001)
+
+            // () -> ContinuousPCommTransition.newPSurv(40, 1, 0.5, 0.005, 100000, 100000, 0)
+
+            // () -> AbruptTransitionRuns.original("lang_takeover_0.99", 40, 1, 0.05, 0),
+            // () -> AbruptTransitionRuns.original("lang_takeover_0.99", 40, 1, 0.05, 0),
+            // () -> AbruptTransitionRuns.original("lang_takeover_0.99", 40, 1, 0.05, 0),
+            // () -> AbruptTransitionRuns.original("lang_takeover_0.99", 40, 1, 0.05, 0),
+
+            // () -> AbruptTransitionRuns.original("lang_takeover_0.95", 40, 1, 0.05, 0),
+            // () -> AbruptTransitionRuns.original("lang_takeover_0.95", 40, 1, 0.05, 0),
+            // () -> AbruptTransitionRuns.original("lang_takeover_0.95", 40, 1, 0.05, 0),
+            // () -> AbruptTransitionRuns.original("lang_takeover_0.95", 40, 1, 0.05, 0)
+
+            // () -> ContinuousPCommTransition.original(60, 1, 0.5, 0.05, 100000, 200000)
+
+            ////////// ABRUPT FOR FORMULA /////////////
+            
+            // () -> AbruptTransitionRuns.original("default", 40, 1,0.05, 0, new Neighbor8PositionsStrategy()),
+            // () -> AbruptTransitionRuns.originalMoloney(40, 1,0.05, 0, new Neighbor8PositionsStrategy())
+
+            // () -> AbruptTransitionRuns.original("neighb", 40, 1,0.05, 0, new Neighbor4PositionsStrategy(false)),
+            // () -> AbruptTransitionRuns.original("neighb", 40, 1,0.05, 0, new Neighbor8PositionsStrategy())
+
+            // () -> AbruptTransitionRuns.original("neighb", 40, 1, 0.05, 0, new Neighbor4PositionsStrategy(false)),
+            // () -> AbruptTransitionRuns.original("neighb", 40, 1, 0.05)
+            // () -> AbruptTransitionRuns.original("neighb", 40, 1, 0.05, 0, new Neighbor4PositionsStrategy(true))
+           
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.01", 20, 1, 0.01),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.01", 20, 1, 0.01),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.01", 20, 1, 0.01),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.01", 20, 1, 0.01),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.01", 20, 1, 0.01),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.01", 20, 1, 0.01),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.01", 20, 1, 0.01),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.01", 20, 1, 0.01),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.01", 20, 1, 0.01),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.01", 20, 1, 0.01)
+            
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.075", 20, 1, 0.075),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.075", 20, 1, 0.075),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.075", 20, 1, 0.075),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.075", 20, 1, 0.075),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.075", 20, 1, 0.075),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.075", 20, 1, 0.075),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.075", 20, 1, 0.075),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.075", 20, 1, 0.075),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.075", 20, 1, 0.075),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.075", 20, 1, 0.075)
+           
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.8", 40, 1, 0.8),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.8", 40, 1, 0.8),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.8", 40, 1, 0.8),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.8", 40, 1, 0.8),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.8", 40, 1, 0.8),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.8", 40, 1, 0.8),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.8", 40, 1, 0.8),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.8", 40, 1, 0.8),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.8", 40, 1, 0.8),
+            // () -> AbruptTransitionRuns.original("formula_0.98_a0.8", 40, 1, 0.8)
+
+            // () -> AbruptTransitionRuns.original("formula_0.96", 40, 1, 0.05),
+            // () -> AbruptTransitionRuns.original("formula_0.96", 40, 1, 0.05),
+            // () -> AbruptTransitionRuns.original("formula_0.96", 40, 1, 0.05),
+            // () -> AbruptTransitionRuns.original("formula_0.96", 40, 1, 0.05),
+            // () -> AbruptTransitionRuns.original("formula_0.96", 40, 1, 0.05),
+            // () -> AbruptTransitionRuns.original("formula_0.96", 40, 1, 0.05),
+            // () -> AbruptTransitionRuns.original("formula_0.96", 40, 1, 0.05),
+            // () -> AbruptTransitionRuns.original("formula_0.96", 40, 1, 0.05),
+            // () -> AbruptTransitionRuns.original("formula_0.96", 40, 1, 0.05),
+            // () -> AbruptTransitionRuns.original("formula_0.96", 20, 1, 0.05)
+
+
+            () -> AbruptTransitionRuns.original("decreasing_A_096", 40, 1,0.004),
+            () -> AbruptTransitionRuns.original("decreasing_A_096", 40, 1,0.003),
+            () -> AbruptTransitionRuns.original("decreasing_A_096", 40, 1,0.002),
+            () -> AbruptTransitionRuns.original("decreasing_A_096", 40, 1,0.001),
+            () -> AbruptTransitionRuns.original("decreasing_A_096", 40, 1,0.005)
         );
 
 

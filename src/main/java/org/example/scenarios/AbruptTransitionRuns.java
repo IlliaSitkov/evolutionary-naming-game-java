@@ -11,7 +11,6 @@ import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
 import org.example.strategies.evolution.ProbabilisticEvolutionStrategy;
 import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
-import org.example.strategies.learningAbilityInheritance.MoloneyRandomLAbInheritanceStrategy;
 import org.example.strategies.learningAbilityInheritance.MutatedLAbInheritanceStrategy;
 import org.example.strategies.learningAbilityInheritance.RandomLAbInheritanceStrategy;
 import org.example.strategies.neighborPositions.Neighbor8PositionsStrategy;
@@ -49,16 +48,17 @@ public class AbruptTransitionRuns {
     RunUtils.runSimulation(simulation, folder);
   }
 
-  public static void original(int L, int N, double A) {
-    original(L, N, A, 0);
+  public static void original(String tag, int L, int N, double A) {
+    original(tag, L, N, A, 0);
   }
 
-  public static void original(int L, int N, double A, int initAge) {
-    original(L, N, A, initAge, new Neighbor8PositionsStrategy());
+  public static void original(String tag, int L, int N, double A, int initAge) {
+    original(tag, L, N, A, initAge, new Neighbor8PositionsStrategy());
   }
 
-  public static void original(int L, int N, double A, int initAge, NeighborPositionsStrategy neighborPositionsStrategy ) {
-    String folder = RunUtils.makePath(AbruptTransitionRuns.folder, "/original/L", L, "N", N);
+  public static void original(String tag, int L, int N, double A, int initAge, NeighborPositionsStrategy neighborPositionsStrategy ) {
+    String folder = RunUtils.makePath(AbruptTransitionRuns.folder, "/original/L", L, "N", N) + (tag == null ? "" : "/" + tag);
+
     VarConfig varConfig = new VarConfig(Map.of(
         ConfigKey.L, L,
         ConfigKey.A, A,
@@ -76,7 +76,7 @@ public class AbruptTransitionRuns {
 
     SimulationStats simulationStats = new SimulationStats(
         List.of(1000, 5000, 7990, 8000, 8050, 8100, 8200, 8500, 10000,15000, 20000, 30000, 35000,37000, 40000, varConfig.T() - 1),
-        List.of());
+        List.of(), true, 0.99);
 
     Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 
@@ -104,7 +104,7 @@ public class AbruptTransitionRuns {
     StrategyConfig strategyConfig = new StrategyConfig(
         new SingleStepPCommunicationStrategy(0.1, 8000, 0.98),
         new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-        new MoloneyRandomLAbInheritanceStrategy(),
+        new RandomLAbInheritanceStrategy(),
         new ConstantLAbAgingStrategy(),
         neighborPositionsStrategy,
         new UnitWordAcquisitionStrategy(),

@@ -15,7 +15,6 @@ import org.example.strategies.evolution.FullEvolutionStrategy;
 import org.example.strategies.evolution.ProbabilisticEvolutionStrategy;
 import org.example.strategies.learningAbilityAging.ConstantDecreaseLAbAgingStrategy;
 import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
-import org.example.strategies.learningAbilityInheritance.MoloneyRandomLAbInheritanceStrategy;
 import org.example.strategies.learningAbilityInheritance.MutatedLAbInheritanceStrategy;
 import org.example.strategies.learningAbilityInheritance.RandomLAbInheritanceStrategy;
 import org.example.strategies.neighborPositions.Neighbor8PositionsStrategy;
@@ -88,7 +87,7 @@ public class ContinuousPCommTransition {
                 StrategyConfig strategyConfig = new StrategyConfig(
                                 new ContinuousIncreasePCommunicationStrategy(0.1, finalPComm, nStepsSimulated),
                                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-                                new MoloneyRandomLAbInheritanceStrategy(),
+                                new RandomLAbInheritanceStrategy(),
                                 new ConstantLAbAgingStrategy(),
                                 new Neighbor8PositionsStrategy(),
                                 new UnitWordAcquisitionStrategy(),
@@ -176,7 +175,7 @@ public class ContinuousPCommTransition {
                 StrategyConfig strategyConfig = new StrategyConfig(
                                 new InterpolatedPCommunicationStrategy(0.1, finalPComm, nStepsSimulated),
                                 new SuccessRatePSurvivalStrategy(varConfig.A(), varConfig.C()),
-                                new MoloneyRandomLAbInheritanceStrategy(),
+                                new RandomLAbInheritanceStrategy(),
                                 new ConstantLAbAgingStrategy(),
                                 new Neighbor8PositionsStrategy(),
                                 new UnitWordAcquisitionStrategy(),
@@ -236,7 +235,7 @@ public class ContinuousPCommTransition {
                 StrategyConfig strategyConfig = new StrategyConfig(
                                 new InterpolatedPCommunicationStrategy(0.1, finalPComm, nStepsSimulated),
                                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-                                isMoloney ? new MoloneyRandomLAbInheritanceStrategy() : new MutatedLAbInheritanceStrategy(stdDev),
+                                isMoloney ? new RandomLAbInheritanceStrategy() : new MutatedLAbInheritanceStrategy(stdDev),
                                 new ConstantLAbAgingStrategy(),
                                 new Neighbor8PositionsStrategy(),
                                 new LAbWordAquisitionStrategy(inventedLAb, learntLAb, inheritedLAb),
@@ -373,7 +372,7 @@ public class ContinuousPCommTransition {
                 StrategyConfig strategyConfig = new StrategyConfig(
                                 new InterpolatedPCommunicationStrategy(0.1, 0.5, nSteps),
                                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-                                new MoloneyRandomLAbInheritanceStrategy(),
+                                new RandomLAbInheritanceStrategy(),
                                 new ConstantLAbAgingStrategy(),
                                 new Neighbor8PositionsStrategy(),
                                 new UnitWordAcquisitionStrategy(),
