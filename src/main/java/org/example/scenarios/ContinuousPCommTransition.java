@@ -29,27 +29,27 @@ import org.example.utils.RunUtils;
 
 public class ContinuousPCommTransition {
 
-        public static final String folder = "continuous_p_comm_transition";
+        public static final String folder = "continuous_p_comm_transition_new";
 
-        public static void original(int L, int N, double finalPComm, double A) {
+        public static void original(String tag, int L, int N, double finalPComm, double A) {
                 int nSteps = 80000;
-                original(L, N, finalPComm, A, nSteps, nSteps);
+                original(tag, L, N, finalPComm, A, nSteps, nSteps);
         }
 
-        public static void original(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated) {
-                original(L, N, finalPComm, A, nSteps, nStepsSimulated, new Neighbor8PositionsStrategy(), 0);
+        public static void original(String tag, int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated) {
+                original(tag, L, N, finalPComm, A, nSteps, nStepsSimulated, new Neighbor8PositionsStrategy(), 0);
         }
 
-        public static void original(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, NeighborPositionsStrategy neighborPositionsStrateg) {
-                original(L, N, finalPComm, A, nSteps, nStepsSimulated, neighborPositionsStrateg, 0);
+        public static void original(String tag, int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, NeighborPositionsStrategy neighborPositionsStrateg) {
+                original(tag, L, N, finalPComm, A, nSteps, nStepsSimulated, neighborPositionsStrateg, 0);
         }
 
-        public static void original(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, int initAge) {
-                original(L, N, finalPComm, A, nSteps, nStepsSimulated, new Neighbor8PositionsStrategy(), initAge);
+        public static void original(String tag,int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, int initAge) {
+                original(tag, L, N, finalPComm, A, nSteps, nStepsSimulated, new Neighbor8PositionsStrategy(), initAge);
         }
 
-        public static void original(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, NeighborPositionsStrategy neighborPositionsStrategy, int initAge) {
-                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/original/L", L, "N", N);
+        public static void original(String tag, int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, NeighborPositionsStrategy neighborPositionsStrategy, int initAge) {
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/original/L", L, "N", N) + (tag == null ? "" : "/" + tag);
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
                                 ConfigKey.A, A,
@@ -68,8 +68,8 @@ public class ContinuousPCommTransition {
 
                 SimulationStats simulationStats = new SimulationStats(
                                 List.of(varConfig.T() - 1),
-                                List.of(0.1, 0.12, 0.13, 0.15, 0.16, 0.17, 0.18, 0.2, 0.22, 0.25, 0.26, 0.28, 0.3, 0.35,
-                                                0.4, 0.49, 0.5));
+                                List.of(0.1, 0.11, 0.115, 0.12, 0.125, 0.13, 0.135, 0.14, 0.15, 0.16, 0.17, 0.18, 0.2, 0.22, 0.23, 0.24, 0.25, 0.26, 0.28, 0.29, 0.3, 0.31, 0.32, 0.33, 0.34, 0.35,
+                                                0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.49, 0.5));
 
                 Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 

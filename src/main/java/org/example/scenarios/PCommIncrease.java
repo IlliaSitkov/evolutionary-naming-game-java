@@ -18,6 +18,7 @@ import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.MutatedLAbInheritanceStrategy;
 import org.example.strategies.learningAbilityInheritance.RandomLAbInheritanceStrategy;
 import org.example.strategies.neighborPositions.Neighbor8PositionsStrategy;
+import org.example.strategies.neighborPositions.NeighborPositionsStrategy;
 import org.example.strategies.pCommunication.ConstantPCommunicationStrategy;
 import org.example.strategies.pCommunication.PCommunicationStrategy;
 import org.example.strategies.pSurvival.AvgKnowledgePSurvivalStrategy;
@@ -30,18 +31,18 @@ public class PCommIncrease {
     public static final String folder = "p_comm_increase";
 
     public static void original(int L, double A, int N, int iterationsPerStep, int nSkipIterations, double minPComm, double maxPComm) {
-        original(L, A, N, false, iterationsPerStep, nSkipIterations, maxPComm, minPComm);
+        original(L, A, N, false, iterationsPerStep, nSkipIterations, maxPComm, minPComm, new Neighbor8PositionsStrategy());
     }
 
     public static void original(int L, double A, int N, int iterationsPerStep, int nSkipIterations, double maxPComm) {
-        original(L, A, N, false, iterationsPerStep, nSkipIterations, maxPComm, 0.11);
+        original(L, A, N, false, iterationsPerStep, nSkipIterations, maxPComm, 0.11, new Neighbor8PositionsStrategy());
     }
     
     public static void originalMoloney(int L, double A, int N, int iterationsPerStep, int nSkipIterations, double maxPComm) {
-        original(L, A, N, true, iterationsPerStep, nSkipIterations, maxPComm, 0.11);
+        original(L, A, N, true, iterationsPerStep, nSkipIterations, maxPComm, 0.11, new Neighbor8PositionsStrategy());
     }
 
-    public static void original(int L, double A, int N, boolean moloneyImpl, int iterationsPerStep, int nSkipIterations, double maxPComm, double minPComm) {
+    public static void original(int L, double A, int N, boolean moloneyImpl, int iterationsPerStep, int nSkipIterations, double maxPComm, double minPComm, NeighborPositionsStrategy neighborPositionsStrategy) {
         maxPComm += 0.0001;
         VarConfig varConfig = new VarConfig(Map.of(
                 ConfigKey.T, iterationsPerStep,
@@ -55,7 +56,7 @@ public class PCommIncrease {
                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
                 new RandomLAbInheritanceStrategy(),
                 new ConstantLAbAgingStrategy(),
-                new Neighbor8PositionsStrategy(),
+                neighborPositionsStrategy,
                 new UnitWordAcquisitionStrategy(),
                 new ProbabilisticEvolutionStrategy());
 

@@ -54,11 +54,13 @@ public class RunUtils {
       IOUtils.rootFolder + folder + "/LAbLangARI.txt");
 
     writeSeriesStats(stats.getLearningAbilityLanguageRI(), IOUtils.rootFolder + folder + "/LAbLangRI.txt");
+    writeSeriesStats(stats.getNLAbClusters(), IOUtils.rootFolder + folder + "/LAb_Clusters.txt");
+    writeSeriesStats(stats.getNLangClusters(), IOUtils.rootFolder + folder + "/NLang_Clusters.txt");
     
     if (stats.getNAgentsAlive().size() > 9000) {
       writeSeriesStats(stats.getNAgentsAlive().subList(9000, stats.getAvgAges().size()), IOUtils.rootFolder + folder + "/agents_n_after_transition_stats.txt");
     }
-    writeSeriesStats(stats.getNAgentsAlive().subList(0, 8000), IOUtils.rootFolder + folder + "/agents_n_before_transition_stats.txt");
+    // writeSeriesStats(stats.getNAgentsAlive().subList(0, 8000), IOUtils.rootFolder + folder + "/agents_n_before_transition_stats.txt");
    
     simulationPlots.saveSimulationStats(
         stats,
@@ -132,20 +134,29 @@ public class RunUtils {
     return path.toString();
   }
 
-  public static synchronized void writeSeriesStats(List<? extends Number> data, String fileName) {
+  public static double[] getSeriesStats(List<? extends Number> data) {
     double[] values = data.stream().mapToDouble(i -> i.doubleValue()).toArray();
     if (values.length == 0) {
-      return;
+      return new double[]{0, 0, 0};
     }
-    
     double mean = MathEx.mean(values);
     double median = MathEx.median(values);
     double stdDev = MathEx.stdev(values);
+    return new double[]{mean, median, stdDev};
+  }
+
+  public static synchronized void writeSeriesStats(List<? extends Number> data, String fileName) {
+    double[] stats = getSeriesStats(data);
+    
+    double mean = stats[0];
+    double median = stats[1];
+    double stdDev = stats[2];
 
     StringBuilder sb = new StringBuilder();
     sb.append("Mean: ").append(mean).append("\n");
     sb.append("Median: ").append(median).append("\n");
     sb.append("StdDev: ").append(stdDev).append("\n");
+    sb.append(mean).append(',').append(median).append(',').append(stdDev).append("\n");
 
     IOUtils.writeStringToFile(sb.toString(), fileName);
   }

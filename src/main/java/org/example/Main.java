@@ -1,6 +1,8 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -11,6 +13,7 @@ import org.example.VarConfig.ConfigKey;
 import org.example.export.IOUtils;
 import org.example.plotting.SimulationPlots;
 import org.example.scenarios.AbruptTransitionRuns;
+import org.example.scenarios.ConstantPCommTransition;
 import org.example.scenarios.ContinuousPCommTransition;
 import org.example.scenarios.MultiWorld;
 import org.example.scenarios.PCommDecrease;
@@ -30,7 +33,11 @@ import org.example.strategies.pCommunication.PCommunicationStrategy;
 import org.example.strategies.pCommunication.SingleStepPCommunicationStrategy;
 import org.example.strategies.pSurvival.AvgKnowledgePSurvivalStrategy;
 import org.example.strategies.wordAcquisition.UnitWordAcquisitionStrategy;
+import org.example.utils.RunUtils;
 import org.example.utils.Timer;
+
+import smile.validation.metric.AdjustedRandIndex;
+import smile.validation.metric.RandIndex;
 
 public class Main {
     public static void main(String[] args) {
@@ -38,7 +45,34 @@ public class Main {
         // AbruptTransitionRuns.original("default", 40, 1,0.05);
         // MultiWorld.relocate("test", 20, 1, 0.005, 0.5, 0.5, 20000,100000, 0.95, 0.95);
         // AbruptTransitionRuns.original("formula_0.98_a0.5", 40, 1, 0.5);
-    }
+        // ContinuousPCommTransition.original("A", 40, 1, 0.5, 0, 100000,200000);
+
+        // AdjustedRandIndex ari = new AdjustedRandIndex();
+        // RandIndex ri = new RandIndex();
+
+        // int[] truth = new int[]{1, 2, 3};
+        // int[] labels = new int[]{1,1, 0};
+        // double ariScore = ari.score(truth, labels);
+        // double riScore = ri.score(truth, labels);
+
+        // System.out.println(ariScore);
+        // System.out.println(riScore);
+
+        // ConstantPCommTransition.run("mut_0.5", 20, 1, 0.0, 0.05, 10000, 0.5);
+        // ConstantPCommTransition.run("mut_0.01", 20, 1, 0.0, 0.05, 50000, 0.5);
+        // ConstantPCommTransition.run("mut_0.005", 20, 1, 0.0, 0.05, 50000, 0.5);
+
+        // ConstantPCommTransition.run("test", 30, 1, 0.2, 0.05, 50000, 0);
+
+        // ConstantPCommTransition.run("m_0/p_0", 30, 1, 0.0, 0.05, 50000, 0.0);
+
+        // investigateA(20, 2000, 0.1, 0.97, 0.99, 0.01);
+        // investigatePComm(20, 2000, 0.03, 0.05, 0.8, 0.99, 0.01);
+
+        // investigateA(20, 2000, 0, 1, 0.5, 0.99, 0.05, 0.02, 2);
+
+        // investigatePComm(20, 2000, 0, 1, 0.5, 0.99, 0.05, 0.02, 2);
+}
 
     public static void runSimulationsInParallel() {
         ExecutorService executorService = Executors.newFixedThreadPool(16);
@@ -324,6 +358,36 @@ public class Main {
             // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_age", 40, 1, 0.5, 0.99, 3, 0.01),
             // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("A_sm_age", 40, 1, 2, 0.99, 3, 0.01)
 
+            ///////////// 3 Strategies same params
+            
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("same_param/base", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 8, 0.1),
+
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("same_param/L20", 20, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 8, 0.1),
+
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("same_param/N1000", 40, 1000, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 8, 0.1),
+
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("same_param/A", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 8, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("same_param/A", 40, 1, 0.5, 0.05, 100000, 100000, null, null, null, 0.9, 8, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("same_param/A", 40, 1, 0.5, 0.5, 100000, 100000, null, null, null, 0.9, 8, 0.1),
+
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("same_param/age", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 3, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("same_param/age", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 15, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("same_param/age", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 1, 0.1),
+
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("same_param/stddev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 8, 0.8),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("same_param/stddev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 8, 0.01),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("same_param/stddev", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.9, 8, 5),
+
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("same_param/alpha", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.75, 8, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("same_param/alpha", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0, 8, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("same_param/alpha", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.25, 8, 0.1),
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("same_param/alpha", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0.99, 8, 0.1)
+            // () -> ContinuousPCommTransition.wordAcquisitionNewPSurvAgedLAb("same_param/alpha", 40, 1, 0.5, 0.005, 100000, 100000, null, null, null, 0, 8, 0.1)
+
+
+
+
+
 
 
             /////////////// AGED LAB FIXED /////////////////////////////////
@@ -558,12 +622,363 @@ public class Main {
             // () -> AbruptTransitionRuns.original("formula_0.96", 20, 1, 0.05)
 
 
-            () -> AbruptTransitionRuns.original("decreasing_A_096", 40, 1,0.004),
-            () -> AbruptTransitionRuns.original("decreasing_A_096", 40, 1,0.003),
-            () -> AbruptTransitionRuns.original("decreasing_A_096", 40, 1,0.002),
-            () -> AbruptTransitionRuns.original("decreasing_A_096", 40, 1,0.001),
-            () -> AbruptTransitionRuns.original("decreasing_A_096", 40, 1,0.005)
-        );
+            // () -> AbruptTransitionRuns.original("decreasing_A_096", 40, 1,0.004),
+            // () -> AbruptTransitionRuns.original("decreasing_A_096", 40, 1,0.003),
+            // () -> AbruptTransitionRuns.original("decreasing_A_096", 40, 1,0.002),
+            // () -> AbruptTransitionRuns.original("decreasing_A_096", 40, 1,0.001),
+            // () -> AbruptTransitionRuns.original("decreasing_A_096", 40, 1,0.005)
+
+            // () -> ContinuousPCommTransition.original(60, 1, 0.5, 0.005, 100000,200000),
+            // () -> ContinuousPCommTransition.originalMoloney(60, 1, 0.5, 0.05, 100000,200000),
+            // () -> ContinuousPCommTransition.originalMoloney(60, 1, 0.5, 0.005, 100000,200000)
+
+            ///////////////////////////////////////////////////////////////////////////////////////
+            // () -> ContinuousPCommTransition.original("base", 40, 1, 0.5, 0.05, 100000,200000),
+            // () -> ContinuousPCommTransition.original("base", 40, 1, 0.5, 0.05, 100000,200000),
+            // () -> ContinuousPCommTransition.original("base", 40, 1, 0.5, 0.05, 100000,200000),
+
+            // () -> ContinuousPCommTransition.original("N", 40, 5, 0.5, 0.05, 100000,200000),
+            // () -> ContinuousPCommTransition.original("N", 40, 5, 0.5, 0.05, 100000,200000),
+            // () -> ContinuousPCommTransition.original("N", 40, 1000, 0.5, 0.05, 100000,200000),
+            // () -> ContinuousPCommTransition.original("N", 40, 1000, 0.5, 0.05, 100000,200000),
+
+            // () -> ContinuousPCommTransition.original("age", 40, 1, 0.5, 0.05, 100000,200000, new Neighbor8PositionsStrategy(), 1),
+            // () -> ContinuousPCommTransition.original("age", 40, 1, 0.5, 0.05, 100000,200000, new Neighbor8PositionsStrategy(), 1),
+            // () -> ContinuousPCommTransition.original("age", 40, 1, 0.5, 0.05, 100000,200000, new Neighbor8PositionsStrategy(), 5),
+            // () -> ContinuousPCommTransition.original("age", 40, 1, 0.5, 0.05, 100000,200000, new Neighbor8PositionsStrategy(), 5),
+            // () -> ContinuousPCommTransition.original("age", 40, 1, 0.5, 0.05, 100000,200000, new Neighbor8PositionsStrategy(), 10),
+            // () -> ContinuousPCommTransition.original("age", 40, 1, 0.5, 0.05, 100000,200000, new Neighbor8PositionsStrategy(), 10),
+
+            // () -> ContinuousPCommTransition.original("L", 20, 1, 0.5, 0.05, 100000,200000),
+            // () -> ContinuousPCommTransition.original("L", 20, 1, 0.5, 0.05, 100000,200000),
+            // () -> ContinuousPCommTransition.original("L", 30, 1, 0.5, 0.05, 100000,200000),
+            // () -> ContinuousPCommTransition.original("L", 30, 1, 0.5, 0.05, 100000,200000),
+
+            // () -> ContinuousPCommTransition.original("A", 40, 1, 0.5, 0, 100000,200000),
+            // () -> ContinuousPCommTransition.original("A", 40, 1, 0.5, 0.005, 100000,200000),
+            // () -> ContinuousPCommTransition.original("A", 40, 1, 0.5, 0.005, 100000,200000),
+            // () -> ContinuousPCommTransition.original("A", 40, 1, 0.5, 0.1, 100000,200000),
+            // () -> ContinuousPCommTransition.original("A", 40, 1, 0.5, 0.1, 100000,200000),
+            // () -> ContinuousPCommTransition.original("A", 40, 1, 0.5, 0.5, 100000,200000),
+            // () -> ContinuousPCommTransition.original("A", 40, 1, 0.5, 0.5, 100000,200000),
+
+            // () -> ContinuousPCommTransition.original("neighb_not_diag", 40, 1, 0.5, 0.05, 100000,200000, new Neighbor4PositionsStrategy(false)),
+            // () -> ContinuousPCommTransition.original("neighb_not_diag", 40, 1, 0.5, 0.05, 100000,200000, new Neighbor4PositionsStrategy(false)),
+            // () -> ContinuousPCommTransition.original("neighb_not_diag", 40, 1, 0.5, 0.05, 100000,200000, new Neighbor4PositionsStrategy(false)),
+            
+            // () -> ContinuousPCommTransition.original("neighb", 40, 1, 0.5, 0.05, 100000,200000, new Neighbor4PositionsStrategy(true)),
+            // () -> ContinuousPCommTransition.original("neighb", 40, 1, 0.5, 0.05, 100000,200000, new Neighbor4PositionsStrategy(true)),
+            // () -> ContinuousPCommTransition.original("neighb", 40, 1, 0.5, 0.05, 100000,200000, new Neighbor4PositionsStrategy(true))
+
+            // () -> ContinuousPCommTransition.original("A_small", 40, 1, 0.5, 0.003, 100000,200000),
+            // () -> ContinuousPCommTransition.original("A_small", 40, 1, 0.5, 0.001, 100000,200000),
+            // () -> ContinuousPCommTransition.original("A_small", 40, 1, 0.5, 0.002, 100000,200000),
+            // () -> ContinuousPCommTransition.original("A_small", 40, 1, 0.5, 0.004, 100000,200000),
+            // () -> ContinuousPCommTransition.original("A_small", 40, 1, 0.5, 0.0005, 100000,200000)
+            
+            // () -> ContinuousPCommTransition.original("A_big", 40, 1, 0.5, 2, 100000,200000),
+            // () -> ContinuousPCommTransition.original("A_big", 40, 1, 0.5, 3, 100000,200000),
+            // () -> ContinuousPCommTransition.original("A_big", 40, 1, 0.5, 5, 100000,200000),
+            // () -> ContinuousPCommTransition.original("A_big", 40, 1, 0.5, 4, 100000,200000)
+
+            // () -> ContinuousPCommTransition.originalMoloney(60, 1, 0.5, 0.05, 100000,200000)
+
+            // () -> PCommDecrease.original("base", 60, 1, 0.05, false, 3000, 7000, 0.01, 0.18),
+
+            // () -> PCommIncrease.originalMoloney(60, 0.05, 1, 7000, 3000, 0.19),
+            // () -> PCommDecrease.original("base_0.05", 60, 1, 0.05, true, 3000, 7000, 0.01, 0.15)
+            // () -> PCommDecrease.original("base_0.005", 60, 1, 0.005, true, 3000, 7000, 0.0, 0.10)
+
+            // () -> PCommDecrease.original("base", 40, 1, 0.05, false, 3000, 10000, 0.01, 0.15),
+            // () -> PCommDecrease.original("base", 40, 1, 0.05, false, 3000, 10000, 0.01, 0.15),
+
+            // () -> PCommDecrease.original("L", 20, 1, 0.05, false, 3000, 10000, 0.01, 0.15),
+            // () -> PCommDecrease.original("L", 20, 1, 0.05, false, 3000, 10000, 0.01, 0.15),
+            // () -> PCommDecrease.original("L", 30, 1, 0.05, false, 3000, 10000, 0.01, 0.15),
+            // () -> PCommDecrease.original("L", 30, 1, 0.05, false, 3000, 10000, 0.01, 0.15),
+
+            // () -> PCommDecrease.original("N", 40, 5, 0.05, false, 3000, 10000, 0.01, 0.15),
+            // () -> PCommDecrease.original("N", 40, 5, 0.05, false, 3000, 10000, 0.01, 0.15),
+            // () -> PCommDecrease.original("N", 40, 1000, 0.05, false, 3000, 10000, 0.01, 0.15),
+            // () -> PCommDecrease.original("N", 40, 1000, 0.05, false, 3000, 10000, 0.01, 0.15),
+
+            // () -> PCommDecrease.original("A", 40, 1, 0.005, false, 3000, 10000, 0.01, 0.15),
+            // () -> PCommDecrease.original("A", 40, 1, 0.005, false, 3000, 10000, 0.01, 0.15),
+            // () -> PCommDecrease.original("A", 40, 1, 0.5, false, 3000, 10000, 0.01, 0.15),
+            // () -> PCommDecrease.original("A", 40, 1, 0.5, false, 3000, 10000, 0.01, 0.15),
+            // () -> PCommDecrease.original("A", 40, 1, 0.1, false, 3000, 10000, 0.01, 0.15),
+            // () -> PCommDecrease.original("A", 40, 1, 0.1, false, 3000, 10000, 0.01, 0.15),
+            // () -> PCommDecrease.original("A", 40, 1, 2, false, 3000, 10000, 0.01, 0.15),
+            // () -> PCommDecrease.original("A", 40, 1, 2, false, 3000, 10000, 0.01, 0.15)
+
+            // () -> PCommIncrease.original(40, 0.05, 1, false, 8000, 3000, 0.19, 0.11, new Neighbor4PositionsStrategy(false)),
+            // () -> PCommIncrease.original(40, 0.05, 1, false, 8000, 3000, 0.19, 0.11, new Neighbor4PositionsStrategy(false)),
+            // () -> PCommIncrease.original(40, 0.05, 1, false, 8000, 3000, 0.19, 0.11, new Neighbor4PositionsStrategy(true)),
+            // () -> PCommIncrease.original(40, 0.05, 1, false, 8000, 3000, 0.19, 0.11, new Neighbor4PositionsStrategy(true)),
+
+            // () -> PCommDecrease.original("neighb", 40, 1, 0.05, false, 3000, 8000, 0.01, 0.15, new Neighbor4PositionsStrategy(false)),
+            // () -> PCommDecrease.original("neighb", 40, 1, 0.05, false, 3000, 8000, 0.01, 0.15, new Neighbor4PositionsStrategy(false)),
+            // () -> PCommDecrease.original("neighb_diag", 40, 1, 0.05, false, 3000, 8000, 0.01, 0.15, new Neighbor4PositionsStrategy(true)),
+            // () -> PCommDecrease.original("neighb_diag", 40, 1, 0.05, false, 3000, 8000, 0.01, 0.15, new Neighbor4PositionsStrategy(true))
+
+
+            // () -> ConstantPCommTransition.run("p_0.5", 20, 1, 0.0, 0.05, 10000, 0.001),
+            // () -> ConstantPCommTransition.run("p_0.5", 20, 1, 0.0, 0.05, 10000, 0.001),
+            // () -> ConstantPCommTransition.run("p_0.5", 20, 1, 0.0, 0.05, 10000, 0.001),
+
+            /////////////////////////////// CORRELATION
+
+            // () -> ConstantPCommTransition.run("mut_0/p_0", 30, 1, 0.0, 0.05, 50000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0/p_0", 30, 1, 0.0, 0.05, 50000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0/p_0", 30, 1, 0.0, 0.05, 50000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0/p_0", 30, 1, 0.0, 0.05, 50000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0/p_0", 30, 1, 0.0, 0.05, 50000, 0.001),
+           
+            // () -> ConstantPCommTransition.run("mut_0/p_0.1", 30, 1, 0.1, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.1", 30, 1, 0.1, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.1", 30, 1, 0.1, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.1", 30, 1, 0.1, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.1", 30, 1, 0.1, 0.05, 50000, 0),
+            
+            // () -> ConstantPCommTransition.run("mut_0/p_0.2", 30, 1, 0.2, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.2", 30, 1, 0.2, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.2", 30, 1, 0.2, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.2", 30, 1, 0.2, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.2", 30, 1, 0.2, 0.05, 50000, 0),
+           
+            // () -> ConstantPCommTransition.run("mut_0/p_0.3", 30, 1, 0.3, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.3", 30, 1, 0.3, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.3", 30, 1, 0.3, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.3", 30, 1, 0.3, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.3", 30, 1, 0.3, 0.05, 50000, 0),
+            
+            // () -> ConstantPCommTransition.run("mut_0/p_0.4", 30, 1, 0.4, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.4", 30, 1, 0.4, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.4", 30, 1, 0.4, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.4", 30, 1, 0.4, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.4", 30, 1, 0.4, 0.05, 50000, 0),
+           
+            // () -> ConstantPCommTransition.run("mut_0/p_0.5", 30, 1, 0.5, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.5", 30, 1, 0.5, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.5", 30, 1, 0.5, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.5", 30, 1, 0.5, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.5", 30, 1, 0.5, 0.05, 50000, 0),
+            
+            // () -> ConstantPCommTransition.run("mut_0/p_0.6", 30, 1, 0.6, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.6", 30, 1, 0.6, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.6", 30, 1, 0.6, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.6", 30, 1, 0.6, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.6", 30, 1, 0.6, 0.05, 50000, 0),
+
+            // () -> ConstantPCommTransition.run("mut_0/p_0.7", 30, 1, 0.7, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.7", 30, 1, 0.7, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.7", 30, 1, 0.7, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.7", 30, 1, 0.7, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.7", 30, 1, 0.7, 0.05, 50000, 0),
+           
+            // () -> ConstantPCommTransition.run("mut_0/p_0.8", 30, 1, 0.8, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.8", 30, 1, 0.8, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.8", 30, 1, 0.8, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.8", 30, 1, 0.8, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.8", 30, 1, 0.8, 0.05, 50000, 0),
+            
+            // () -> ConstantPCommTransition.run("mut_0/p_0.9", 30, 1, 0.9, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.9", 30, 1, 0.9, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.9", 30, 1, 0.9, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.9", 30, 1, 0.9, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.9", 30, 1, 0.9, 0.05, 50000, 0),
+        
+            // () -> ConstantPCommTransition.run("mut_0/p_1", 30, 1, 1, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_1", 30, 1, 1, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_1", 30, 1, 1, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_1", 30, 1, 1, 0.05, 50000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_1", 30, 1, 1, 0.05, 50000, 0)
+
+              
+            ////////////// CORRELATION MUTATION ONLY
+            
+            // () -> ConstantPCommTransition.run("p_0/mut_0.001", 30, 1, 0.0, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.001", 30, 1, 0.0, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.001", 30, 1, 0.0, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.001", 30, 1, 0.0, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.001", 30, 1, 0.0, 0.05, 30000, 0.001),
+
+            // () -> ConstantPCommTransition.run("p_0/mut_0.005", 30, 1, 0.0, 0.05, 30000, 0.005),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.005", 30, 1, 0.0, 0.05, 30000, 0.005),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.005", 30, 1, 0.0, 0.05, 30000, 0.005),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.005", 30, 1, 0.0, 0.05, 30000, 0.005),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.005", 30, 1, 0.0, 0.05, 30000, 0.005),
+
+            // () -> ConstantPCommTransition.run("p_0/mut_0.5", 30, 1, 0.0, 0.05, 30000, 0.5),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.5", 30, 1, 0.0, 0.05, 30000, 0.5),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.5", 30, 1, 0.0, 0.05, 30000, 0.5),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.5", 30, 1, 0.0, 0.05, 30000, 0.5),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.5", 30, 1, 0.0, 0.05, 30000, 0.5),
+            
+            // () -> ConstantPCommTransition.run("p_0/mut_0.01", 30, 1, 0.0, 0.05, 30000, 0.01),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.01", 30, 1, 0.0, 0.05, 30000, 0.01),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.01", 30, 1, 0.0, 0.05, 30000, 0.01),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.01", 30, 1, 0.0, 0.05, 30000, 0.01),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.01", 30, 1, 0.0, 0.05, 30000, 0.01),
+
+            // () -> ConstantPCommTransition.run("p_0/mut_0.0001", 30, 1, 0.0, 0.05, 30000, 0.0001),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.0001", 30, 1, 0.0, 0.05, 30000, 0.0001),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.0001", 30, 1, 0.0, 0.05, 30000, 0.0001),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.0001", 30, 1, 0.0, 0.05, 30000, 0.0001),
+            // () -> ConstantPCommTransition.run("p_0/mut_0.0001", 30, 1, 0.0, 0.05, 30000, 0.0001)
+        
+        
+            ///////// COMMUNICATION ONLY
+
+            // () -> ConstantPCommTransition.run("mut_0/p_0.1", 30, 1, 0.1, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.1", 30, 1, 0.1, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.1", 30, 1, 0.1, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.1", 30, 1, 0.1, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.1", 30, 1, 0.1, 0.05, 30000, 0),
+            
+            // () -> ConstantPCommTransition.run("mut_0/p_0.2", 30, 1, 0.2, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.2", 30, 1, 0.2, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.2", 30, 1, 0.2, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.2", 30, 1, 0.2, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.2", 30, 1, 0.2, 0.05, 30000, 0),
+           
+            // () -> ConstantPCommTransition.run("mut_0/p_0.3", 30, 1, 0.3, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.3", 30, 1, 0.3, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.3", 30, 1, 0.3, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.3", 30, 1, 0.3, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.3", 30, 1, 0.3, 0.05, 30000, 0),
+            
+            // () -> ConstantPCommTransition.run("mut_0/p_0.4", 30, 1, 0.4, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.4", 30, 1, 0.4, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.4", 30, 1, 0.4, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.4", 30, 1, 0.4, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.4", 30, 1, 0.4, 0.05, 30000, 0),
+           
+            // () -> ConstantPCommTransition.run("mut_0/p_0.5", 30, 1, 0.5, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.5", 30, 1, 0.5, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.5", 30, 1, 0.5, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.5", 30, 1, 0.5, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.5", 30, 1, 0.5, 0.05, 30000, 0),
+            
+            // () -> ConstantPCommTransition.run("mut_0/p_0.6", 30, 1, 0.6, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.6", 30, 1, 0.6, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.6", 30, 1, 0.6, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.6", 30, 1, 0.6, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.6", 30, 1, 0.6, 0.05, 30000, 0),
+
+            // () -> ConstantPCommTransition.run("mut_0/p_0.7", 30, 1, 0.7, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.7", 30, 1, 0.7, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.7", 30, 1, 0.7, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.7", 30, 1, 0.7, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.7", 30, 1, 0.7, 0.05, 30000, 0),
+           
+            // () -> ConstantPCommTransition.run("mut_0/p_0.8", 30, 1, 0.8, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.8", 30, 1, 0.8, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.8", 30, 1, 0.8, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.8", 30, 1, 0.8, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.8", 30, 1, 0.8, 0.05, 30000, 0),
+            
+            // () -> ConstantPCommTransition.run("mut_0/p_0.9", 30, 1, 0.9, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.9", 30, 1, 0.9, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.9", 30, 1, 0.9, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.9", 30, 1, 0.9, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_0.9", 30, 1, 0.9, 0.05, 30000, 0),
+        
+            // () -> ConstantPCommTransition.run("mut_0/p_1", 30, 1, 1, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_1", 30, 1, 1, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_1", 30, 1, 1, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_1", 30, 1, 1, 0.05, 30000, 0),
+            // () -> ConstantPCommTransition.run("mut_0/p_1", 30, 1, 1, 0.05, 30000, 0)
+
+
+            ////// COMMUNICATION + MUTATION
+            
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.1", 30, 1, 0.1, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.1", 30, 1, 0.1, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.1", 30, 1, 0.1, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.1", 30, 1, 0.1, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.1", 30, 1, 0.1, 0.05, 30000, 0.001),
+            
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.2", 30, 1, 0.2, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.2", 30, 1, 0.2, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.2", 30, 1, 0.2, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.2", 30, 1, 0.2, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.2", 30, 1, 0.2, 0.05, 30000, 0.001),
+           
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.3", 30, 1, 0.3, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.3", 30, 1, 0.3, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.3", 30, 1, 0.3, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.3", 30, 1, 0.3, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.3", 30, 1, 0.3, 0.05, 30000, 0.001),
+            
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.4", 30, 1, 0.4, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.4", 30, 1, 0.4, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.4", 30, 1, 0.4, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.4", 30, 1, 0.4, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.4", 30, 1, 0.4, 0.05, 30000, 0.001),
+           
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.5", 30, 1, 0.5, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.5", 30, 1, 0.5, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.5", 30, 1, 0.5, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.5", 30, 1, 0.5, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.5", 30, 1, 0.5, 0.05, 30000, 0.001),
+            
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.6", 30, 1, 0.6, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.6", 30, 1, 0.6, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.6", 30, 1, 0.6, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.6", 30, 1, 0.6, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.6", 30, 1, 0.6, 0.05, 30000, 0.001),
+
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.7", 30, 1, 0.7, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.7", 30, 1, 0.7, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.7", 30, 1, 0.7, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.7", 30, 1, 0.7, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.7", 30, 1, 0.7, 0.05, 30000, 0.001),
+           
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.8", 30, 1, 0.8, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.8", 30, 1, 0.8, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.8", 30, 1, 0.8, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.8", 30, 1, 0.8, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.8", 30, 1, 0.8, 0.05, 30000, 0.001),
+            
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.9", 30, 1, 0.9, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.9", 30, 1, 0.9, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.9", 30, 1, 0.9, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.9", 30, 1, 0.9, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_0.9", 30, 1, 0.9, 0.05, 30000, 0.001),
+        
+            // () -> ConstantPCommTransition.run("mut_0.001/p_1", 30, 1, 1, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_1", 30, 1, 1, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_1", 30, 1, 1, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_1", 30, 1, 1, 0.05, 30000, 0.001),
+            // () -> ConstantPCommTransition.run("mut_0.001/p_1", 30, 1, 1, 0.05, 30000, 0.001)
+
+
+            //////////////      A PARAM       /////////////////////////////////////////////////
+            
+            // () -> investigateA(20, 2000, 1, 0.8, 0.99, 0.01, 2),
+            // () -> investigateA(40, 2000, 1, 0.8, 0.99, 0.01, 2),
+
+            // () -> investigatePComm(20, 2000, 0, 1, 0.5, 0.99, 0.01, 2),
+            // () -> investigatePComm(40, 2000, 0, 1, 0.5, 0.99, 0.01, 2)
+
+
+            // () -> investigateA(40, 2000, 1000, 0, 1, 0.5, 0.99, 0.05, 0.02, 2),
+
+            // () -> investigatePComm(40, 2000, 1000, 0, 1, 0.5, 0.99, 0.05, 0.02, 2)
+
+            // () -> ContinuousPCommTransition.originalMoloney(60, 1, 0.5, 0.005, 20000, 200000),
+
+            // () -> PCommIncrease.original(60, 0.005, 1, true, 7000, 3000, 0.17, 0.1, new Neighbor8PositionsStrategy() )
+
+            () -> ConstantPCommTransition.run("p_comm_0_mut_0", 30, 1, 0.0, 0.05, 30000, 0.0),
+            () -> ConstantPCommTransition.run("p_comm_0_mut_0", 30, 1, 0.0, 0.05, 30000, 0.0),
+            () -> ConstantPCommTransition.run("p_comm_0_mut_0", 30, 1, 0.0, 0.05, 30000, 0.0),
+            () -> ConstantPCommTransition.run("p_comm_0_mut_0", 30, 1, 0.0, 0.05, 30000, 0.0),
+            () -> ConstantPCommTransition.run("p_comm_0_mut_0", 30, 1, 0.0, 0.05, 30000, 0.0)
+
+
+            );
 
 
 
@@ -573,6 +988,112 @@ public class Main {
         }
 
         executorService.shutdown();
+    }
+
+    public static void investigateA(int L, int T, int skipT, double minA, double maxA, double minPComm, double maxPComm, double pCommStep, double pCommStepSmall, int nRuns) {
+        String parentFolder = "investigate_A";
+        String folder = parentFolder + "/alive_depend_a_L_" + L + "/" + new Date().getTime();
+        Map<Double, Object> allStats = new HashMap<>();
+        for (double pComm = minPComm; pComm <= maxPComm; pComm = round(pComm + (pComm < 0.8 ? pCommStep : pCommStepSmall), 10000)) {
+            List<Double> valuesA = new ArrayList<>();
+            List<Double> valuesAvgAlive = new ArrayList<>();
+            List<Double> valuesActualPUpds = new ArrayList<>();
+            for (double A = minA; A <= maxA; A = round(A + (A < 0.01 ? 0.002 : A < 0.1 ? 0.01 : 0.1), 100000)) {
+                valuesA.add(A);
+                double totalAvgAlive = 0;
+                double count = 0;
+                
+                System.out.println("pComm = " + pComm + ", A = " + A);
+                for (int i = 0; i < nRuns; i++) {
+                    VarConfig varConfig = new VarConfig(Map.of(ConfigKey.T, T, ConfigKey.L, L, ConfigKey.A, A));
+                    StrategyConfig strategyConfig = new StrategyConfig(
+                        new ConstantPCommunicationStrategy(pComm),
+                        new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
+                        new RandomLAbInheritanceStrategy(),
+                        new ConstantLAbAgingStrategy(),
+                        new Neighbor8PositionsStrategy(),
+                        new UnitWordAcquisitionStrategy(),
+                        new ProbabilisticEvolutionStrategy());
+                    SimulationStats stats = new SimulationStats();
+                    Simulation simulation = new Simulation(stats, varConfig, strategyConfig);
+                    simulation.start();
+
+                    System.out.println(stats.getNAgentsAlive().size());
+                    if (stats.getNAgentsAlive().size() < skipT) {
+                        continue;
+                    }
+                    double[] results = RunUtils.getSeriesStats(stats.getNAgentsAlive().subList(skipT, stats.getAvgAges().size()));
+                    totalAvgAlive += results[0];
+                    count++;
+                }
+                double agentsAlive = count == 0 ? 0 : totalAvgAlive/count;
+                valuesAvgAlive.add(agentsAlive);
+                valuesActualPUpds.add(agentsAlive == 0 ? 0 : L*L / agentsAlive * (1 - pComm));
+            }
+
+            SimulationPlots plots = new SimulationPlots(folder);
+            plots.plotSeriesAsDependentOnAnother(valuesA, valuesAvgAlive, "alive_over_A_pComm=" + pComm, "A", "# Alive Agents", "A", 0.0, (double) L*L, true);
+            plots.plotSeriesAsDependentOnAnother(valuesA, valuesActualPUpds, "pUpd_over_A_pComm=" + pComm, "A", "# Actual p_upd", "A", 0.0, 6.0, true);
+            List<List<Double>> data = List.of(valuesA, valuesAvgAlive, valuesActualPUpds);
+            IOUtils.exportToJson(data, "out/" + folder + "/data_pComm=" + pComm + ".json");
+            allStats.put(pComm, data);
+        }
+        IOUtils.exportToJson(allStats, "out/" + folder + "/data_all.json");
+    }
+
+    public static double round(double d, double prec) {
+        return Math.round(d * prec)/prec;
+    }
+
+    public static void investigatePComm(int L, int T, int skipT, double minA, double maxA, double minPComm, double maxPComm, double pCommStep, double pCommStepSmall, int nRuns) {
+        String parentFolder = "investigate_p_comm";
+        String folder = parentFolder + "/alive_depend_p_comm_L_" + L + "/" + new Date().getTime();
+        Map<Double, Object> allStats = new HashMap<>();
+        for (double A = minA; A < maxA; A = round(A + (A < 0.01 ? 0.002 : A < 0.1 ? 0.01 : 0.1), 100000)) {
+            List<Double> valuesPComm = new ArrayList<>();
+            List<Double> valuesAvgAlive = new ArrayList<>();
+            List<Double> valuesActualPUpds = new ArrayList<>();
+            for (double pComm = minPComm; pComm <= maxPComm; pComm = round(pComm + (pComm < 0.8 ? pCommStep : pCommStepSmall), 10000)) {
+                valuesPComm.add(pComm);
+                double totalAvgAlive = 0;
+                int count = 0;
+                
+                System.out.println("A = " + A + ", pComm = " + pComm);
+                for (int i = 0; i < nRuns; i++) {
+                    VarConfig varConfig = new VarConfig(Map.of(ConfigKey.T, T, ConfigKey.L, L, ConfigKey.A, A));
+                    StrategyConfig strategyConfig = new StrategyConfig(
+                        new ConstantPCommunicationStrategy(pComm),
+                        new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
+                        new RandomLAbInheritanceStrategy(),
+                        new ConstantLAbAgingStrategy(),
+                        new Neighbor8PositionsStrategy(),
+                        new UnitWordAcquisitionStrategy(),
+                        new ProbabilisticEvolutionStrategy());
+                    SimulationStats stats = new SimulationStats();
+                    Simulation simulation = new Simulation(stats, varConfig, strategyConfig);
+                    simulation.start();
+
+                    System.out.println(stats.getNAgentsAlive().size());
+                    if (stats.getNAgentsAlive().size() < skipT) {
+                        continue;
+                    }
+                    double[] results = RunUtils.getSeriesStats(stats.getNAgentsAlive().subList(skipT, stats.getAvgAges().size()));
+                    totalAvgAlive += results[0];
+                    count++;
+                }
+                double agentsAlive = count == 0 ? 0 : totalAvgAlive/count;
+                valuesAvgAlive.add(agentsAlive);
+                System.out.println("agentsAlive = " + agentsAlive);
+                valuesActualPUpds.add(agentsAlive == 0 ? 0 : L*L / agentsAlive * (1 - pComm));
+            }
+            SimulationPlots plots = new SimulationPlots(folder);
+            plots.plotSeriesAsDependentOnAnother(valuesPComm, valuesAvgAlive, "alive_over_pComm_A=" + A, "p_comm", "# Alive Agents", "PComm", 0.0, (double) L*L);
+            plots.plotSeriesAsDependentOnAnother(valuesPComm, valuesActualPUpds, "pUpd_over_pComm_A=" + A, "p_comm", "# Actual p_upd", "PComm", 0.0, 1.05);
+            List<List<Double>> data = List.of(valuesPComm, valuesAvgAlive, valuesActualPUpds);
+            IOUtils.exportToJson(data, "out/" + folder + "/data_A=" + A + ".json");
+            allStats.put(A, data);
+        }
+        IOUtils.exportToJson(allStats, "out/" + folder + "/data_all.json");
     }
 
     public static void abruptPCommIncrease(int L, int N, double stdDev) {

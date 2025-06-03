@@ -18,6 +18,7 @@ import org.example.strategies.evolution.ProbabilisticEvolutionStrategy;
 import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.RandomLAbInheritanceStrategy;
 import org.example.strategies.neighborPositions.Neighbor8PositionsStrategy;
+import org.example.strategies.neighborPositions.NeighborPositionsStrategy;
 import org.example.strategies.pCommunication.ConstantPCommunicationStrategy;
 import org.example.strategies.pCommunication.PCommunicationStrategy;
 import org.example.strategies.pSurvival.AvgKnowledgePSurvivalStrategy;
@@ -27,7 +28,7 @@ import org.example.utils.Timer;
 
 public class PCommDecrease {
 
-  public static final String folder = "p_comm_decrease";
+  public static final String folder = "p_comm_decrease_new";
 
   public static void controlledWorld(int L, int N, double A, int nSkipIterations, int nIterationsPerStep, double minPComm, double maxPComm) {
     try {
@@ -113,7 +114,11 @@ public class PCommDecrease {
     timer.stop("All simulations done");
   }
 
-  public static void original(int L, int N, double A, boolean moloneyImpl, int nSkipIterations, int nIterationsPerStep, double minPComm, double maxPComm) {
+  public static void original(String tag, int L, int N, double A, boolean moloneyImpl, int nSkipIterations, int nIterationsPerStep, double minPComm, double maxPComm) {
+    original(tag, L, N, A, moloneyImpl, nSkipIterations, nIterationsPerStep, minPComm, maxPComm, new Neighbor8PositionsStrategy());
+  }
+
+  public static void original(String tag, int L, int N, double A, boolean moloneyImpl, int nSkipIterations, int nIterationsPerStep, double minPComm, double maxPComm, NeighborPositionsStrategy neighborPositionsStrategy) {
 
     int preSimulationStepsNumber = 10000;
     double preSimulationPComm = 0.65;
@@ -132,7 +137,7 @@ public class PCommDecrease {
         new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
         new RandomLAbInheritanceStrategy(),
         new ConstantLAbAgingStrategy(),
-        new Neighbor8PositionsStrategy(),
+        neighborPositionsStrategy,
         new UnitWordAcquisitionStrategy(),
         new ProbabilisticEvolutionStrategy());
 
@@ -142,7 +147,8 @@ public class PCommDecrease {
         e.printStackTrace();
     }
     String subfolder = moloneyImpl ? "original_moloney" : "original";
-    String folder = RunUtils.makePath("p_comm_decrease", "/", "natural_world","/", subfolder, "/", "L", L, "/", new Date().getTime());
+    String baseFolder = RunUtils.makePath(PCommDecrease.folder, "/", "natural_world","/", subfolder, "/", "L", L) + (tag == null ? "" : "/" + tag);
+    String folder = RunUtils.makePath(baseFolder, "/", new Date().getTime());
     String preSimulationStatsFolder = folder + "/pre-simulation";
     SimulationPlots preSimulationPlots = new SimulationPlots(preSimulationStatsFolder);
     SimulationPlots simulationPlots = new SimulationPlots(folder);
