@@ -13,7 +13,6 @@ import org.example.export.IOUtils;
 import org.example.plotting.SimulationPlots;
 import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
-import org.example.strategies.agentInitializer.ControlledAgentInitializer;
 import org.example.strategies.evolution.ProbabilisticEvolutionStrategy;
 import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
 import org.example.strategies.learningAbilityInheritance.RandomLAbInheritanceStrategy;
@@ -28,279 +27,127 @@ import org.example.utils.Timer;
 
 public class PCommDecrease {
 
-  public static final String folder = "p_comm_decrease_new";
+    public static final String folder = "p_comm_decrease";
 
-  public static void controlledWorld(int L, int N, double A, int nSkipIterations, int nIterationsPerStep, double minPComm, double maxPComm) {
-    try {
-        Thread.sleep(new Random().nextInt(2000));
-    } catch (InterruptedException e) {
-        e.printStackTrace();
-    }
-    String folder = RunUtils.makePath("p_comm_decrease", "/", "controlled_world", "/", "L", L, "/", new Date().getTime());
-    
-    VarConfig varConfig = new VarConfig(Map.of(
-        ConfigKey.T, nIterationsPerStep,
-        ConfigKey.N, N,
-        ConfigKey.L, L,
-        ConfigKey.SKIP_ITERATIONS, nSkipIterations,
-        ConfigKey.A, A
-        ));
-
-    StrategyConfig strategyConfig = new StrategyConfig(
-        null,
-        new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-        new RandomLAbInheritanceStrategy(),
-        new ConstantLAbAgingStrategy(),
-        new Neighbor8PositionsStrategy(),
-        new UnitWordAcquisitionStrategy(),
-        new ProbabilisticEvolutionStrategy(),
-        new ControlledAgentInitializer(0.95)
-        );
-    
-    SimulationPlots simulationPlots = new SimulationPlots(folder);
-
-    Simulation simulation = new Simulation(null, varConfig, strategyConfig);
-
-    maxPComm += 0.0001;
-    List<Double> pCommunicationValues = new ArrayList<>();
-    for (double i = minPComm; i <= maxPComm; i += 0.01) {
-        pCommunicationValues.add(Math.round(i * 100.0) / 100.0);
-    }
-    pCommunicationValues = pCommunicationValues.reversed();
-
-    List<Double> avgSuccessRates = new ArrayList<>();
-    List<Double> avgLearningAbilities = new ArrayList<>();
-
-    Timer timer = new Timer();
-    timer.start();
-
-    for (double pComm : pCommunicationValues) {
-      System.out.println("Starting simulation for pComm = " + pComm);
-
-      PCommunicationStrategy strategy = new ConstantPCommunicationStrategy(pComm);
-      SimulationStats simulationStats = new SimulationStats(nSkipIterations);
-
-      simulation.setPCommunicationStrategy(strategy);
-      simulation.setSimulationStats(simulationStats);
-      simulation.start();
-
-      Double avgLearningAbility = simulationStats.getAvgLearningAbility();
-      avgLearningAbilities.add(avgLearningAbility);
-
-      Double avgSuccessRate = simulationStats.getAvgSuccessRate();
-      avgSuccessRates.add(avgSuccessRate);
-
-      simulationPlots.plotTwoSeriesOverIterations(simulationStats.getAvgLearningAbilities(),
-          simulationStats.getSuccessRates(), "l_ab_&_s_rate, pComm = " + pComm, "Iteration",
-          "Value", 0, 1, "Learning Ability", "Success Rate", 0.0, 1.2);
-
-      IOUtils.exportToJson(avgLearningAbility, "out/" + folder + "/l_ab_pComm_" + pComm + ".json");
-      IOUtils.exportToJson(avgSuccessRate, "out/" + folder + "/s_rate_pComm_" + pComm + ".json");
-      
-      List<Double> pCommOverIterations = SimulationStats.getPCommunicationOverIterations(strategy, varConfig.T(), true);
-      RunUtils.saveStats(folder + "/pComm_" + pComm + "_run_stats.csv", simulationStats, pCommOverIterations);
+    public static void original(String tag, int L, int N, double A, boolean moloneyImpl, int nSkipIterations,
+            int nIterationsPerStep, double minPComm, double maxPComm) {
+        original(tag, L, N, A, moloneyImpl, nSkipIterations, nIterationsPerStep, minPComm, maxPComm,
+                new Neighbor8PositionsStrategy());
     }
 
-    IOUtils.saveSimulationConfig(folder, simulation);
+    public static void original(String tag, int L, int N, double A, boolean moloneyImpl, int nSkipIterations,
+            int nIterationsPerStep, double minPComm, double maxPComm,
+            NeighborPositionsStrategy neighborPositionsStrategy) {
 
-    simulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgLearningAbilities, "l_ab_over_p_comm_avg",
-        "P_Communication", "Learning Ability", "Learning Ability", 0.0, 1.2, true);
-    simulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgSuccessRates, "s_rate_over_p_comm_avg",
-        "P_Communication", "Success Rate", "Success Rate", 0.0, 1.2, true);
+        int preSimulationStepsNumber = 10000;
+        double preSimulationPComm = 0.65;
 
-    IOUtils.exportToJson(avgLearningAbilities, "out/" + folder + "/l_ab_pComm_all.json");
-    IOUtils.exportToJson(avgSuccessRates, "out/" + folder + "/s_rate_pComm_all.json");
+        VarConfig varConfig = new VarConfig(Map.of(
+                ConfigKey.T, preSimulationStepsNumber,
+                ConfigKey.L, L,
+                ConfigKey.N, N,
+                ConfigKey.SKIP_ITERATIONS, nSkipIterations,
+                ConfigKey.A, A,
+                ConfigKey.REPR_LIPOWSKA, moloneyImpl ? 0 : 1));
 
-    timer.stop("All simulations done");
-  }
+        StrategyConfig strategyConfig = new StrategyConfig(
+                new ConstantPCommunicationStrategy(preSimulationPComm),
+                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
+                new RandomLAbInheritanceStrategy(),
+                new ConstantLAbAgingStrategy(),
+                neighborPositionsStrategy,
+                new UnitWordAcquisitionStrategy(),
+                new ProbabilisticEvolutionStrategy());
 
-  public static void original(String tag, int L, int N, double A, boolean moloneyImpl, int nSkipIterations, int nIterationsPerStep, double minPComm, double maxPComm) {
-    original(tag, L, N, A, moloneyImpl, nSkipIterations, nIterationsPerStep, minPComm, maxPComm, new Neighbor8PositionsStrategy());
-  }
+        try {
+            Thread.sleep(new Random().nextInt(2000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-  public static void original(String tag, int L, int N, double A, boolean moloneyImpl, int nSkipIterations, int nIterationsPerStep, double minPComm, double maxPComm, NeighborPositionsStrategy neighborPositionsStrategy) {
+        String subfolder = moloneyImpl ? "original_moloney" : "original";
+        String baseFolder = RunUtils.makePath(PCommDecrease.folder, "/", "natural_world", "/", subfolder, "/", "L", L)
+                + (tag == null ? "" : "/" + tag);
+        String folder = RunUtils.makePath(baseFolder, "/", new Date().getTime());
+        String preSimulationStatsFolder = folder + "/pre-simulation";
+        SimulationPlots preSimulationPlots = new SimulationPlots(preSimulationStatsFolder);
+        SimulationPlots simulationPlots = new SimulationPlots(folder);
 
-    int preSimulationStepsNumber = 10000;
-    double preSimulationPComm = 0.65;
+        Simulation simulation = new Simulation(
+                new SimulationStats(List.of(4000, 4500, 4999, 10000, 13000, 20000, 29000, 29999), List.of()), varConfig,
+                strategyConfig);
 
-    VarConfig varConfig = new VarConfig(Map.of(
-        ConfigKey.T, preSimulationStepsNumber,
-        ConfigKey.L, L,
-        ConfigKey.N, N,
-        ConfigKey.SKIP_ITERATIONS, nSkipIterations,
-        ConfigKey.A, A,
-        ConfigKey.REPR_LIPOWSKA, moloneyImpl ? 0 : 1
-        ));
+        simulation.start();
+        IOUtils.saveSimulationConfig(preSimulationStatsFolder, simulation);
 
-    StrategyConfig strategyConfig = new StrategyConfig(
-        new ConstantPCommunicationStrategy(preSimulationPComm),
-        new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-        new RandomLAbInheritanceStrategy(),
-        new ConstantLAbAgingStrategy(),
-        neighborPositionsStrategy,
-        new UnitWordAcquisitionStrategy(),
-        new ProbabilisticEvolutionStrategy());
+        List<Double> pCommOverIterations = SimulationStats
+                .getPCommunicationOverIterations(simulation.getPCommunicationStrategy(), varConfig.T(), true);
+        RunUtils.saveStats(preSimulationStatsFolder + "/run_stats.csv", simulation.getSimulationStats(),
+                pCommOverIterations);
 
-    try {
-        Thread.sleep(new Random().nextInt(2000));
-    } catch (InterruptedException e) {
-        e.printStackTrace();
+        preSimulationPlots.saveSimulationStats(simulation.getSimulationStats(),
+                strategyConfig.getPCommunicationStrategy(),
+                varConfig.T());
+        varConfig.setT(nIterationsPerStep);
+
+        maxPComm += 0.0001;
+        List<Double> pCommunicationValues = new ArrayList<>();
+        for (double i = minPComm; i <= maxPComm; i += 0.01) {
+            pCommunicationValues.add(Math.round(i * 100.0) / 100.0);
+        }
+        pCommunicationValues = pCommunicationValues.reversed();
+
+        List<Double> avgSuccessRates = new ArrayList<>();
+        List<Double> avgLearningAbilities = new ArrayList<>();
+
+        Timer timer = new Timer();
+        timer.start();
+
+        for (double pComm : pCommunicationValues) {
+            System.out.println("Starting simulation for pComm = " + pComm);
+
+            Timer simulationTimer = new Timer();
+            simulationTimer.start();
+
+            PCommunicationStrategy strategy = new ConstantPCommunicationStrategy(pComm);
+            SimulationStats simulationStats = new SimulationStats(nSkipIterations);
+
+            simulation.setPCommunicationStrategy(strategy);
+            simulation.setSimulationStats(simulationStats);
+            simulation.start();
+
+            simulationTimer.stop("Simulation for pComm = " + pComm + " done");
+
+            Double avgLearningAbility = simulationStats.getAvgLearningAbility();
+            avgLearningAbilities.add(avgLearningAbility);
+
+            Double avgSuccessRate = simulationStats.getAvgSuccessRate();
+            avgSuccessRates.add(avgSuccessRate);
+
+            simulationPlots.plotTwoSeriesOverIterations(simulationStats.getAvgLearningAbilities(),
+                    simulationStats.getSuccessRates(), "l_ab_&_s_rate, pComm = " + pComm, "Iteration",
+                    "Value", 0, 1, "Learning Ability", "Success Rate", 0.0, 1.2);
+
+            IOUtils.exportToJson(avgLearningAbility, "out/" + folder + "/l_ab_pComm_" + pComm + ".json");
+            IOUtils.exportToJson(avgSuccessRate, "out/" + folder + "/s_rate_pComm_" + pComm + ".json");
+
+            List<Double> pCommOverIterationsSingleStep = SimulationStats.getPCommunicationOverIterations(strategy,
+                    varConfig.T(), true);
+            RunUtils.saveStats(folder + "/pComm_" + pComm + "_run_stats.csv", simulationStats,
+                    pCommOverIterationsSingleStep);
+        }
+
+        IOUtils.saveSimulationConfig(folder, simulation);
+
+        simulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgLearningAbilities,
+                "l_ab_over_p_comm_avg",
+                "P_Communication", "Learning Ability", "Learning Ability", null, null, true);
+        simulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgSuccessRates, "s_rate_over_p_comm_avg",
+                "P_Communication", "Success Rate", "Success Rate", null, null, true);
+
+        IOUtils.exportToJson(avgLearningAbilities, "out/" + folder + "/l_ab_pComm_all.json");
+        IOUtils.exportToJson(avgSuccessRates, "out/" + folder + "/s_rate_pComm_all.json");
+
+        timer.stop("All simulations done");
     }
-    String subfolder = moloneyImpl ? "original_moloney" : "original";
-    String baseFolder = RunUtils.makePath(PCommDecrease.folder, "/", "natural_world","/", subfolder, "/", "L", L) + (tag == null ? "" : "/" + tag);
-    String folder = RunUtils.makePath(baseFolder, "/", new Date().getTime());
-    String preSimulationStatsFolder = folder + "/pre-simulation";
-    SimulationPlots preSimulationPlots = new SimulationPlots(preSimulationStatsFolder);
-    SimulationPlots simulationPlots = new SimulationPlots(folder);
-
-    Simulation simulation = new Simulation(new SimulationStats(List.of(4000, 4500, 4999, 10000, 13000, 20000, 29000, 29999), List.of()), varConfig,
-        strategyConfig);
-
-    simulation.start();
-    IOUtils.saveSimulationConfig(preSimulationStatsFolder, simulation);
-
-    List<Double> pCommOverIterations = SimulationStats.getPCommunicationOverIterations(simulation.getPCommunicationStrategy(), varConfig.T(), true);
-    RunUtils.saveStats(preSimulationStatsFolder + "/run_stats.csv", simulation.getSimulationStats(), pCommOverIterations);
-
-    preSimulationPlots.saveSimulationStats(simulation.getSimulationStats(), strategyConfig.getPCommunicationStrategy(),
-        varConfig.T());
-    varConfig.setT(nIterationsPerStep);
-
-    maxPComm += 0.0001;
-    List<Double> pCommunicationValues = new ArrayList<>();
-    for (double i = minPComm; i <= maxPComm; i += 0.01) {
-        pCommunicationValues.add(Math.round(i * 100.0) / 100.0);
-    }
-    pCommunicationValues = pCommunicationValues.reversed();
-
-    List<Double> avgSuccessRates = new ArrayList<>();
-    List<Double> avgLearningAbilities = new ArrayList<>();
-
-    Timer timer = new Timer();
-    timer.start();
-
-    for (double pComm : pCommunicationValues) {
-      System.out.println("Starting simulation for pComm = " + pComm);
-
-      Timer simulationTimer = new Timer();
-      simulationTimer.start();
-
-      PCommunicationStrategy strategy = new ConstantPCommunicationStrategy(pComm);
-      SimulationStats simulationStats = new SimulationStats(nSkipIterations);
-
-      simulation.setPCommunicationStrategy(strategy);
-      simulation.setSimulationStats(simulationStats);
-      simulation.start();
-
-      simulationTimer.stop("Simulation for pComm = " + pComm + " done");
-
-      Double avgLearningAbility = simulationStats.getAvgLearningAbility();
-      avgLearningAbilities.add(avgLearningAbility);
-
-      Double avgSuccessRate = simulationStats.getAvgSuccessRate();
-      avgSuccessRates.add(avgSuccessRate);
-
-      simulationPlots.plotTwoSeriesOverIterations(simulationStats.getAvgLearningAbilities(),
-          simulationStats.getSuccessRates(), "l_ab_&_s_rate, pComm = " + pComm, "Iteration",
-          "Value", 0, 1, "Learning Ability", "Success Rate", 0.0, 1.2);
-
-      IOUtils.exportToJson(avgLearningAbility, "out/" + folder + "/l_ab_pComm_" + pComm + ".json");
-      IOUtils.exportToJson(avgSuccessRate, "out/" + folder + "/s_rate_pComm_" + pComm + ".json");
-
-      List<Double> pCommOverIterationsSingleStep = SimulationStats.getPCommunicationOverIterations(strategy, varConfig.T(), true);
-      RunUtils.saveStats(folder + "/pComm_" + pComm + "_run_stats.csv", simulationStats, pCommOverIterationsSingleStep);
-    }
-
-    IOUtils.saveSimulationConfig(folder, simulation);
-
-    simulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgLearningAbilities, "l_ab_over_p_comm_avg",
-        "P_Communication", "Learning Ability", "Learning Ability", null, null, true);
-    simulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgSuccessRates, "s_rate_over_p_comm_avg",
-        "P_Communication", "Success Rate", "Success Rate", null, null, true);
-
-    IOUtils.exportToJson(avgLearningAbilities, "out/" + folder + "/l_ab_pComm_all.json");
-    IOUtils.exportToJson(avgSuccessRates, "out/" + folder + "/s_rate_pComm_all.json");
-
-    timer.stop("All simulations done");
-  }
-
-
-  public static void runPCommDecreaseSimulations(int L) {
-
-    VarConfig varConfig = new VarConfig(Map.of(
-        ConfigKey.T, 30000, ConfigKey.L, L));
-
-    StrategyConfig strategyConfig = new StrategyConfig(
-        new ConstantPCommunicationStrategy(0.5),
-        new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-        new RandomLAbInheritanceStrategy(),
-        new ConstantLAbAgingStrategy(),
-        new Neighbor8PositionsStrategy(),
-        new UnitWordAcquisitionStrategy(),
-        new ProbabilisticEvolutionStrategy());
-
-    String folder = RunUtils.makePath("p_comm_decrease", "/", "natural_world", "/", "L", L, "/", new Date().getTime());
-    String preSimulationStatsFolder = folder + "/pre-simulation";
-    SimulationPlots preSimulationPlots = new SimulationPlots(preSimulationStatsFolder);
-    SimulationPlots simulationPlots = new SimulationPlots(folder);
-
-    Simulation simulation = new Simulation(new SimulationStats(List.of(4000, 4500, 4999, 10000, 13000, 14999), List.of()), varConfig,
-        strategyConfig);
-
-    IOUtils.saveSimulationConfig(preSimulationStatsFolder, simulation);
-    simulation.start();
-
-    preSimulationPlots.saveSimulationStats(simulation.getSimulationStats(), strategyConfig.getPCommunicationStrategy(),
-        varConfig.T());
-    varConfig.setT(3000);
-
-    int nSkipIterations = 1000;
-
-    List<Double> pCommunicationValues = List.of(0.27, 0.26, 0.25, 0.24, 0.23, 0.22, 0.21, 0.2, 0.19, 0.18, 0.17, 0.16,
-        0.15, 0.14, 0.13, 0.12, 0.11);
-    List<Double> avgSuccessRates = new ArrayList<>();
-    List<Double> avgLearningAbilities = new ArrayList<>();
-
-    Timer timer = new Timer();
-    timer.start();
-
-    for (double pComm : pCommunicationValues) {
-      System.out.println("Starting simulation for pComm = " + pComm);
-
-      Timer simulationTimer = new Timer();
-      simulationTimer.start();
-
-      PCommunicationStrategy strategy = new ConstantPCommunicationStrategy(pComm);
-      SimulationStats simulationStats = new SimulationStats(nSkipIterations);
-
-      simulation.setPCommunicationStrategy(strategy);
-      simulation.setSimulationStats(simulationStats);
-      simulation.start();
-
-      simulationTimer.stop("Simulation for pComm = " + pComm + " done");
-
-      Double avgLearningAbility = simulationStats.getAvgLearningAbility();
-      avgLearningAbilities.add(avgLearningAbility);
-
-      Double avgSuccessRate = simulationStats.getAvgSuccessRate();
-      avgSuccessRates.add(avgSuccessRate);
-
-      simulationPlots.plotTwoSeriesOverIterations(simulationStats.getAvgLearningAbilities(),
-          simulationStats.getSuccessRates(), "l_ab_&_s_rate, pComm = " + pComm, "Iteration",
-          "Value", 0, 1, "Learning Ability", "Success Rate", 0.0, 1.2);
-
-      IOUtils.exportToJson(avgLearningAbility, "out/" + folder + "/l_ab_pComm_" + pComm + ".json");
-      IOUtils.exportToJson(avgSuccessRate, "out/" + folder + "/s_rate_pComm_" + pComm + ".json");
-    }
-
-    simulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgLearningAbilities, "l_ab_over_p_comm_avg",
-        "P_Communication", "Learning Ability", "Learning Ability", null, null, true);
-    simulationPlots.plotSeriesAsDependentOnAnother(pCommunicationValues, avgSuccessRates, "s_rate_over_p_comm_avg",
-        "P_Communication", "Success Rate", "Success Rate", null, null, true);
-
-    IOUtils.exportToJson(avgLearningAbilities, "out/" + folder + "/l_ab_pComm_all.json");
-    IOUtils.exportToJson(avgSuccessRates, "out/" + folder + "/s_rate_pComm_all.json");
-
-    timer.stop("All simulations done");
-  }
 }

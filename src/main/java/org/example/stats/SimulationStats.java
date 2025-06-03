@@ -89,14 +89,27 @@ public class SimulationStats {
     private final List<Integer> iterationsToSaveMaps;
     private final List<Double> pCommunicationsToSaveMaps;
     private final int nSkipIterations;
+    private final boolean trackCorrelation;
 
-    public SimulationStats(List<Integer> iterationsToSaveMaps, List<Double> pCommunicationsToSaveMaps) {
-        this(iterationsToSaveMaps, pCommunicationsToSaveMaps, false, 0);
+    public SimulationStats(List<Integer> iterationsToSaveMaps, List<Double> pCommunicationsToSaveMaps,
+            boolean trackCorrelation) {
+        this(iterationsToSaveMaps, pCommunicationsToSaveMaps, false, 0, trackCorrelation);
     }
 
-    public SimulationStats(List<Integer> iterationsToSaveMaps, List<Double> pCommunicationsToSaveMaps, boolean trackLanguageStats, double languageThreshold) {
+    public SimulationStats(List<Integer> iterationsToSaveMaps, List<Double> pCommunicationsToSaveMaps) {
+        this(iterationsToSaveMaps, pCommunicationsToSaveMaps, false, 0, false);
+    }
+
+    public SimulationStats(List<Integer> iterationsToSaveMaps, List<Double> pCommunicationsToSaveMaps,
+            boolean trackLanguageStats, double languageThreshold) {
+        this(iterationsToSaveMaps, pCommunicationsToSaveMaps, trackLanguageStats, languageThreshold, false);
+    }
+
+    public SimulationStats(List<Integer> iterationsToSaveMaps, List<Double> pCommunicationsToSaveMaps,
+            boolean trackLanguageStats, double languageThreshold, boolean trackCorrelation) {
         this.iterationsToSaveMaps = new ArrayList<>(iterationsToSaveMaps);
         this.pCommunicationsToSaveMaps = new ArrayList<>(pCommunicationsToSaveMaps);
+        this.trackCorrelation = trackCorrelation;
         this.nSkipIterations = 0;
         if (trackLanguageStats) {
             this.languageStats = new LanguageStats(languageThreshold);
@@ -107,6 +120,7 @@ public class SimulationStats {
         this.iterationsToSaveMaps = new ArrayList<>();
         this.pCommunicationsToSaveMaps = new ArrayList<>();
         this.nSkipIterations = nSkipIterations;
+        this.trackCorrelation = false;
     }
 
     public SimulationStats() {
@@ -128,7 +142,7 @@ public class SimulationStats {
     public void recordAfterEvolution(World world) {
         recordWorldLearningAbilities(world, -11, -11);
         recordWorldLanguages(world, -11, -11);
-         if (languageStats != null) {
+        if (languageStats != null) {
             languageStats.trackFinalIteration(world);
         }
     }
@@ -177,28 +191,21 @@ public class SimulationStats {
 
     private boolean shouldSaveMaps(int iteration, double pCommunication) {
         boolean isScheduledSave = iterationsToSaveMaps.contains(iteration) ||
-            pCommunicationsToSaveMaps.stream().anyMatch((pComm) -> pCommunication >= pComm);
-    
+                pCommunicationsToSaveMaps.stream().anyMatch((pComm) -> pCommunication >= pComm);
+
         boolean isExtremeDrop = false;
         if (!learningAbilityLanguageRI.isEmpty()) {
             double currentRiScore = learningAbilityLanguageRI.get(learningAbilityLanguageRI.size() - 1);
             double previousRiScore = learningAbilityLanguageRI.size() > 1
-                ? learningAbilityLanguageRI.get(learningAbilityLanguageRI.size() - 2)
-                : currentRiScore;
-    
+                    ? learningAbilityLanguageRI.get(learningAbilityLanguageRI.size() - 2)
+                    : currentRiScore;
+
             double dropPercentage = ((previousRiScore - currentRiScore) / previousRiScore) * 100;
             isExtremeDrop = dropPercentage > 20;
         }
-    
-        return isScheduledSave || isExtremeDrop; // || iteration % 50 == 0;
-    }
 
-    // private boolean shouldSaveMaps(int iteration, double pCommunication) {
-    //     return iterationsToSaveMaps.contains(iteration) ||
-    //     pCommunicationsToSaveMaps
-    //     .stream()
-    //     .anyMatch((pComm) -> pCommunication >= pComm);
-    // }
+        return isScheduledSave || isExtremeDrop;
+    }
 
     private void recordCommonWorldStats(World world) {
         World.Stats stats = world.getStats();
@@ -208,7 +215,9 @@ public class SimulationStats {
         avgAges.add(stats.getAvgAge());
         avgKnowledge.add(stats.getAvgKnowledge());
         nAgentsAlive.add(world.getAgents().size());
-        // calculateLearningAbilityLanguageCorrelation(world);
+        if (trackCorrelation) {
+            calculateLearningAbilityLanguageCorrelation(world);
+        }
     }
 
     private void calculateLearningAbilityLanguageCorrelation(World world) {
@@ -262,7 +271,8 @@ public class SimulationStats {
         return getPCommunicationOverIterations(strategy, nIters, false);
     }
 
-    public static List<Double> getPCommunicationOverIterations(PCommunicationStrategy strategy, int nIters, boolean padInitialValue) {
+    public static List<Double> getPCommunicationOverIterations(PCommunicationStrategy strategy, int nIters,
+            boolean padInitialValue) {
         List<Double> pCommunications = new ArrayList<>();
         if (padInitialValue) {
             // used for aligning with "zero" (initial setup) iteration stats
@@ -278,12 +288,12 @@ public class SimulationStats {
         if (list.isEmpty()) {
             return null;
         }
-    
+
         double sum = 0;
         for (Number number : list) {
             sum += number.doubleValue();
         }
-    
+
         return sum / list.size();
     }
 
@@ -331,5 +341,4 @@ public class SimulationStats {
         return successRates.stream().filter((d) -> d != null).mapToDouble(Double::doubleValue).average().orElse(0);
     }
 
-    
 }

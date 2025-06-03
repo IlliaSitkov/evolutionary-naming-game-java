@@ -33,8 +33,7 @@ public class ConstantPCommTransition {
         ConfigKey.P_MUT, pMut,
         ConfigKey.A, A,
         ConfigKey.T, nSteps,
-        ConfigKey.N, N
-        ));
+        ConfigKey.N, N));
 
     StrategyConfig strategyConfig = new StrategyConfig(
         new ConstantPCommunicationStrategy(pComm),
@@ -44,19 +43,18 @@ public class ConstantPCommTransition {
         new Neighbor8PositionsStrategy(),
         new UnitWordAcquisitionStrategy(),
         new ProbabilisticEvolutionStrategy(),
-        new LAbLangContinueSimulationStrategy(0.95, 0)
-    );
+        new LAbLangContinueSimulationStrategy(0.95, 0));
 
     List<Integer> iterations = new ArrayList<>();
-      for (int i = 0; i < nSteps; i += 200) {
-        iterations.add(i);
-      }
+    for (int i = 0; i < nSteps; i += 200) {
+      iterations.add(i);
+    }
 
     SimulationStats simulationStats = new SimulationStats(
         iterations,
         List.of(0.1, 0.11, 0.115, 0.12, 0.125, 0.13, 0.135, 0.14, 0.15, 0.16, 0.17, 0.18, 0.2, 0.22, 0.23, 0.24, 0.25,
             0.26, 0.28, 0.29, 0.3, 0.31, 0.32, 0.33, 0.34, 0.35,
-            0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.49, 0.5));
+            0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.49, 0.5), true);
 
     Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 

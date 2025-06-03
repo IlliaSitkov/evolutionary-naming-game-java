@@ -37,7 +37,8 @@ public class LanguageStats {
     public void trackIteration(int iteration, World world) {
         UniformLanguage language = getUniformLanguage(languageThreshold, world);
 
-        if (language == null || currentUniformLanguage != null && currentUniformLanguage.getLanguage() == language.getLanguage()) {
+        if (language == null
+                || currentUniformLanguage != null && currentUniformLanguage.getLanguage() == language.getLanguage()) {
             return;
         }
 
@@ -58,7 +59,7 @@ public class LanguageStats {
         double totalTime = 0;
         int count = 0;
 
-        for (UniformLanguage uniformLanguage: languages) {
+        for (UniformLanguage uniformLanguage : languages) {
             if (uniformLanguage.getDisplacedTime() == null) {
                 continue;
             }

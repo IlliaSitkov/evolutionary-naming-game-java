@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.ToString;
 
 /**
- * Child's learning ability is derived from parent's: l_child = l_parent_at_birth + N(0, epsilon)
+ * Child's learning ability is derived from parent's: l_child = l_parent_at_birth + N(0, σ)
  * p_mutation = 1
  */
 @AllArgsConstructor

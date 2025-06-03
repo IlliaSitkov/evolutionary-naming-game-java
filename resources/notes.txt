@@ -1,8 +1,0 @@
-Survival probability modification:
-- what is the success rate when agents had no communications?
-
-Each iteration involves L*L updates of agents. Over iterations, the number of agents
-decreases, but the number of updates remains L*L, so agents communicate/reproduce more
-often per one iteration.
-
-Initial age of agents?

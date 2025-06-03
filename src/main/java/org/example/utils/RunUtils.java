@@ -60,7 +60,6 @@ public class RunUtils {
     if (stats.getNAgentsAlive().size() > 9000) {
       writeSeriesStats(stats.getNAgentsAlive().subList(9000, stats.getAvgAges().size()), IOUtils.rootFolder + folder + "/agents_n_after_transition_stats.txt");
     }
-    // writeSeriesStats(stats.getNAgentsAlive().subList(0, 8000), IOUtils.rootFolder + folder + "/agents_n_before_transition_stats.txt");
    
     simulationPlots.saveSimulationStats(
         stats,

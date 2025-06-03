@@ -10,8 +10,6 @@ import org.example.simulation.Simulation;
 import org.example.stats.SimulationStats;
 import org.example.strategies.agentInitializer.LimitedLAbAgentInitializer;
 import org.example.strategies.agentInitializer.RandomAgentInitializer;
-import org.example.strategies.evolution.ConstantPUpdEvolutionStrategy;
-import org.example.strategies.evolution.FullEvolutionStrategy;
 import org.example.strategies.evolution.ProbabilisticEvolutionStrategy;
 import org.example.strategies.learningAbilityAging.ConstantDecreaseLAbAgingStrategy;
 import org.example.strategies.learningAbilityAging.ConstantLAbAgingStrategy;
@@ -29,27 +27,32 @@ import org.example.utils.RunUtils;
 
 public class ContinuousPCommTransition {
 
-        public static final String folder = "continuous_p_comm_transition_new";
+        public static final String folder = "continuous_p_comm_transition";
 
         public static void original(String tag, int L, int N, double finalPComm, double A) {
                 int nSteps = 80000;
                 original(tag, L, N, finalPComm, A, nSteps, nSteps);
         }
 
-        public static void original(String tag, int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated) {
+        public static void original(String tag, int L, int N, double finalPComm, double A, int nSteps,
+                        int nStepsSimulated) {
                 original(tag, L, N, finalPComm, A, nSteps, nStepsSimulated, new Neighbor8PositionsStrategy(), 0);
         }
 
-        public static void original(String tag, int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, NeighborPositionsStrategy neighborPositionsStrateg) {
+        public static void original(String tag, int L, int N, double finalPComm, double A, int nSteps,
+                        int nStepsSimulated, NeighborPositionsStrategy neighborPositionsStrateg) {
                 original(tag, L, N, finalPComm, A, nSteps, nStepsSimulated, neighborPositionsStrateg, 0);
         }
 
-        public static void original(String tag,int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, int initAge) {
+        public static void original(String tag, int L, int N, double finalPComm, double A, int nSteps,
+                        int nStepsSimulated, int initAge) {
                 original(tag, L, N, finalPComm, A, nSteps, nStepsSimulated, new Neighbor8PositionsStrategy(), initAge);
         }
 
-        public static void original(String tag, int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, NeighborPositionsStrategy neighborPositionsStrategy, int initAge) {
-                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/original/L", L, "N", N) + (tag == null ? "" : "/" + tag);
+        public static void original(String tag, int L, int N, double finalPComm, double A, int nSteps,
+                        int nStepsSimulated, NeighborPositionsStrategy neighborPositionsStrategy, int initAge) {
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/original/L", L, "N", N)
+                                + (tag == null ? "" : "/" + tag);
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
                                 ConfigKey.A, A,
@@ -68,7 +71,9 @@ public class ContinuousPCommTransition {
 
                 SimulationStats simulationStats = new SimulationStats(
                                 List.of(varConfig.T() - 1),
-                                List.of(0.1, 0.11, 0.115, 0.12, 0.125, 0.13, 0.135, 0.14, 0.15, 0.16, 0.17, 0.18, 0.2, 0.22, 0.23, 0.24, 0.25, 0.26, 0.28, 0.29, 0.3, 0.31, 0.32, 0.33, 0.34, 0.35,
+                                List.of(0.1, 0.11, 0.115, 0.12, 0.125, 0.13, 0.135, 0.14, 0.15, 0.16, 0.17, 0.18, 0.2,
+                                                0.22, 0.23, 0.24, 0.25, 0.26, 0.28, 0.29, 0.3, 0.31, 0.32, 0.33, 0.34,
+                                                0.35,
                                                 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.49, 0.5));
 
                 Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
@@ -76,7 +81,7 @@ public class ContinuousPCommTransition {
                 RunUtils.runSimulation(simulation, folder);
         }
 
-        public static void originalMoloney(int L, int N, double finalPComm, double A,  int nSteps, int nStepsSimulated) {
+        public static void originalMoloney(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated) {
                 String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/original_moloney/L", L, "N", N);
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
@@ -91,8 +96,7 @@ public class ContinuousPCommTransition {
                                 new ConstantLAbAgingStrategy(),
                                 new Neighbor8PositionsStrategy(),
                                 new UnitWordAcquisitionStrategy(),
-                                new ProbabilisticEvolutionStrategy()
-                                );
+                                new ProbabilisticEvolutionStrategy());
 
                 SimulationStats simulationStats = new SimulationStats(
                                 List.of(varConfig.T() - 1),
@@ -103,8 +107,8 @@ public class ContinuousPCommTransition {
                 RunUtils.runSimulation(simulation, folder);
         }
 
-
-        public static void mutatedLAb(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, double stdDev) {
+        public static void mutatedLAb(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated,
+                        double stdDev) {
                 String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/mutated_l_ab/L", L, "N", N);
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
@@ -124,19 +128,19 @@ public class ContinuousPCommTransition {
                 SimulationStats simulationStats = new SimulationStats(
                                 List.of(varConfig.T() - 1),
                                 List.of(0.1, 0.11, 0.12, 0.13, 0.15, 0.16, 0.17, 0.18,
-                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
-                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
-                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5));
+                                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
+                                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
+                                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49,
+                                                0.5));
 
                 Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 
                 RunUtils.runSimulation(simulation, folder);
         }
 
-
-
-        public static void agedLAb(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, int startAge) {
-                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/aged_l_ab_fixed/L", L, "N", N);
+        public static void agedLAb(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated,
+                        int startAge) {
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/aged_l_ab/L", L, "N", N);
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
                                 ConfigKey.A, A,
@@ -155,17 +159,18 @@ public class ContinuousPCommTransition {
                 SimulationStats simulationStats = new SimulationStats(
                                 List.of(varConfig.T() - 1),
                                 List.of(0.1, 0.11, 0.12, 0.13, 0.15, 0.16, 0.17, 0.18,
-                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
-                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
-                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5));
+                                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
+                                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
+                                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49,
+                                                0.5));
 
                 Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 
                 RunUtils.runSimulation(simulation, folder);
         }
 
-        public static void moloneyPSurv411(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated) {
-                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/moloney_4_1_1_real/L", L, "N", N);
+        public static void moloneyPSurv(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated) {
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/moloney_4_1_1/L", L, "N", N);
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
                                 ConfigKey.A, A,
@@ -185,16 +190,18 @@ public class ContinuousPCommTransition {
                 SimulationStats simulationStats = new SimulationStats(
                                 List.of(varConfig.T() - 1),
                                 List.of(0.1, 0.11, 0.12, 0.13, 0.15, 0.16, 0.17, 0.18,
-                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
-                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
-                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5));
+                                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
+                                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
+                                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49,
+                                                0.5));
 
                 Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 
                 RunUtils.runSimulation(simulation, folder);
         }
 
-        public static void newPSurv(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, double otherKnwldgCoef) {
+        public static void newPSurv(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated,
+                        double otherKnwldgCoef) {
                 String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/new_p_surv/L", L, "N", N);
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
@@ -214,18 +221,21 @@ public class ContinuousPCommTransition {
                 SimulationStats simulationStats = new SimulationStats(
                                 List.of(varConfig.T() - 1),
                                 List.of(0.1, 0.11, 0.12, 0.13, 0.15, 0.16, 0.17, 0.18,
-                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
-                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
-                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5));
+                                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
+                                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
+                                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49,
+                                                0.5));
 
                 Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 
                 RunUtils.runSimulation(simulation, folder);
         }
 
-        public static void wordAcquisition(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, boolean isMoloney, double stdDev) {
+        public static void wordAcquisition(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated,
+                        Double inventedLAb, Double learntLAb, Double inheritedLAb, boolean isMoloney, double stdDev) {
                 String folderPrefix = isMoloney ? "moloney_" : "";
-                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/", folderPrefix + "word_acquisition", "/", "L", L, "N", N);
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/",
+                                folderPrefix + "word_acquisition", "/", "L", L, "N", N);
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
                                 ConfigKey.A, A,
@@ -235,33 +245,40 @@ public class ContinuousPCommTransition {
                 StrategyConfig strategyConfig = new StrategyConfig(
                                 new InterpolatedPCommunicationStrategy(0.1, finalPComm, nStepsSimulated),
                                 new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-                                isMoloney ? new RandomLAbInheritanceStrategy() : new MutatedLAbInheritanceStrategy(stdDev),
+                                isMoloney ? new RandomLAbInheritanceStrategy()
+                                                : new MutatedLAbInheritanceStrategy(stdDev),
                                 new ConstantLAbAgingStrategy(),
                                 new Neighbor8PositionsStrategy(),
                                 new LAbWordAquisitionStrategy(inventedLAb, learntLAb, inheritedLAb),
                                 new ProbabilisticEvolutionStrategy(),
-                                isMoloney ? new RandomAgentInitializer() : new LimitedLAbAgentInitializer(0.1)
-                                );
+                                isMoloney ? new RandomAgentInitializer() : new LimitedLAbAgentInitializer(0.1));
 
                 SimulationStats simulationStats = new SimulationStats(
                                 List.of(varConfig.T() - 1),
                                 List.of(0.1, 0.11, 0.12, 0.13, 0.15, 0.16, 0.17, 0.18,
-                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
-                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
-                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5));
+                                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
+                                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
+                                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49,
+                                                0.5));
 
                 Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 
                 RunUtils.runSimulation(simulation, folder);
         }
 
-        public static void wordAcquisitionAgedLAb(int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double stdDev, int startAge) {
-                wordAcquisitionAgedLAb(null, L, N, finalPComm, A, nSteps, nStepsSimulated, inventedLAb, learntLAb, inheritedLAb, stdDev, startAge);
+        public static void wordAcquisitionAgedLAb(int L, int N, double finalPComm, double A, int nSteps,
+                        int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double stdDev,
+                        int startAge) {
+                wordAcquisitionAgedLAb(null, L, N, finalPComm, A, nSteps, nStepsSimulated, inventedLAb, learntLAb,
+                                inheritedLAb, stdDev, startAge);
         }
 
-        public static void wordAcquisitionAgedLAb(String tag, int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double stdDev, int startAge) {
-                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/", "word_acquisition_aged_l_ab_4a_fixed", "/", "L", L, "N", N);
-                folder +=  tag == null ? "" : "/" + tag;
+        public static void wordAcquisitionAgedLAb(String tag, int L, int N, double finalPComm, double A, int nSteps,
+                        int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double stdDev,
+                        int startAge) {
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/",
+                                "word_acquisition_aged_l_ab", "/", "L", L, "N", N);
+                folder += tag == null ? "" : "/" + tag;
 
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
@@ -276,25 +293,27 @@ public class ContinuousPCommTransition {
                                 new Neighbor8PositionsStrategy(),
                                 new LAbWordAquisitionStrategy(inventedLAb, learntLAb, inheritedLAb),
                                 new ProbabilisticEvolutionStrategy(),
-                                new LimitedLAbAgentInitializer(0.1)
-                                );
+                                new LimitedLAbAgentInitializer(0.1));
 
                 SimulationStats simulationStats = new SimulationStats(
                                 List.of(varConfig.T() - 1),
                                 List.of(0.1, 0.11, 0.12, 0.13, 0.15, 0.16, 0.17, 0.18,
-                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
-                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
-                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5));
+                                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
+                                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
+                                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49,
+                                                0.5));
 
                 Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 
                 RunUtils.runSimulation(simulation, folder);
         }
 
-
-        public static void wordAcquisitionNewPSurv(String tag, int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double otherKnwldgCoef, double stdDev) {
-                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/", "word_acquisition_new_p_surv_4b", "/", "L", L, "N", N);
-                folder +=  tag == null ? "" : "/" + tag;
+        public static void wordAcquisitionNewPSurv(String tag, int L, int N, double finalPComm, double A, int nSteps,
+                        int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb,
+                        double otherKnwldgCoef, double stdDev) {
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/",
+                                "word_acquisition_new_p_surv", "/", "L", L, "N", N);
+                folder += tag == null ? "" : "/" + tag;
 
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
@@ -314,25 +333,34 @@ public class ContinuousPCommTransition {
                 SimulationStats simulationStats = new SimulationStats(
                                 List.of(varConfig.T() - 1),
                                 List.of(0.1, 0.11, 0.12, 0.13, 0.15, 0.16, 0.17, 0.18,
-                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
-                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
-                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5));
+                                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
+                                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
+                                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49,
+                                                0.5));
 
                 Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 
                 RunUtils.runSimulation(simulation, folder);
         }
 
-        public static void wordAcquisitionNewPSurvAgedLAb(int L, int N, double A, double otherKnwldgCoef, int startAge, double stdDev) {
-                wordAcquisitionNewPSurvAgedLAb(null, L, N, 0.5, A, 100000, 100000, null, null, null, otherKnwldgCoef, startAge,stdDev);
-        }
-        public static void wordAcquisitionNewPSurvAgedLAb(String tag, int L, int N, double A, double otherKnwldgCoef, int startAge, double stdDev) {
-                wordAcquisitionNewPSurvAgedLAb(tag, L, N, 0.5, A, 100000, 100000, null, null, null, otherKnwldgCoef, startAge,stdDev);
+        public static void wordAcquisitionNewPSurvAgedLAb(int L, int N, double A, double otherKnwldgCoef, int startAge,
+                        double stdDev) {
+                wordAcquisitionNewPSurvAgedLAb(null, L, N, 0.5, A, 100000, 100000, null, null, null, otherKnwldgCoef,
+                                startAge, stdDev);
         }
 
-        public static void wordAcquisitionNewPSurvAgedLAb(String tag, int L, int N, double finalPComm, double A, int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb, double otherKnwldgCoef, int startAge, double stdDev) {
-                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/word_acquisition_new_p_surv_aged_l_ab_4c_tagged_fixed/L", L, "N", N);
-                folder +=  tag == null ? "" : "/" + tag;
+        public static void wordAcquisitionNewPSurvAgedLAb(String tag, int L, int N, double A, double otherKnwldgCoef,
+                        int startAge, double stdDev) {
+                wordAcquisitionNewPSurvAgedLAb(tag, L, N, 0.5, A, 100000, 100000, null, null, null, otherKnwldgCoef,
+                                startAge, stdDev);
+        }
+
+        public static void wordAcquisitionNewPSurvAgedLAb(String tag, int L, int N, double finalPComm, double A,
+                        int nSteps, int nStepsSimulated, Double inventedLAb, Double learntLAb, Double inheritedLAb,
+                        double otherKnwldgCoef, int startAge, double stdDev) {
+                String folder = RunUtils.makePath(ContinuousPCommTransition.folder,
+                                "/word_acquisition_new_p_surv_aged_l_ab/L", L, "N", N);
+                folder += tag == null ? "" : "/" + tag;
 
                 VarConfig varConfig = new VarConfig(Map.of(
                                 ConfigKey.L, L,
@@ -352,68 +380,10 @@ public class ContinuousPCommTransition {
                 SimulationStats simulationStats = new SimulationStats(
                                 List.of(varConfig.T() - 1),
                                 List.of(0.1, 0.11, 0.12, 0.13, 0.15, 0.16, 0.17, 0.18,
-                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
-                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
-                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5));
-
-                Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
-
-                RunUtils.runSimulation(simulation, folder);
-        }
-
-        public static void moloneyFullWorldEvolution(int L, int N, double A, int nSteps) {
-                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/moloney_full_evol_414/L", L, "N", N);
-                VarConfig varConfig = new VarConfig(Map.of(
-                                ConfigKey.L, L,
-                                ConfigKey.A, A,
-                                ConfigKey.T, nSteps,
-                                ConfigKey.REPR_LIPOWSKA, 0,
-                                ConfigKey.N, N));
-                StrategyConfig strategyConfig = new StrategyConfig(
-                                new InterpolatedPCommunicationStrategy(0.1, 0.5, nSteps),
-                                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-                                new RandomLAbInheritanceStrategy(),
-                                new ConstantLAbAgingStrategy(),
-                                new Neighbor8PositionsStrategy(),
-                                new UnitWordAcquisitionStrategy(),
-                                new FullEvolutionStrategy()
-                                );
-
-                SimulationStats simulationStats = new SimulationStats(
-                                List.of(varConfig.T() - 1),
-                                List.of(0.1, 0.11, 0.12, 0.13, 0.15, 0.16, 0.17, 0.18,
-                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
-                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
-                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5));
-
-                Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
-
-                RunUtils.runSimulation(simulation, folder);
-        }
-
-        public static void constantPUpdWithContinuousPComm(int L, int N, double A, double finalPComm, int nSteps, double pUpd) {
-                String folder = RunUtils.makePath(ContinuousPCommTransition.folder, "/constant_p_upd/L", L, "N", N);
-                VarConfig varConfig = new VarConfig(Map.of(
-                                ConfigKey.L, L,
-                                ConfigKey.A, A,
-                                ConfigKey.T, nSteps,
-                                ConfigKey.N, N));
-                StrategyConfig strategyConfig = new StrategyConfig(
-                                new InterpolatedPCommunicationStrategy(0.1, finalPComm, nSteps),
-                                new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
-                                new RandomLAbInheritanceStrategy(),
-                                new ConstantLAbAgingStrategy(),
-                                new Neighbor8PositionsStrategy(),
-                                new UnitWordAcquisitionStrategy(),
-                                new ConstantPUpdEvolutionStrategy(pUpd),
-                                new LimitedLAbAgentInitializer(0.1));
-
-                SimulationStats simulationStats = new SimulationStats(
-                                List.of(varConfig.T() - 1),
-                                List.of(0.1, 0.11, 0.12, 0.13, 0.15, 0.16, 0.17, 0.18,
-                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
-                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
-                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5));
+                                                0.19, 0.2, 0.21, 0.22, 0.23, 0.25, 0.24, 0.25, 0.26,
+                                                0.27, 0.28, 0.29, 0.3, 0.31, 0.35, 0.36, 0.37,
+                                                0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49,
+                                                0.5));
 
                 Simulation simulation = new Simulation(simulationStats, varConfig, strategyConfig);
 

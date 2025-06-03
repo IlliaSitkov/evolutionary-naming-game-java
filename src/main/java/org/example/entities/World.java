@@ -181,7 +181,7 @@ public class World implements Serializable {
 
     public void takeAgentsFrom(World world, int nAgents) {
         List<Agent> agents = world.getRandomNAgents(nAgents);
-        for (Agent agent: agents) {
+        for (Agent agent : agents) {
             setAgent(agent.getX(), agent.getY(), agent);
         }
     }

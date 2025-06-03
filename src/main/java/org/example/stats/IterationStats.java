@@ -9,17 +9,17 @@ import lombok.Getter;
 
 public class IterationStats {
     @Getter
-    private int nCommunications = 0;
+    private int nCommunications;
     @Getter
-    private int nSuccessfulCommunications = 0;
+    private int nSuccessfulCommunications;
     @Getter
-    private int nNewWordSpeak = 0;
+    private int nNewWordSpeak;
     @Getter
-    private int nNewWordEmptyLexicon = 0;
+    private int nNewWordEmptyLexicon;
     @Getter
-    private int nNewWordMutation = 0;
+    private int nNewWordMutation;
     @Getter
-    private int nWordRemoved = 0;
+    private int nWordRemoved;
     @Getter
     private List<Double> killedLAbsAtBirth = new ArrayList<>();
     @Getter
@@ -70,15 +70,15 @@ public class IterationStats {
     public Double getAvgKilledLAbAtBirth() {
         return SimulationStats.getDoubleListAvg(killedLAbsAtBirth);
     }
-    
+
     public Double getAvgKilledLAb() {
         return SimulationStats.getDoubleListAvg(killedLAbs);
     }
-    
+
     public Double getAvgKilledKnowledge() {
         return SimulationStats.getDoubleListAvg(killedKnowledge);
     }
-   
+
     public Double getAvgKilledAge() {
         return SimulationStats.getDoubleListAvg(killedAges);
     }
@@ -86,7 +86,7 @@ public class IterationStats {
     public Double getAvgBornLAbAtBirth() {
         return SimulationStats.getDoubleListAvg(bornLAbsAtBirth);
     }
-    
+
     public Double getAvgBornLAb() {
         return SimulationStats.getDoubleListAvg(bornLAbs);
     }
@@ -94,7 +94,7 @@ public class IterationStats {
     public Double getAvgSurvivorLAbAtBirth() {
         return SimulationStats.getDoubleListAvg(survivorLAbsAtBirth);
     }
-    
+
     public Double getAvgSurvivorLAb() {
         return SimulationStats.getDoubleListAvg(survivorLAbs);
     }
@@ -102,7 +102,7 @@ public class IterationStats {
     public Double getAvgSurvivorKnowledge() {
         return SimulationStats.getDoubleListAvg(survivorKnowledge);
     }
-    
+
     public Double getAvgSurvivorAge() {
         return SimulationStats.getDoubleListAvg(survivorAges);
     }
@@ -147,14 +147,14 @@ public class IterationStats {
     }
 
     public Integer getNKilledAgents() {
-      return killedLAbs.size();
+        return killedLAbs.size();
     }
-    
+
     public Integer getNBornAgents() {
-      return bornLAbs.size();
+        return bornLAbs.size();
     }
-    
+
     public Integer getNSurvivorAgents() {
-      return survivorLAbs.size();
+        return survivorLAbs.size();
     }
 }

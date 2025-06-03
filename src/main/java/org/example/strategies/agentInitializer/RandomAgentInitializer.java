@@ -10,7 +10,7 @@ import org.example.entities.Lexicon;
 import lombok.ToString;
 
 /**
- * Original initialization of the world
+ * Original random initialization of the world
  */
 @ToString
 public class RandomAgentInitializer implements AgentInitializer {

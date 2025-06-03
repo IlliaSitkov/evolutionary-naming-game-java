@@ -9,6 +9,7 @@ import lombok.ToString;
 
 /**
  * Child inherits parent's learning ability at birth with p_mutation probability, otherwise acquires random learning ability
+ * (as in Moloney's original listings with the error)
  */
 @ToString
 public class MoloneyRandomLAbInheritanceStrategy implements LAbInheritanceStrategy, Serializable {

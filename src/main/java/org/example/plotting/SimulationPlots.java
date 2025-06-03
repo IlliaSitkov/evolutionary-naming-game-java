@@ -43,11 +43,16 @@ public class SimulationPlots {
         }
     }
 
-    public void plotTwoSeriesOverIterations(List<Double> series1, List<Double> series2, String title, String xAxisLabel, String yAxisLabel, int series1Shift, int series2Shift, String series1Name, String series2Name, Double rangeMin, Double rangeMax) {
-        plotTwoSeriesOverIterations(series1, series2, title, xAxisLabel, yAxisLabel, series1Shift, series2Shift, series1Name, series2Name, rangeMin, rangeMax, series1.size());
+    public void plotTwoSeriesOverIterations(List<Double> series1, List<Double> series2, String title, String xAxisLabel,
+            String yAxisLabel, int series1Shift, int series2Shift, String series1Name, String series2Name,
+            Double rangeMin, Double rangeMax) {
+        plotTwoSeriesOverIterations(series1, series2, title, xAxisLabel, yAxisLabel, series1Shift, series2Shift,
+                series1Name, series2Name, rangeMin, rangeMax, series1.size());
     }
 
-    public void plotTwoSeriesOverIterations(List<Double> series1, List<Double> series2, String title, String xAxisLabel, String yAxisLabel, int series1Shift, int series2Shift, String series1Name, String series2Name, Double rangeMin, Double rangeMax, int iterations) {
+    public void plotTwoSeriesOverIterations(List<Double> series1, List<Double> series2, String title, String xAxisLabel,
+            String yAxisLabel, int series1Shift, int series2Shift, String series1Name, String series2Name,
+            Double rangeMin, Double rangeMax, int iterations) {
         XYSeries xySeries1 = new XYSeries(series1Name);
         for (int i = 0; i < iterations; i++) {
             Double elem = null;
@@ -78,8 +83,7 @@ public class SimulationPlots {
                 PlotOrientation.VERTICAL,
                 true,
                 true,
-                false
-        );
+                false);
 
         XYPlot plot = chart.getXYPlot();
         if (rangeMin != null && rangeMax != null) {
@@ -93,19 +97,16 @@ public class SimulationPlots {
         renderer.setSeriesShapesVisible(1, false);
 
         plot.setRenderer(renderer);
-
-        // Set background color to white
         plot.setBackgroundPaint(Color.WHITE);
-
-        // Set grid lines color to grey
         plot.setDomainGridlinePaint(Color.GRAY);
         plot.setRangeGridlinePaint(Color.GRAY);
 
         saveChartAsPNG(chart, title.replaceAll(" ", "") + ".png", 800, 600);
     }
 
-
-    public void plotTwoSeriesOverThird(List<Double> xData, List<Double> series1, List<Double> series2, String title, String xAxisLabel, String yAxisLabel, int series1Shift, int series2Shift, String series1Name, String series2Name, Double rangeMin, Double rangeMax, int iterations) {
+    public void plotTwoSeriesOverThird(List<Double> xData, List<Double> series1, List<Double> series2, String title,
+            String xAxisLabel, String yAxisLabel, int series1Shift, int series2Shift, String series1Name,
+            String series2Name, Double rangeMin, Double rangeMax, int iterations) {
         XYSeries xySeries1 = new XYSeries(series1Name);
         for (int i = 0; i < iterations; i++) {
             Double elem = null;
@@ -114,7 +115,7 @@ public class SimulationPlots {
             }
             xySeries1.add(xData != null && i < xData.size() ? xData.get(i) : i + series1Shift, elem);
         }
-    
+
         XYSeries xySeries2 = new XYSeries(series2Name);
         for (int i = 0; i < iterations; i++) {
             Double elem = null;
@@ -123,11 +124,11 @@ public class SimulationPlots {
             }
             xySeries2.add(xData != null && i < xData.size() ? xData.get(i) : i + series2Shift, elem);
         }
-    
+
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(xySeries1);
         dataset.addSeries(xySeries2);
-    
+
         JFreeChart chart = ChartFactory.createXYLineChart(
                 title,
                 xAxisLabel,
@@ -136,37 +137,34 @@ public class SimulationPlots {
                 PlotOrientation.VERTICAL,
                 true,
                 true,
-                false
-        );
-    
+                false);
+
         XYPlot plot = chart.getXYPlot();
         if (rangeMin != null && rangeMax != null) {
             plot.getRangeAxis().setRange(rangeMin, rangeMax);
         }
-    
+
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesPaint(0, Color.GREEN);
         renderer.setSeriesPaint(1, Color.BLUE);
         renderer.setSeriesShapesVisible(0, false);
         renderer.setSeriesShapesVisible(1, false);
-    
+
         plot.setRenderer(renderer);
-    
-        // Set background color to white
         plot.setBackgroundPaint(Color.WHITE);
-    
-        // Set grid lines color to grey
         plot.setDomainGridlinePaint(Color.GRAY);
         plot.setRangeGridlinePaint(Color.GRAY);
-    
+
         saveChartAsPNG(chart, title.replaceAll(" ", "") + ".png", 800, 600);
     }
-    
-    public <T extends Number> void plotStat(List<T> data, String title, String seriesName, String yAxisLabel, int startIteration) {
+
+    public <T extends Number> void plotStat(List<T> data, String title, String seriesName, String yAxisLabel,
+            int startIteration) {
         plotStat(data, title, seriesName, yAxisLabel, startIteration, null, null);
     }
 
-    public <T extends Number> void plotStat(List<T> data, String title, String seriesName, String yAxisLabel, int startIteration, Double rangeMin, Double rangeMax) {
+    public <T extends Number> void plotStat(List<T> data, String title, String seriesName, String yAxisLabel,
+            int startIteration, Double rangeMin, Double rangeMax) {
         XYSeries series = new XYSeries(seriesName);
         for (int i = 0; i < data.size(); i++) {
             T value = data.get(i);
@@ -175,7 +173,7 @@ public class SimulationPlots {
             } else {
                 series.add(i + startIteration, data.get(i).doubleValue());
             }
-            
+
         }
 
         XYSeriesCollection dataset = new XYSeriesCollection();
@@ -189,8 +187,7 @@ public class SimulationPlots {
                 PlotOrientation.VERTICAL,
                 true,
                 true,
-                false
-        );
+                false);
 
         XYPlot plot = chart.getXYPlot();
         if (rangeMin != null && rangeMax != null) {
@@ -202,25 +199,24 @@ public class SimulationPlots {
         renderer.setSeriesShapesVisible(0, false);
 
         plot.setRenderer(renderer);
-
-        // Set background color to white
         plot.setBackgroundPaint(Color.WHITE);
-
-        // Set grid lines color to grey
         plot.setDomainGridlinePaint(Color.GRAY);
         plot.setRangeGridlinePaint(Color.GRAY);
 
         saveChartAsPNG(chart, title.replaceAll(" ", "") + ".png", 800, 600);
     }
 
-    public void plotSeriesAsDependentOnAnother(List<Double> xData, List<Double> yData, String title, String xAxisLabel, String yAxisLabel, String seriesName, Double rangeMin, Double rangeMax) {
-        plotSeriesAsDependentOnAnother(xData, yData, title, xAxisLabel, yAxisLabel, seriesName, rangeMin, rangeMax, false);
+    public void plotSeriesAsDependentOnAnother(List<Double> xData, List<Double> yData, String title, String xAxisLabel,
+            String yAxisLabel, String seriesName, Double rangeMin, Double rangeMax) {
+        plotSeriesAsDependentOnAnother(xData, yData, title, xAxisLabel, yAxisLabel, seriesName, rangeMin, rangeMax,
+                false);
     }
 
-    public void plotSeriesAsDependentOnAnother(List<Double> xData, List<Double> yData, String title, String xAxisLabel, String yAxisLabel, String seriesName, Double rangeMin, Double rangeMax, boolean showMarkers) {
+    public void plotSeriesAsDependentOnAnother(List<Double> xData, List<Double> yData, String title, String xAxisLabel,
+            String yAxisLabel, String seriesName, Double rangeMin, Double rangeMax, boolean showMarkers) {
         xData = new ArrayList<>(xData);
         yData = new ArrayList<>(yData);
-        
+
         while (yData.size() < xData.size()) {
             yData.add(0, null);
         }
@@ -241,8 +237,7 @@ public class SimulationPlots {
                 PlotOrientation.VERTICAL,
                 true,
                 true,
-                false
-        );
+                false);
 
         XYPlot plot = chart.getXYPlot();
         if (rangeMin != null && rangeMax != null) {
@@ -254,11 +249,7 @@ public class SimulationPlots {
         renderer.setSeriesShapesVisible(0, showMarkers);
 
         plot.setRenderer(renderer);
-
-        // Set background color to white
         plot.setBackgroundPaint(Color.WHITE);
-
-        // Set grid lines color to grey
         plot.setDomainGridlinePaint(Color.GRAY);
         plot.setRangeGridlinePaint(Color.GRAY);
 
@@ -290,7 +281,7 @@ public class SimulationPlots {
                 "Communications Number", "Communications Number", 1);
 
         plotStat(simulationStats.getAvgAges(), "avg_age", "Average Age", "Age", 0);
-        
+
         plotStat(simulationStats.getKilledAgentsNumber(), "killed_agents",
                 "Killed Agents Number", "Killed Agents Number", 1);
 
@@ -301,7 +292,7 @@ public class SimulationPlots {
                 "Number Of Born Agents", "Number Of Born Agents", 1);
         plotStat(simulationStats.getNAgentsAlive(), "alive_agents", "Number Of Alive Agents",
                 "Number Of Alive Agents", 0);
-                
+
         plotStat(simulationStats.getLearningAbilityLanguageARI(), "l_ab_lang_ari", "Learning Ability - Language ARI",
                 "Learning Ability - Language ARI", 0, -1.05, 1.05);
 
@@ -310,30 +301,28 @@ public class SimulationPlots {
 
         plotStat(simulationStats.getNLangClusters(), "n_lang_clusters", "Language Clusters Number",
                 "Language Clusters Number", 0);
-        
+
         plotStat(simulationStats.getNLAbClusters(), "n_l_ab_clusters", "Learning Ability Clusters Number",
                 "Learning Ability Clusters Number", 0);
 
         plotTwoSeriesOverThird(
-            pCommunicationOverIterations,
-            simulationStats.getLearningAbilityLanguageARI(),
-            simulationStats.getLearningAbilityLanguageRI(),
-            "l_ab_lang_ari_&_ri_over_p_comm",
-            "P_Communication",
-            "Value",
-            0, 0, "Learning Ability - Language ARI", "Learning Ability - Language RI",
-            -1.05, 1.05, pCommunicationOverIterations.size()
-        );
+                pCommunicationOverIterations,
+                simulationStats.getLearningAbilityLanguageARI(),
+                simulationStats.getLearningAbilityLanguageRI(),
+                "l_ab_lang_ari_&_ri_over_p_comm",
+                "P_Communication",
+                "Value",
+                0, 0, "Learning Ability - Language ARI", "Learning Ability - Language RI",
+                -1.05, 1.05, pCommunicationOverIterations.size());
 
         plotTwoSeriesOverIterations(
-            simulationStats.getLearningAbilityLanguageARI(),
-            simulationStats.getLearningAbilityLanguageRI(),
-            "l_ab_lang_ari_&_ri_over_iterations",
-            "Iteration",
-            "Value",
-            0, 0, "Learning Ability - Language ARI", "Learning Ability - Language RI",
-            -1.05, 1.05, pCommunicationOverIterations.size()
-        );
+                simulationStats.getLearningAbilityLanguageARI(),
+                simulationStats.getLearningAbilityLanguageRI(),
+                "l_ab_lang_ari_&_ri_over_iterations",
+                "Iteration",
+                "Value",
+                0, 0, "Learning Ability - Language ARI", "Learning Ability - Language RI",
+                -1.05, 1.05, pCommunicationOverIterations.size());
 
         plotSeriesAsDependentOnAnother(
                 pCommunicationOverIterations,
@@ -352,7 +341,7 @@ public class SimulationPlots {
                 "Learning Ability - Language RI",
                 "Learning Ability - Language RI",
                 0.0, 1.05);
-        
+
         plotSeriesAsDependentOnAnother(
                 pCommunicationOverIterations,
                 simulationStats.getSuccessRates(),

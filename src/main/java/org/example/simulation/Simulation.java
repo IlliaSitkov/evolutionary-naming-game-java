@@ -91,6 +91,8 @@ public class Simulation {
                 iterationStats.trackCommunicationResult(isCommunicationSuccessful);
             }
         }
+        // need to track if agent has gone through population update before (when listener == null) because
+        // it could have been killed during previous population update
         if (shouldUpdatePopulation && !populationUpdateOccurred) {
             populationUpdate(speaker);
         }

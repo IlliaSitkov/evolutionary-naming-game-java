@@ -3,12 +3,8 @@ package org.example.export;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,7 +16,6 @@ import java.util.Locale;
 
 import org.example.StrategyConfig;
 import org.example.VarConfig;
-import org.example.entities.World;
 import org.example.simulation.Simulation;
 
 public class IOUtils {
@@ -33,23 +28,6 @@ public class IOUtils {
             mapper.writeValue(new File(fileName), object);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public static synchronized void saveWorld(World world, String fileName) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
-            oos.writeObject(world);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static synchronized World loadWorld(String fileName) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
-            return (World) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 
@@ -113,7 +91,7 @@ public class IOUtils {
 
             DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
             symbols.setDecimalSeparator('.');
-            DecimalFormat decimalFormat = new DecimalFormat("0.0####", symbols); // 5 decimal places
+            DecimalFormat decimalFormat = new DecimalFormat("0.0####", symbols);
 
             for (int i = 0; i < nIterations; i++) {
                 writer.append(String.valueOf(i));

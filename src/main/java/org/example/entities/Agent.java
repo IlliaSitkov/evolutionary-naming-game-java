@@ -31,6 +31,7 @@ public class Agent implements Serializable {
      * Number of communications where the agent was a speaker
      */
     private int nInitedCommunications = 0;
+
     /**
      * Number of communications where the agent was a speaker and the communication
      * was successful
@@ -70,7 +71,8 @@ public class Agent implements Serializable {
     }
 
     private void inventWord() {
-        lexicon.addWord(Lexicon.generateWord(varConfig.WORD_LENGTH()), wordAcquisitionStrategy.getInventedWordWeight(this));
+        lexicon.addWord(Lexicon.generateWord(varConfig.WORD_LENGTH()),
+                wordAcquisitionStrategy.getInventedWordWeight(this));
     }
 
     public boolean knowsWord(String word) {
@@ -127,13 +129,16 @@ public class Agent implements Serializable {
     }
 
     private Agent reproduceMoloney(double mutationProbability, IterationStats iterationStats) {
-        double[] newLearningAbilityResult = learningAbilityInheritanceStrategy.inheritLearningAbility(mutationProbability,
+        double[] newLearningAbilityResult = learningAbilityInheritanceStrategy.inheritLearningAbility(
+                mutationProbability,
                 this);
 
         double newLearningAbility = newLearningAbilityResult[0];
         double rWordMutation = newLearningAbilityResult[1];
 
         String newWord;
+
+        // fixed incorrect Moloney's mutation probability
         if (rWordMutation >= mutationProbability) {
             if (lexicon.isEmpty()) {
                 iterationStats.trackNewWordEmptyLexicon();

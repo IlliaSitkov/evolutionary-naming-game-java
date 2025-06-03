@@ -30,7 +30,6 @@ public class LAbLangContinueSimulationStrategy extends BaseContinueSimulationStr
       return false;
     }
     return super.shouldContinueSimulation(iteration, maxNIterations, world);
-    // return super.shouldContinueSimulation(iteration, maxNIterations, world) || !isLanguageUniform(world);
   }
 
   private boolean isLanguageUniform(World world) {

@@ -22,18 +22,17 @@ import org.example.strategies.learningAbilityInheritance.RandomLAbInheritanceStr
 import org.example.strategies.neighborPositions.Neighbor8PositionsStrategy;
 import org.example.strategies.neighborPositions.NeighborPositionsStrategy;
 import org.example.strategies.pCommunication.ConstantPCommunicationStrategy;
-import org.example.strategies.pCommunication.ContinuousIncreasePCommunicationStrategy;
 import org.example.strategies.pCommunication.InterpolatedPCommunicationStrategy;
 import org.example.strategies.pSurvival.AvgKnowledgePSurvivalStrategy;
 import org.example.strategies.wordAcquisition.UnitWordAcquisitionStrategy;
 import org.example.utils.RunUtils;
 
 public class MultiWorld {
-  
-  public static final String folder = "multi_world_50k_1";
 
+  public static final String folder = "multi_world";
 
-  public static World evolveWorld(int L_COLS, int L_ROWS, int N, double A, String folder, String subfolder, int preSimulationStepsNumber, double uniformLAbThreshold) {
+  public static World evolveWorld(int L_COLS, int L_ROWS, int N, double A, String folder, String subfolder,
+      int preSimulationStepsNumber, double uniformLAbThreshold) {
     double preSimulationPComm = 0.65;
     double uniformLangThreshold = 0.99;
 
@@ -42,8 +41,7 @@ public class MultiWorld {
         ConfigKey.L_COLS, L_COLS,
         ConfigKey.L_ROWS, L_ROWS,
         ConfigKey.N, N,
-        ConfigKey.A, A
-        ));
+        ConfigKey.A, A));
 
     StrategyConfig strategyConfig = new StrategyConfig(
         new ConstantPCommunicationStrategy(preSimulationPComm),
@@ -53,12 +51,11 @@ public class MultiWorld {
         new Neighbor8PositionsStrategy(),
         new UnitWordAcquisitionStrategy(),
         new ProbabilisticEvolutionStrategy(),
-        new LAbLangContinueSimulationStrategy(uniformLangThreshold, uniformLAbThreshold)
-        );
+        new LAbLangContinueSimulationStrategy(uniformLangThreshold, uniformLAbThreshold));
 
     String preSimulationStatsFolder = folder + "/" + subfolder;
     SimulationStats stats = new SimulationStats(List.of(0, varConfig.T() - 1), List.of());
-    
+
     Simulation simulation = new Simulation(stats, varConfig, strategyConfig);
 
     RunUtils.runSimulation(simulation, preSimulationStatsFolder, true);
@@ -66,22 +63,28 @@ public class MultiWorld {
     return simulation.getWorld();
   }
 
-  public static void joinTerritory(String tag, int L, int N, double A, double pComm, int nIterations, int nPreIterations, double preLAb, double preLAb2) {
+  public static void joinTerritory(String tag, int L, int N, double A, double pComm, int nIterations,
+      int nPreIterations, double preLAb, double preLAb2) {
     joinTerritory(tag, L, N, A, pComm, null, nIterations, nPreIterations, preLAb, preLAb2);
   }
 
-  public static void joinTerritory(String tag, int L, int N, double A, double pComm, Double pCommFinal, int nIterations, int nPreIterations, double preLAb1, double preLAb2) {
-    joinTerritory(tag, L, N, A, pComm, pCommFinal, new Neighbor8PositionsStrategy(), nIterations, nPreIterations, preLAb1, preLAb2);
+  public static void joinTerritory(String tag, int L, int N, double A, double pComm, Double pCommFinal, int nIterations,
+      int nPreIterations, double preLAb1, double preLAb2) {
+    joinTerritory(tag, L, N, A, pComm, pCommFinal, new Neighbor8PositionsStrategy(), nIterations, nPreIterations,
+        preLAb1, preLAb2);
   }
 
-  public static void joinTerritory(String tag, int L, int N, double A, double pComm, Double pCommFinal, NeighborPositionsStrategy neighborPositionsStrategy, int nIterations, int nPreNIterations, double preLAb1, double preLAb2) {
+  public static void joinTerritory(String tag, int L, int N, double A, double pComm, Double pCommFinal,
+      NeighborPositionsStrategy neighborPositionsStrategy, int nIterations, int nPreNIterations, double preLAb1,
+      double preLAb2) {
     try {
       Thread.sleep(new Random().nextInt(2000) + new Random().nextInt(2000));
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
 
-    String baseFolder = RunUtils.makePath(MultiWorld.folder,"/", "join_territory", "/", "L", L, "N", N) + (tag == null ? "" : "/" + tag);
+    String baseFolder = RunUtils.makePath(MultiWorld.folder, "/", "join_territory", "/", "L", L, "N", N)
+        + (tag == null ? "" : "/" + tag);
     String folder = RunUtils.makePath(baseFolder, "/", new Date().getTime());
 
     World world1, world2;
@@ -89,8 +92,10 @@ public class MultiWorld {
     ExecutorService executor = Executors.newFixedThreadPool(2);
 
     try {
-      CompletableFuture<World> future1 = CompletableFuture.supplyAsync(() -> evolveWorld(L/2, L, N, A, folder, "world1", nPreNIterations, preLAb1), executor);
-      CompletableFuture<World> future2 = CompletableFuture.supplyAsync(() -> evolveWorld(L/2, L, N, A, folder, "world2",  nPreNIterations, preLAb2), executor);
+      CompletableFuture<World> future1 = CompletableFuture
+          .supplyAsync(() -> evolveWorld(L / 2, L, N, A, folder, "world1", nPreNIterations, preLAb1), executor);
+      CompletableFuture<World> future2 = CompletableFuture
+          .supplyAsync(() -> evolveWorld(L / 2, L, N, A, folder, "world2", nPreNIterations, preLAb2), executor);
 
       CompletableFuture<Void> allDone = CompletableFuture.allOf(future1, future2);
 
@@ -105,19 +110,18 @@ public class MultiWorld {
           ConfigKey.T, nIterations,
           ConfigKey.N, N,
           ConfigKey.A, A,
-          ConfigKey.L, L
-          ));
+          ConfigKey.L, L));
 
       StrategyConfig strategyConfig = new StrategyConfig(
-          pCommFinal == null ? new ConstantPCommunicationStrategy(pComm) : new InterpolatedPCommunicationStrategy(pComm,pCommFinal, nIterations),
+          pCommFinal == null ? new ConstantPCommunicationStrategy(pComm)
+              : new InterpolatedPCommunicationStrategy(pComm, pCommFinal, nIterations),
           new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
           new RandomLAbInheritanceStrategy(),
           new ConstantLAbAgingStrategy(),
           neighborPositionsStrategy,
           new UnitWordAcquisitionStrategy(),
           new ProbabilisticEvolutionStrategy(),
-          new LAbLangContinueSimulationStrategy(languageThreshold, 0)
-          );
+          new LAbLangContinueSimulationStrategy(languageThreshold, 0));
 
       World world3 = World.mergeWorlds(world1, world2, varConfig, strategyConfig);
 
@@ -127,9 +131,8 @@ public class MultiWorld {
       }
 
       SimulationStats stats = new SimulationStats(
-        iterations,
-        List.of(), true, languageThreshold
-        );
+          iterations,
+          List.of(), true, languageThreshold);
 
       Simulation simulation = new Simulation(world3, stats, varConfig, strategyConfig);
 
@@ -139,26 +142,29 @@ public class MultiWorld {
     }
   }
 
-
-
-
-
-  public static void relocate(String tag, int L, int N, double A, double relocatedN, double pComm, int nIterations, int nPreNIterations, double preLAb1, double preLAb2) {
-    relocate(tag, L, N, A, relocatedN, pComm, null, new Neighbor8PositionsStrategy(), nIterations, nPreNIterations, preLAb1, preLAb2);
+  public static void relocate(String tag, int L, int N, double A, double relocatedN, double pComm, int nIterations,
+      int nPreNIterations, double preLAb1, double preLAb2) {
+    relocate(tag, L, N, A, relocatedN, pComm, null, new Neighbor8PositionsStrategy(), nIterations, nPreNIterations,
+        preLAb1, preLAb2);
   }
 
-  public static void relocate(String tag, int L, int N, double A, double relocatedN, double pComm, Double pCommFinal, int nIterations, int nPreNIterations, double preLAb1, double preLAb2) {
-    relocate(tag, L, N, A, relocatedN, pComm, pCommFinal, new Neighbor8PositionsStrategy(), nIterations, nPreNIterations, preLAb1, preLAb2);
+  public static void relocate(String tag, int L, int N, double A, double relocatedN, double pComm, Double pCommFinal,
+      int nIterations, int nPreNIterations, double preLAb1, double preLAb2) {
+    relocate(tag, L, N, A, relocatedN, pComm, pCommFinal, new Neighbor8PositionsStrategy(), nIterations,
+        nPreNIterations, preLAb1, preLAb2);
   }
 
-  public static void relocate(String tag, int L, int N, double A, double relocatedPortion, double pComm, Double pCommFinal, NeighborPositionsStrategy neighborPositionsStrategy, int nIterations, int nPreNIterations, double preLAb1, double preLAb2) {
+  public static void relocate(String tag, int L, int N, double A, double relocatedPortion, double pComm,
+      Double pCommFinal, NeighborPositionsStrategy neighborPositionsStrategy, int nIterations, int nPreNIterations,
+      double preLAb1, double preLAb2) {
     try {
       Thread.sleep(new Random().nextInt(2000) + new Random().nextInt(2000));
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
 
-    String baseFolder = RunUtils.makePath(MultiWorld.folder,"/", "relocated", "/", "L", L, "N", N) + (tag == null ? "" : "/" + tag);
+    String baseFolder = RunUtils.makePath(MultiWorld.folder, "/", "relocated", "/", "L", L, "N", N)
+        + (tag == null ? "" : "/" + tag);
     String folder = RunUtils.makePath(baseFolder, "/", new Date().getTime());
 
     World world1, world2;
@@ -166,8 +172,10 @@ public class MultiWorld {
     ExecutorService executor = Executors.newFixedThreadPool(2);
 
     try {
-      CompletableFuture<World> future1 = CompletableFuture.supplyAsync(() -> evolveWorld(L, L, N, A, folder, "world1", nPreNIterations, preLAb1), executor);
-      CompletableFuture<World> future2 = CompletableFuture.supplyAsync(() -> evolveWorld(L, L, N, A, folder, "world2", nPreNIterations, preLAb2), executor);
+      CompletableFuture<World> future1 = CompletableFuture
+          .supplyAsync(() -> evolveWorld(L, L, N, A, folder, "world1", nPreNIterations, preLAb1), executor);
+      CompletableFuture<World> future2 = CompletableFuture
+          .supplyAsync(() -> evolveWorld(L, L, N, A, folder, "world2", nPreNIterations, preLAb2), executor);
 
       CompletableFuture<Void> allDone = CompletableFuture.allOf(future1, future2);
 
@@ -183,21 +191,21 @@ public class MultiWorld {
           ConfigKey.N, N,
           ConfigKey.A, A,
           ConfigKey.L, L,
-          ConfigKey.RELOCATED_Q, relocatedPortion
-          ));
+          ConfigKey.RELOCATED_Q, relocatedPortion));
 
       StrategyConfig strategyConfig = new StrategyConfig(
-          pCommFinal == null ? new ConstantPCommunicationStrategy(pComm) : new InterpolatedPCommunicationStrategy(pComm, pCommFinal, nIterations),
+          pCommFinal == null ? new ConstantPCommunicationStrategy(pComm)
+              : new InterpolatedPCommunicationStrategy(pComm, pCommFinal, nIterations),
           new AvgKnowledgePSurvivalStrategy(varConfig.A(), varConfig.B()),
           new RandomLAbInheritanceStrategy(),
           new ConstantLAbAgingStrategy(),
           neighborPositionsStrategy,
           new UnitWordAcquisitionStrategy(),
           new ProbabilisticEvolutionStrategy(),
-          new LAbLangContinueSimulationStrategy(languageThreshold, 0)
-          );
+          new LAbLangContinueSimulationStrategy(languageThreshold, 0));
 
-      int relocatedN  = varConfig.RELOCATED_Q() < 1 ? (int) (varConfig.RELOCATED_Q() * L*L) : (int) varConfig.RELOCATED_Q();
+      int relocatedN = varConfig.RELOCATED_Q() < 1 ? (int) (varConfig.RELOCATED_Q() * L * L)
+          : (int) varConfig.RELOCATED_Q();
       world1.takeAgentsFrom(world2, relocatedN);
 
       List<Integer> iterations = new ArrayList<>();
@@ -206,9 +214,8 @@ public class MultiWorld {
       }
 
       SimulationStats stats = new SimulationStats(
-        iterations,
-        List.of(), true, languageThreshold
-        );
+          iterations,
+          List.of(), true, languageThreshold);
 
       Simulation simulation = new Simulation(world1, stats, varConfig, strategyConfig);
 
@@ -217,6 +224,5 @@ public class MultiWorld {
       executor.shutdown();
     }
   }
-
 
 }
